@@ -732,9 +732,933 @@
       .hero { padding: 26px 22px; }
       .hero h1 { font-size: 22px; }
     }
+
+    /* Accessibility & Scoped Playbook Integration Styles */
+    .skip-link {
+      position: fixed;
+      inset-block-start: -100px;
+      inset-inline-start: 1rem;
+      z-index: 9999;
+      background: #1d4ed8;
+      color: #ffffff;
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: inset-block-start 0.15s ease;
+    }
+
+    .skip-link:focus {
+      inset-block-start: 1rem;
+      outline: 3px solid #fde047;
+      outline-offset: 2px;
+    }
+
+    :where(a:any-link, button, summary, input, [tabindex]):focus-visible {
+      outline: 3px solid #1d4ed8;
+      outline-offset: 2px;
+    }
+
+    .visually-hidden:where(:not(:focus-within, :active)) {
+      position: absolute !important;
+      clip-path: inset(50%) !important;
+      overflow: hidden !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      border: 0 !important;
+      white-space: nowrap !important;
+    }
+
+    #playbook-hub {
+      --surface-alt: #f1f5f9;
+      --border-strong: #94a3b8;
+      --accent: #1d4ed8;
+      --accent-soft: #eff6ff;
+      --accent-border: #93c5fd;
+      --para: #047857;
+      --para-soft: #ecfdf5;
+      --para-border: #6ee7b7;
+      --nonpara: #b45309;
+      --nonpara-soft: #fffbeb;
+      --nonpara-border: #fcd34d;
+      --danger: #b91c1c;
+      --danger-soft: #fef2f2;
+      --danger-border: #fca5a5;
+      --purple-soft: #f5f3ff;
+      --purple-border: #c4b5fd;
+      --code-bg: #0f172a;
+      --code-fg: #e2e8f0;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgb(15 23 42 / 0.08), 0 1px 2px rgb(15 23 42 / 0.04);
+      --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+
+    #playbook-hub .pb-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+    }
+
+    #playbook-hub .pb-pill-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      padding: 0.75rem 0.9rem;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      margin-bottom: 1.15rem;
+    }
+
+    #playbook-hub .pb-pill-nav a {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      min-block-size: 44px;
+      padding: 0.35rem 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 0.84rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    #playbook-hub .pb-pill-nav a:hover {
+      background: #eff6ff;
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+
+    #playbook-hub h3 {
+      display: block;
+      font-size: 1.2rem;
+      line-height: 1.4;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 0.35rem;
+    }
+
+    #playbook-hub h4 {
+      display: block;
+      font-size: 0.96rem;
+      line-height: 1.4;
+      font-weight: 700;
+      color: #4c1d95;
+      margin: 0;
+    }
+
+    #playbook-hub p {
+      margin: 0 0 0.7rem;
+    }
+
+    #playbook-hub p:last-child {
+      margin-bottom: 0;
+    }
+
+    #playbook-hub ol {
+      margin: 0.35rem 0 0 1.35rem;
+      padding: 0;
+    }
+
+    #playbook-hub li {
+      margin-bottom: 0.25rem;
+    }
+
+    #playbook-hub code {
+      font-family: var(--font-mono);
+      font-size: 0.86em;
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 0.12rem 0.38rem;
+      border-radius: 5px;
+      border: none;
+      word-break: break-word;
+    }
+
+    #playbook-hub .code-card pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+      word-break: normal;
+    }
+
+    #playbook-hub .playbook-card {
+      scroll-margin-top: 72px;
+    }
+
+    #playbook-hub #finder-section {
+      scroll-margin-top: 72px;
+    }
+
+    @media print {
+      #playbook-hub .filter-panel,
+      #playbook-hub .finder-section,
+      #playbook-hub .pb-pill-nav,
+      #playbook-hub .copy {
+        display: none !important;
+      }
+      #playbook-hub .playbook-card {
+        display: block !important;
+        break-inside: avoid-page;
+        box-shadow: none;
+        margin-bottom: 1rem;
+      }
+      #playbook-hub details.worked-log {
+        break-inside: avoid;
+      }
+      #playbook-hub .table-wrapper {
+        max-block-size: none;
+        overflow: visible;
+      }
+    }
+
+    #playbook-hub .exam-rules-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    #playbook-hub .rule-chip {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-inline-start: 4px solid var(--accent);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    #playbook-hub .rule-chip.warn {
+      border-inline-start-color: var(--danger);
+      background: var(--danger-soft);
+      border-color: var(--danger-border);
+    }
+
+    #playbook-hub .rule-chip.ok {
+      border-inline-start-color: var(--para);
+      background: var(--para-soft);
+      border-color: var(--para-border);
+    }
+
+    #playbook-hub /* Search & Filter Toolbar (<search> semantic landmark) */
+    .filter-panel {
+      background: var(--surface);
+      border: 2px solid var(--accent-border);
+      border-radius: var(--radius);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow);
+    }
+
+    #playbook-hub .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: 0.75rem;
+    }
+
+    #playbook-hub .search-field {
+      flex: 1 1 280px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    #playbook-hub .search-field label {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    #playbook-hub .search-field input[type="search"] {
+      font: inherit;
+      font-size: max(1rem, 1em);
+      min-block-size: 48px;
+      padding: 0.6rem 0.9rem;
+      border: 2px solid #64748b;
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--text);
+      inline-size: 100%;
+    }
+
+    #playbook-hub .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    #playbook-hub .btn-action {
+      font: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      min-block-size: 48px;
+      padding: 0.5rem 0.95rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface-alt);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    #playbook-hub .btn-action:hover {
+      background: #e2e8f0;
+    }
+
+    #playbook-hub .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+      align-items: center;
+    }
+
+    #playbook-hub .filter-btn {
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: 700;
+      min-block-size: 44px;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    #playbook-hub .filter-btn[aria-pressed="true"] {
+      background: var(--accent);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    #playbook-hub .status-bar {
+      margin-top: 0.75rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 8px;
+      background: var(--surface-alt);
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    #playbook-hub /* Interactive 3-Step Test Finder */
+    .finder-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    #playbook-hub .finder-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    #playbook-hub fieldset.finder-group {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      margin: 0;
+      background: var(--bg);
+    }
+
+    #playbook-hub fieldset.finder-group legend {
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 0 0.4rem;
+      color: var(--accent);
+    }
+
+    #playbook-hub .radio-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-top: 0.25rem;
+    }
+
+    #playbook-hub .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      min-block-size: 44px;
+      padding: 0.3rem 0.5rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    #playbook-hub .radio-option label {
+      flex: 1;
+      cursor: pointer;
+    }
+
+    #playbook-hub .radio-option:hover {
+      background: var(--accent-soft);
+    }
+
+    #playbook-hub .radio-option input[type="radio"] {
+      accent-color: var(--accent);
+      inline-size: 18px;
+      block-size: 18px;
+      margin: 0;
+      flex: none;
+    }
+
+    #playbook-hub .finder-result-box {
+      margin-top: 1rem;
+      border: 2px solid var(--accent);
+      border-radius: 10px;
+      background: var(--accent-soft);
+      padding: 1rem 1.15rem;
+    }
+
+    #playbook-hub .finder-result-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #playbook-hub .finder-jump-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-block-size: 44px;
+      padding: 0.45rem 0.9rem;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.88rem;
+    }
+
+    #playbook-hub .finder-jump-link:hover {
+      background: #1e40af;
+    }
+
+    #playbook-hub /* Section & Scenario Cards */
+    .playbook-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.35rem 1.5rem;
+      box-shadow: var(--shadow);
+      scroll-margin-top: 1rem;
+    }
+
+    #playbook-hub .playbook-card.is-hidden {
+      display: none;
+    }
+
+    #playbook-hub .card-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding-bottom: 0.85rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid var(--surface-alt);
+    }
+
+    #playbook-hub .scenario-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent-border);
+      margin-bottom: 0.35rem;
+    }
+
+    #playbook-hub .scenario-tag.excel {
+      background: #ecfdf5;
+      color: #065f46;
+      border-color: #6ee7b7;
+    }
+
+    #playbook-hub .scenario-tag.danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border-color: var(--danger-border);
+    }
+
+    #playbook-hub .trigger-keywords {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      background: var(--surface-alt);
+      padding: 0.55rem 0.85rem;
+      border-radius: 8px;
+      border-inline-start: 4px solid #64748b;
+      margin-bottom: 1rem;
+    }
+
+    #playbook-hub /* Parametric vs Non-parametric Decision Boxes */
+    .gate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    #playbook-hub .gate-box {
+      border-radius: 10px;
+      padding: 0.85rem 1rem;
+      border: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    #playbook-hub .gate-box.para {
+      background: var(--para-soft);
+      border-color: var(--para-border);
+    }
+
+    #playbook-hub .gate-box.nonpara {
+      background: var(--nonpara-soft);
+      border-color: var(--nonpara-border);
+    }
+
+    #playbook-hub .gate-box.assumption {
+      background: var(--accent-soft);
+      border-color: var(--accent-border);
+    }
+
+    #playbook-hub .gate-box.trap {
+      background: var(--danger-soft);
+      border-color: var(--danger-border);
+    }
+
+    #playbook-hub .gate-label {
+      display: inline-block;
+      font-weight: 800;
+      font-size: 0.86rem;
+      margin-bottom: 0.35rem;
+    }
+
+    #playbook-hub .gate-box.para .gate-label { color: #065f46; }
+    #playbook-hub .gate-box.nonpara .gate-label { color: #92400e; }
+    #playbook-hub .gate-box.assumption .gate-label { color: #1e40af; }
+    #playbook-hub .gate-box.trap .gate-label { color: #991b1b; }
+
+    #playbook-hub /* Code Blocks + Accessible Copy Button (MWG copy-button compliant) */
+    .code-card {
+      border: 1px solid #334155;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+      background: var(--code-bg);
+    }
+
+    #playbook-hub .code-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.5rem 0.85rem;
+      background: #1e293b;
+      border-bottom: 1px solid #334155;
+      color: #e2e8f0;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    #playbook-hub .copy {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      flex: none;
+    }
+
+    #playbook-hub .copy-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      min-inline-size: 44px;
+      min-block-size: 40px;
+      padding: 0.35rem 0.6rem;
+      border-radius: 7px;
+      border: 1px solid #64748b;
+      background: #334155;
+      color: #f8fafc;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    #playbook-hub .copy-button:hover {
+      background: #475569;
+      border-color: #93c5fd;
+    }
+
+    #playbook-hub .copy-button .icon-check,
+#playbook-hub .copy-button .icon-fail {
+      display: none;
+    }
+
+    #playbook-hub .copy-button[data-copied] {
+      background: #065f46;
+      border-color: #34d399;
+      color: #ffffff;
+    }
+
+    #playbook-hub .copy-button[data-copied] .icon-copy { display: none; }
+    #playbook-hub .copy-button[data-copied] .icon-check { display: inline-block; }
+
+    #playbook-hub .copy-button[data-failed] {
+      background: #991b1b;
+      border-color: #f87171;
+      color: #ffffff;
+    }
+
+    #playbook-hub .copy-button[data-failed] .icon-copy { display: none; }
+    #playbook-hub .copy-button[data-failed] .icon-fail { display: inline-block; }
+
+    #playbook-hub /* Bubble kept in accessibility tree using opacity only (NOT display:none/visibility:hidden) */
+    .tip {
+      position: absolute;
+      inset-inline-end: calc(100% + 0.5rem);
+      inset-block-start: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      padding: 0.25rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #047857;
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+
+    #playbook-hub .copy-button[data-failed] + .tip {
+      background: #b91c1c;
+    }
+
+    #playbook-hub .copy-button[data-copied] + .tip,
+#playbook-hub .copy-button[data-failed] + .tip {
+      opacity: 1;
+    }
+
+    #playbook-hub .code-card pre {
+      margin: 0;
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 0.86rem;
+      line-height: 1.55;
+      color: var(--code-fg);
+      background: var(--code-bg);
+    }
+
+    #playbook-hub .code-card pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      font-size: inherit;
+      word-break: normal;
+    }
+
+    #playbook-hub .stata-comment { color: #86efac; }
+    #playbook-hub .stata-kw { color: #93c5fd; font-weight: 700; }
+    #playbook-hub .stata-warn { color: #fca5a5; font-weight: 700; }
+
+    #playbook-hub .gui-path {
+      background: #f8fafc;
+      border: 1px dashed var(--border-strong);
+      border-radius: 8px;
+      padding: 0.55rem 0.85rem;
+      font-size: 0.85rem;
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    #playbook-hub /* Exam Interpretation Template Box */
+    .template-card {
+      border: 2px solid var(--purple-border);
+      background: var(--purple-soft);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    #playbook-hub .template-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.45rem;
+    }
+
+    #playbook-hub .template-header h4 {
+      margin: 0;
+      color: #4c1d95;
+      font-size: 0.94rem;
+    }
+
+    #playbook-hub .template-card .copy-button {
+      background: #5b21b6;
+      border-color: #7c3aed;
+    }
+
+    #playbook-hub .template-card .copy-button:hover {
+      background: #4c1d95;
+    }
+
+    #playbook-hub .template-body {
+      background: #ffffff;
+      border: 1px solid #ddd6fe;
+      border-radius: 8px;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.9rem;
+      line-height: 1.65;
+    }
+
+    #playbook-hub /* Worked Output <details> (Safely searchable across Chrome/Safari/Firefox) */
+    details.worked-log {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-alt);
+      overflow: hidden;
+    }
+
+    #playbook-hub details.worked-log > summary {
+      cursor: pointer;
+      padding: 0.7rem 1rem;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text);
+      min-block-size: 44px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    #playbook-hub details.worked-log > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #playbook-hub details.worked-log > summary::before {
+      content: "▶";
+      font-size: 0.78rem;
+      color: var(--accent);
+      transition: transform 0.15s ease;
+    }
+
+    #playbook-hub details.worked-log[open] > summary::before {
+      transform: rotate(90deg);
+    }
+
+    #playbook-hub .worked-inner {
+      padding: 0 1rem 1rem;
+    }
+
+    #playbook-hub pre.stata-out {
+      margin: 0;
+      padding: 0.85rem 1rem;
+      border-radius: 8px;
+      background: #020617;
+      color: #cbd5e1;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.5;
+      overflow-x: auto;
+    }
+
+    #playbook-hub mark.hl-p {
+      background: #fef08a;
+      color: #713f12;
+      font-weight: 800;
+      padding: 0 0.25rem;
+      border-radius: 3px;
+    }
+
+    #playbook-hub mark.hl-est {
+      background: #bbf7d0;
+      color: #14532d;
+      font-weight: 800;
+      padding: 0 0.25rem;
+      border-radius: 3px;
+    }
+
+    #playbook-hub mark.hl-ci {
+      background: #bfdbfe;
+      color: #1e3a8a;
+      font-weight: 800;
+      padding: 0 0.25rem;
+      border-radius: 3px;
+    }
+
+    #playbook-hub mark.hl-bad {
+      background: #fecaca;
+      color: #7f1d1d;
+      font-weight: 800;
+      padding: 0 0.25rem;
+      border-radius: 3px;
+    }
+
+    #playbook-hub /* Responsive Tables (MWG compliant: table-wrapper + caption + sticky headers) */
+    .table-wrapper {
+      overflow: auto;
+      max-inline-size: 100%;
+      max-block-size: min(520px, 75vh);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      margin-bottom: 1rem;
+      container-type: inline-size;
+    }
+
+    #playbook-hub table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      font-size: 0.88rem;
+      text-align: left;
+    }
+
+    #playbook-hub table caption {
+      text-align: left;
+      font-weight: 800;
+      font-size: 0.92rem;
+      padding: 0.65rem 0.9rem;
+      background: var(--surface-alt);
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    #playbook-hub thead {
+      position: sticky;
+      inset-block-start: 0;
+      z-index: 2;
+    }
+
+    #playbook-hub th,
+#playbook-hub td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    #playbook-hub thead th {
+      background: #1e293b;
+      color: #f8fafc;
+      font-weight: 700;
+      border-bottom: 2px solid #0f172a;
+    }
+
+    #playbook-hub tbody th[scope="row"] {
+      position: sticky;
+      inset-inline-start: 0;
+      z-index: 1;
+      background: #f8fafc;
+      font-weight: 700;
+      color: var(--text);
+      border-right: 1px solid var(--border);
+    }
+
+    #playbook-hub tbody tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    #playbook-hub tbody tr:nth-child(even) th[scope="row"] {
+      background: #f1f5f9;
+    }
+
+    #playbook-hub .badge-ok {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: var(--para-soft);
+      color: #065f46;
+      border: 1px solid var(--para-border);
+    }
+
+    #playbook-hub .badge-warn {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: var(--nonpara-soft);
+      color: #92400e;
+      border: 1px solid var(--nonpara-border);
+    }
+
+    #playbook-hub .badge-bad {
+      display: inline-block;
+      padding: 0.12rem 0.45rem;
+      border-radius: 5px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      background: var(--danger-soft);
+      color: #991b1b;
+      border: 1px solid var(--danger-border);
+    }
+
+    #playbook-hub .formula-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    #playbook-hub .formula-tile {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.88rem;
+    }
+
+    @media (pointer: coarse) {
+      #playbook-hub .copy-button {
+        min-inline-size: 48px;
+        min-block-size: 48px;
+      }
+      #playbook-hub .filter-btn, #playbook-hub .btn-action, #playbook-hub .finder-jump-link, #playbook-hub .radio-option, #playbook-hub .pb-pill-nav a {
+        min-block-size: 48px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      #playbook-hub *, #playbook-hub *::before, #playbook-hub *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
+
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">ข้ามไปยังเนื้อหาหลัก</a>
 
   <!-- Mobile Topbar -->
   <div class="mobile-topbar">
@@ -755,9 +1679,10 @@
         <h2>STATA Final Master Guide</h2>
         <p>สรุปเข้มหลัง Midterm &rarr; Final ครบทุกคำสั่ง</p>
       </div>
-      <div class="sidebar-search">
+      <search class="sidebar-search" aria-label="ค้นหาหัวข้อในสารบัญ">
+        <label for="navSearchInput" class="visually-hidden">ค้นหาเมนูหรือคำสั่งในสารบัญ</label>
         <input type="text" id="navSearchInput" placeholder="🔍 ค้นหาเมนู / คำสั่ง (เช่น sdtest, vif)...">
-      </div>
+      </search>
       <nav class="sidebar-nav" id="sidebarNav">
         <div class="nav-group-title">Exam Tools (หัวใจข้อสอบ)</div>
         <a href="#master-cheat-sheet" class="nav-item" data-keywords="decision tree flowchart parametric non-parametric เลือกสถิติ">
@@ -798,6 +1723,27 @@
           <span class="icon">📈</span>
           <span>บทที่ 5: Corr, Linear, ANCOVA, Logit</span>
         </a>
+        <div class="nav-group-title">Open-Book Playbook (ลุยข้อสอบจริง)</div>
+        <a href="#playbook-hub" class="nav-item" data-keywords="playbook field open-book scenario excel ลุยข้อสอบ copy template">
+          <span class="icon">🎯</span>
+          <span>6. Open-Book Field Playbook</span>
+        </a>
+        <a href="#finder-section" class="nav-item" data-keywords="finder เลือกสถิติ 10 วิ ทายสถิติ assumption gate outcome design">
+          <span class="icon">⚡</span>
+          <span>ตัวช่วยเลือกสถิติ 10 วิ (Finder)</span>
+        </a>
+        <a href="#excel-workflow" class="nav-item" data-keywords="excel xlsx import trim destring NA missing if trap bmi rowmean wc_obese">
+          <span class="icon">📗</span>
+          <span>Excel (.xlsx) Pipeline &amp; กับดัก</span>
+        </a>
+        <a href="#s1-descriptive" class="nav-item" data-keywords="s1 s2 s3 s4 s5 s6 s7 s8 s9 s10 scenario template ประโยคตอบ copy">
+          <span class="icon">📋</span>
+          <span>Scenario S1&ndash;S10 + ก๊อปคำตอบ</span>
+        </a>
+        <a href="#emergency-map" class="nav-item" data-keywords="sos checklist p-value map ก่อนส่งข้อสอบ 30 วิ">
+          <span class="icon">🚨</span>
+          <span>Emergency Map &amp; Checklist 30 วิ</span>
+        </a>
       </nav>
     </aside>
 
@@ -807,7 +1753,7 @@
       <!-- Hero Header -->
       <header class="hero">
         <div class="hero-tag">🎓 Comprehensive Exam Review &bull; Verified with StataNow 19.5</div>
-        <h1>คัมภีร์สรุปเข้มสถิติและการวิเคราะห์ด้วย STATA ฉบับพิชิตข้อสอบ Final</h1>
+        <h1 id="main-content" tabindex="-1">คัมภีร์สรุปเข้มสถิติและการวิเคราะห์ด้วย STATA ฉบับพิชิตข้อสอบ Final</h1>
         <p>
           รวบรวมเนื้อหาและคำสั่งตั้งแต่หลัง Midterm จนถึงปัจจุบัน (Class 4, Class 5, Class 6, HW5, HW6/Tutorial II และบทเสริม Final)
           ครอบคลุมการตรวจสอบ Assumption รายตัวแปร, การเลือก Parametric vs. Non-parametric, พิกัดดูค่า p-value ใน Output จริงทุกคำสั่ง,
@@ -832,6 +1778,8 @@
         <a href="#chapter-3" class="quick-btn">📊 ANOVA &amp; KW</a>
         <a href="#chapter-4" class="quick-btn">📑 Chi-sq, cs, cc</a>
         <a href="#chapter-5" class="quick-btn">📈 Linear &amp; Logistic Reg</a>
+        <a href="#finder-section" class="quick-btn" style="background: #ecfdf5; border-color: #6ee7b7; color: #065f46;">⚡ 10-Sec Finder (Playbook)</a>
+        <a href="#excel-workflow" class="quick-btn" style="background: #eff6ff; border-color: #93c5fd; color: #1e40af;">📗 Excel &amp; S1&ndash;S10</a>
       </div>
 
       <div class="legend-bar">
@@ -1952,9 +2900,1350 @@ Log likelihood = -109.4311                              Pseudo R2     = 0.0674
         </div>
       </section>
 
+
+      <!-- ======================================================== -->
+      <!-- CHAPTER 6: OPEN-BOOK EXAM FIELD PLAYBOOK (SCENARIO & EXCEL) -->
+      <!-- ======================================================== -->
+      <section id="playbook-hub" class="content-section" style="border: 2px solid #059669;" aria-labelledby="playbook-hub-title">
+        <div class="section-header">
+          <div class="section-badge" style="background: #ecfdf5; color: #059669;">🎯</div>
+          <div class="section-title-wrap">
+            <h2 id="playbook-hub-title">บทที่ 6: Open-Book Exam Field Playbook (ตัวช่วยเลือกสถิติ 10 วิ, ไฟล์ Excel &amp; Scenario S1&ndash;S10)</h2>
+            <p>คู่มือปฏิบัติการในห้องสอบจริง: หาสถิติจากโจทย์ใน 10 วินาที, ล้างไฟล์ <code>.xlsx</code> + กันกับดัก Missing/<code>if</code>, ก๊อป Do-File และก๊อปประโยคเขียนตอบมาตรฐาน</p>
+          </div>
+        </div>
+
+        <nav class="pb-pill-nav" aria-label="ทางลัดการ์ด Playbook รายสถานการณ์">
+          <a href="#finder-section">⚡ 00 Finder 10 วิ</a>
+          <a href="#excel-workflow">📗 XL Excel</a>
+          <a href="#s1-descriptive">S1 sum/Outlier</a>
+          <a href="#s2-immediate">S2 Immediate</a>
+          <a href="#s3-two-indep">S3 2 กลุ่มอิสระ</a>
+          <a href="#s4-paired">S4 จับคู่/Diff</a>
+          <a href="#s5-anova">S5 &ge;3 กลุ่ม/ANOVA</a>
+          <a href="#s6-cat-chi2">S6 2&times;2/Fisher</a>
+          <a href="#s7-epi-rr-or">S7 RR vs OR</a>
+          <a href="#s8-corr-prepost">S8 Corr/Pre-Post</a>
+          <a href="#s9-linear-ancova">S9 Linear/ANCOVA</a>
+          <a href="#s10-logistic">S10 Logistic/GOF</a>
+          <a href="#emergency-map">🚨 SOS Map</a>
+        </nav>
+
+        <div class="pb-stack">
+      <!-- Live Search & Category Filter (<search> landmark per MWG forms guide) -->
+      <search class="filter-panel" aria-label="ค้นหาสถานการณ์และกรองคำสั่ง STATA">
+        <div class="search-row">
+          <div class="search-field">
+            <label for="scenario-search">ค้นหาด่วน (พิมพ์คำจากโจทย์, ชื่อคำสั่ง, หรือตัวแปร เช่น equal variance, pre-post, OR, excel, missing, ranksum, ancova):</label>
+            <input type="search" id="scenario-search" name="q" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" enterkeyhint="search" placeholder="เช่น fisher, diff, bonferroni, kurtosis, pwcorr, gof...">
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-action" id="clear-search-btn">ล้างคำค้น</button>
+            <button type="button" class="btn-action" id="toggle-all-logs-btn" aria-pressed="false">เปิดตัวอย่าง Output ทั้งหมด</button>
+          </div>
+        </div>
+
+        <div class="filter-pills" role="group" aria-label="กรองตามหมวดหมู่โจทย์">
+          <button type="button" class="filter-btn" data-cat="all" aria-pressed="true">ทั้งหมด (12)</button>
+          <button type="button" class="filter-btn" data-cat="excel" aria-pressed="false">Excel &amp; เตรียมข้อมูล</button>
+          <button type="button" class="filter-btn" data-cat="two-group" aria-pressed="false">1&ndash;2 กลุ่ม &amp; Immediate</button>
+          <button type="button" class="filter-btn" data-cat="multi-group" aria-pressed="false">&ge;3 กลุ่ม (ANOVA/KW)</button>
+          <button type="button" class="filter-btn" data-cat="categorical" aria-pressed="false">2&times;2 / Chi-sq / RR-OR</button>
+          <button type="button" class="filter-btn" data-cat="regression" aria-pressed="false">Corr / Pre-Post / Regression</button>
+          <button type="button" class="filter-btn" data-cat="emergency" aria-pressed="false">ตาราง p-value &amp; Checklist</button>
+        </div>
+
+        <div id="search-status" class="status-bar" role="status" aria-live="polite">
+          แสดงครบทุก 12 ส่วน (ใช้ Ctrl+F / Cmd+F ในเบราว์เซอร์ร่วมด้วยได้)
+        </div>
+      </search>
+
+      <!-- Interactive 3-Step Instant Exam Test Finder -->
+      <section class="finder-section" id="finder-section" aria-labelledby="finder-heading">
+        <h3 id="finder-heading">00. ตัวช่วยเลือกสถิติจาก Scenario ใน 10 วินาที ("โจทย์ถามแบบนี้ รันคำสั่งไหน?")</h3>
+        <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+          ติ๊กเลือกเงื่อนไขจากโจทย์ 3 ข้อ กล่องด้านล่างจะชี้ชื่อสถิติ Assumption Gate คำสั่ง STATA และลิงก์ข้ามไปยัง Card คำตอบทันที
+        </p>
+
+        <div class="finder-grid">
+          <fieldset class="finder-group">
+            <legend>1. ตัวแปรตาม (Outcome) ของโจทย์คืออะไร?</legend>
+            <div class="radio-stack">
+              <div class="radio-option"><input type="radio" id="fo-cont" name="f-outcome" value="cont" checked><label for="fo-cont">ค่าต่อเนื่อง (เช่น BP, LDL, TG, BMI, BMD, น้ำหนัก)</label></div>
+              <div class="radio-option"><input type="radio" id="fo-cat" name="f-outcome" value="cat"><label for="fo-cat">ค่ากลุ่ม / นับจำนวน (เช่น ป่วย/ไม่ป่วย, ตาย/รอด, LBW)</label></div>
+              <div class="radio-option"><input type="radio" id="fo-corr" name="f-outcome" value="corr"><label for="fo-corr">ดูความสัมพันธ์ X กับ Y ต่อเนื่องทั้งคู่ / สมการทำนาย</label></div>
+              <div class="radio-option"><input type="radio" id="fo-sum" name="f-outcome" value="summary"><label for="fo-sum">โจทย์ไม่ได้ให้ไฟล์มา (ให้เฉพาะ n, Mean, SD, ร้อยละ หรือตาราง 2&times;2)</label></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="finder-group">
+            <legend>2. โครงสร้างกลุ่มเปรียบเทียบ / ดีไซน์วิจัย?</legend>
+            <div class="radio-stack">
+              <div class="radio-option"><input type="radio" id="fd-1grp" name="f-design" value="1grp"><label for="fd-1grp">กลุ่มเดียว (สรุปค่า หรือเทียบกับเกณฑ์มาตรฐาน)</label></div>
+              <div class="radio-option"><input type="radio" id="fd-2indep" name="f-design" value="2indep" checked><label for="fd-2indep">2 กลุ่มอิสระ (เช่น ชาย vs หญิง, ยา vs ยาหลอก)</label></div>
+              <div class="radio-option"><input type="radio" id="fd-2pair" name="f-design" value="2paired"><label for="fd-2pair">2 ค่าที่สัมพันธ์กัน (ก่อน-หลัง ในคนเดียวกัน / จับคู่)</label></div>
+              <div class="radio-option"><input type="radio" id="fd-3plus" name="f-design" value="3plus"><label for="fd-3plus">&ge; 3 กลุ่มอิสระ (เช่น Trt 1/2/3, เชื้อชาติ 3 กลุ่ม)</label></div>
+              <div class="radio-option"><input type="radio" id="fd-multi" name="f-design" value="multi"><label for="fd-multi">ต้องการปรับตัวแปรกวน / คุม Baseline (ANCOVA / Multivariable)</label></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="finder-group">
+            <legend>3. ผลเช็ค Assumption เป็นอย่างไร?</legend>
+            <div class="radio-stack">
+              <div class="radio-option"><input type="radio" id="fa-pass" name="f-assump" value="pass" checked><label for="fa-pass">ผ่าน Normal &amp; Equal Variance (หรือ Cochran &ge; 5)</label></div>
+              <div class="radio-option"><input type="radio" id="fa-unequal" name="f-assump" value="unequal"><label for="fa-unequal">Normal ผ่าน แต่ Variance ไม่เท่า (<code>sdtest</code> p &lt; 0.05)</label></div>
+              <div class="radio-option"><input type="radio" id="fa-fail" name="f-assump" value="fail"><label for="fa-fail">ไม่ผ่าน (เบ้ / มี Outlier / <code>swilk</code> p &lt; 0.05 / E &lt; 5)</label></div>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="finder-result-box" role="region" aria-live="polite" aria-labelledby="finder-res-title" id="finder-result">
+          <div class="finder-result-header">
+            <strong id="finder-res-title" style="font-size: 1rem; color: #1e3a8a;">ผลแนะนำ: Student's Unpaired t-test</strong>
+            <a href="#s3-two-indep" id="finder-jump" class="finder-jump-link">ข้ามไป Card สถานการณ์นี้ &rarr;</a>
+          </div>
+          <p id="finder-res-cmd" style="margin-bottom: 0.35rem;"><strong>คำสั่งหลัก:</strong> <code>ttest y, by(group)</code></p>
+          <p id="finder-res-note" style="font-size: 0.88rem; color: #1e293b; margin: 0;">
+            <strong>เงื่อนไข:</strong> เช็ค <code>bysort group: swilk y</code> (ต้อง p &ge; 0.05 ทั้ง 2 กลุ่ม) และ <code>sdtest y, by(group)</code> (p &ge; 0.05) ก่อนเสมอ
+          </p>
+        </div>
+      </section>
+
+      <!-- ================================================================ -->
+      <!-- PART XL: EXCEL WORKFLOW -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="excel-workflow" data-cat="excel" data-keywords="excel xlsx import cleaning trim destring NA missing if bmi rowmean wc_obese outlier tukey iqr codebook describe">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag excel">PART XL &bull; HANDS-ON EXCEL (.xlsx) WORKFLOW</span>
+            <h3>เมื่อโจทย์ให้ไฟล์ <code>.xlsx</code>: 5 ขั้นตอนเปิดไฟล์ + ล้างข้อมูล + กันพลาดระดับชีวิต</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>ใช้ทันทีเมื่อ:</strong> โจทย์แจกไฟล์ Excel (<code>.xlsx</code> / <code>.xls</code>) ให้สร้างตัวแปรใหม่ (เช่น <code>bmi</code>, <code>change</code>, จัดกลุ่ม <code>cat</code>), พบข้อความภาษาไทย/ช่องว่าง/<code>"NA"</code>, หรือมีค่าว่าง/Outlier ปนอยู่
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths (นำเข้า + จัดการข้อมูล):</strong><br>
+          &bull; เปิด Excel: <code>File &rarr; Import &rarr; Excel spreadsheet (*.xls;*.xlsx)</code> &rarr; <strong>ติ๊กถูก &check; "Import first row as variable names"</strong><br>
+          &bull; สร้าง/แก้ตัวแปร (<code>gen</code> / <code>replace</code> / <code>destring</code>): <code>Data &rarr; Create or change data &rarr; Create new variable / Change contents of variable / Convert variables from string to numeric</code><br>
+          &bull; ดูตารางความถี่ (<code>tab var</code>): <code>Statistics &rarr; Summaries, tables, and tests &rarr; Frequency tables &rarr; One-way table</code> (ใส่ option <code>, nolabel missing</code> เพื่อเช็คเลขรหัสจริง + ค่าว่าง)
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>Do-File Pipeline: นำเข้า Excel + ตรวจโครงสร้าง + ล้างข้อความ + สร้างตัวแปร (วางแก้ชื่อไฟล์ได้เลย)</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-excel" aria-label="คัดลอกคำสั่ง STATA สำหรับเปิดไฟล์และล้างข้อมูล Excel">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-excel"><span class="stata-comment">* --- STEP 0: เปิดไฟล์ Excel &amp; สแกนสุขภาพข้อมูล ---</span>
+clear all
+set more off
+import excel "/path/to/filename.xlsx", firstrow clear   <span class="stata-comment">// ใส่ clear ด้วยทุกครั้ง</span>
+describe                                                <span class="stata-comment">// เช็ค type: แดง=String(str), ดำ=Numeric</span>
+codebook, compact                                       <span class="stata-comment">// เช็คจำนวนคน, Missing, Min-Max ต่อเนื่องในพริบตา</span>
+
+<span class="stata-comment">* --- STEP 1: ล้าง String ที่มีช่องว่างหัว-ท้าย หรือ "NA" ---</span>
+tab smoking, missing                                    <span class="stata-comment">// ดูค่าดิบ + นับ Missing เสมอ</span>
+replace smoking = trim(smoking)                         <span class="stata-comment">// ตัด space เกิน เช่น " สูบ " &rarr; "สูบ"</span>
+gen smoke_num = .
+replace smoke_num = 0 if smoking == "ไม่สูบ"
+replace smoke_num = 1 if smoking == "สูบ"               <span class="stata-comment">// "NA" ไม่เข้าเงื่อนไข จะคงเป็น . (Missing) อัตโนมัติ!</span>
+label define smk 0 "No" 1 "Yes", replace
+label values smoke_num smk
+tab smoke_num, missing                                  <span class="stata-comment">// ตรวจยอด Total/Missing หลังแปลง!</span>
+
+<span class="stata-comment">* (ทางเลือก B) ถ้าคอลัมน์เป็นตัวเลขปน "NA" เช่น exercise:</span>
+<span class="stata-comment">* replace ex = "" if ex == "NA"</span>
+<span class="stata-comment">* destring ex, replace</span>
+
+<span class="stata-comment">* --- STEP 2: คำนวณตัวแปรต่อเนื่อง &amp; เฉลี่ยค่าซ้ำ ---</span>
+gen bmi = wt_kg / ((ht_cm/100)^2)                       <span class="stata-comment">// เช็คหน่วยส่วนสูงเป็น cm หรือ m ให้ดี!</span>
+<span class="stata-comment">* egen basehip = rowmean(basehip1 basehip2)             // เฉลี่ยค่า Pre สองครั้ง (ทนต่อ missing 1 ช่องได้)</span>
+
+<span class="stata-comment">* --- STEP 3: จัดกลุ่ม (ต้องกันกับดัก . = +&infin;!) ---</span>
+gen obese = .
+replace obese = 0 if bmi &lt; 25
+<span class="stata-warn">replace obese = 1 if bmi &gt;= 25 &amp; !missing(bmi)</span>          <span class="stata-comment">// &lt;&lt;&lt; ห้ามลืม &amp; !missing(bmi) เด็ดขาด!</span>
+<span class="stata-comment">* หรือเงื่อนไขซับซ้อน (เช่น อ้วนลงพุงแยกเพศ):</span>
+<span class="stata-comment">* gen wc_obese = (sex == 1 &amp; wc &gt;= 90) | (sex == 0 &amp; wc &gt;= 80) if !missing(sex, wc)</span></code></pre>
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; กับดัก #1: ตำแหน่งของ <code>if</code></span>
+            <p>
+              <strong>ผิด (Error):</strong> <code>if bwt &lt; 2500 replace lbw = 1</code><br>
+              <strong>ถูก:</strong> <code>replace lbw = 1 <strong>if</strong> bwt &lt; 2500</code><br>
+              <em>จำ:</em> ใน STATA คำสั่งส่วนใหญ่วาง <code>if</code> ไว้ <strong>ท้ายคำสั่งเสมอ</strong>!
+            </p>
+          </div>
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; กับดัก #2: ค่าว่าง <code>.</code> มีค่าเท่ากับ <code>+&infin;</code></span>
+            <p>
+              ถ้าพิมพ์แค่ <code>replace obese = 1 if bmi &gt;= 25</code> คนที่น้ำหนัก/ส่วนสูงเป็นค่าว่าง (<code>bmi = .</code>) จะถูกตีความเป็น "อ้วน" (1) ทันทีเพราะ <code>. &ge; 25</code> เป็นจริง! ต้องต่อท้ายด้วย <code><strong>&amp; !missing(bmi)</strong></code> ทุกครั้ง
+            </p>
+          </div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริงจากไฟล์ <code>Stata_Final_Exam_Dataset.xlsx</code> (N = 240: พิสูจน์ Missing Trap ชัดเจน)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out">. replace smoking = trim(smoking)
+(3 real changes made)
+
+. tab smoke_num, missing
+  smoke_num |      Freq.     Percent
+------------+------------------------
+         No |        146       60.83
+        Yes |         92       38.33
+          . |          <mark class="hl-est">2</mark>        0.83   &lt;-- ค่า "NA" แปลงเป็น Missing (.) เรียบร้อย
+
+. gen bmi = wt_kg / ((ht_cm/100)^2)
+(3 missing values generated)
+
+. replace obese_wrong = 1 if bmi &gt;= 25         <span style="color:#fca5a5">// พัง! ลืม !missing(bmi)</span>
+(115 real changes made)                        &lt;-- Missing 3 คนถูกเหมารวมเป็น 1 หมด (0 missing!)
+
+. replace obese = 1 if bmi &gt;= 25 &amp; !missing(bmi)
+(112 real changes made)                        <mark class="hl-p">&lt;-- ถูกต้อง! มี obese=1 แค่ 112 คน และ Missing=. คงอยู่ 3 คน</mark></pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 1: DESCRIPTIVE & OUTLIER -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s1-descriptive" data-cat="excel two-group" data-keywords="sum detail tabstat swilk kurtosis skewness outlier tukey p25 p75 iqr mean sd median">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S1 &bull; DESCRIPTIVE &amp; OUTLIER</span>
+            <h3>สรุปข้อมูลตัวแปรเดียว + ตรวจ Skewness/Outlier (Mean/SD vs Median/IQR)</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "จงอธิบายลักษณะพื้นฐานของตัวแปร...", "ควรรายงานด้วยค่ากลางและการกระจายใด (Mean/SD หรือ Median/IQR)?", "มีค่าผิดปกติ (Outlier) หรือไม่?"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box para">
+            <span class="gate-label">&#10003; เลือกรายงาน Mean (SD) เมื่อ Normal</span>
+            <p>
+              &bull; Mean &approx; Median (p50) ใน <code>sum, detail</code><br>
+              &bull; <strong>Skewness &approx; 0</strong> และใน STATA <strong>Normal <u>Kurtosis &approx; 3</u></strong> (ไม่ใช่ 0!)<br>
+              &bull; <code>swilk var</code> ได้ <strong>Prob&gt;z &ge; 0.05</strong> + กราฟระฆังคว่ำ
+            </p>
+          </div>
+          <div class="gate-box nonpara">
+            <span class="gate-label">&#9888; เลือกรายงาน Median (IQR) เมื่อ Skewed / Outlier</span>
+            <p>
+              &bull; Mean ต่างจาก Median มาก หรือ SD ใหญ่ผิดปกติ<br>
+              &bull; Skewness ห่าง 0 / <code>swilk</code> <strong>Prob&gt;z &lt; 0.05</strong><br>
+              &bull; Tukey Outer Fence: ค่า &gt; <code>Q3 + 3&times;IQR</code> หรือ &lt; <code>Q1 - 3&times;IQR</code> (Mild: <code>1.5&times;IQR</code>)
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: สรุป + เช็ค Normal + จับตัว Outliers</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s1" aria-label="คัดลอกคำสั่ง STATA สำหรับ S1 สรุปข้อมูลและจับ Outlier">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s1">sum tg, detail
+swilk tg
+histogram tg, normal
+graph box tg
+<span class="stata-comment">* แยกรายกลุ่มพร้อมได้ Mean, SD, p50 (Median), p25 (Q1), p75 (Q3), IQR ในตารางเดียว:</span>
+tabstat tg, by(trt) stats(n mean sd p50 p25 p75 iqr skewness kurtosis)
+<span class="stata-comment">* หา ID ที่เป็น Extreme Outlier เกิน Q3 + 3*IQR:</span>
+list id tg if tg &gt; 179 + 3*(179 - 95.5)</code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Summary/Detail: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Summary and descriptive statistics &rarr; Summary statistics</code><br>
+          &bull; Table by Group: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Other tables &rarr; Compact table of summary statistics</code> (<code>tabstat</code>)<br>
+          &bull; Shapiro-Wilk: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Distributional plots and tests &rarr; Shapiro-Wilk normality test</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s1" aria-label="คัดลอกประโยคตอบข้อสอบ S1">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s1">จากการทดสอบการแจกแจงด้วย Shapiro-Wilk test ร่วมกับการดู Skewness และ Kurtosis พบว่าตัวแปร [ชื่อตัวแปร] มีการแจกแจง [ปกติ (p = ...) &rarr; ควรรายงานด้วย Mean &plusmn; SD เท่ากับ ... &plusmn; ... หน่วย] / [เบ้ขวาอย่างชัดเจนและมีค่าผิดปกติ (p &lt; 0.001, Skewness = ..., Kurtosis = ...) เช่น ID ... ค่า ... จึงควรรายงานด้วยค่ากลางแบบ Robust คือ Median (IQR) เท่ากับ ... (Q1&ndash;Q3: ...&ndash;..., IQR = ...) หน่วย]</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: <code>sum tg, detail</code> &amp; <code>swilk tg</code> (เบ้ขวาสุดขีด + Extreme Outlier ID 188)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out">                             tg
+-------------------------------------------------------------
+ 25%         95.5                         Obs                 240
+ 50%        <mark class="hl-est">132.5</mark>                         Mean           156.2542
+                                          Std. dev.      165.7951  &lt;-- SD &gt; Mean เพราะ Outlier 2450!
+ 75%          179                         Skewness       <mark class="hl-bad">11.18284</mark>
+ 99%          390   Largest: <mark class="hl-bad">2450</mark>         Kurtosis       <mark class="hl-bad">154.0893</mark>  (Normal &approx; 3)
+
+. swilk tg  --&gt; W = 0.34103, Prob&gt;z = <mark class="hl-p">0.00000</mark> (&lt; 0.05 แสดงว่าไม่ Normal!)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 2: 1-SAMPLE & IMMEDIATE COMMANDS -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s2-immediate" data-cat="two-group" data-keywords="ttesti ztesti cii means proportions wilson exact wald jeffreys prtesti sigma n>=100 สรุปตัวเลข ไม่มีไฟล์">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S2 &bull; IMMEDIATE COMMANDS (NO EXCEL NEEDED)</span>
+            <h3>โจทย์ให้เฉพาะตัวเลขสรุป: 1-Sample t vs z &amp; CI Calculator &amp; <code>prtesti</code></h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> ไม่มีไฟล์ <code>.dta/.xlsx</code> แต่ให้ตัวเลขมา เช่น "สุ่มคนไข้ n = 25 พบ Mean = 112, SD = 20 เทียบเกณฑ์มาตรฐาน 120", "พบเหตุการณ์ 12 จาก 60 ราย จงหา 95% CI", "อัตราการหายกลุ่ม A = 8% (n=300) vs กลุ่ม B = 3% (n=500)"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; กับดักทฤษฎี: <i>n</i> &ge; 100 ต้องใช้ z หรือ t?</span>
+            <p>
+              <strong>ต้องใช้ t-distribution (<code>ttesti</code>) เสมอ หาก <u>ไม่ทราบ &sigma; ของประชากร</u>!</strong><br>
+              (ถึงแม้ <i>n</i> ใหญ่จนค่า t ใกล้ z ก็ตาม แต่ในทางหลักการถ้าทราบแค่ <i>s</i> จากตัวอย่าง ให้เลือกคำตอบว่า <strong>ใช้ t</strong> เท่านั้น; ใช้ <code>ztesti</code> เฉพาะเมื่อโจทย์บอก SD ของประชากรจริง &sigma;!)
+            </p>
+          </div>
+          <div class="gate-box assumption">
+            <span class="gate-label">&#9432; วิธีเลือก 4 สูตร <code>cii proportions N k</code></span>
+            <p>
+              &bull; <code>exact</code> (ค่าตั้งต้น Clopper-Pearson): ปลอดภัย กว้างสุด แม่นในตัวอย่างเล็ก<br>
+              &bull; <code>wilson</code>: แนะนำทางระบาดวิทยา (ไม่เกิน 0&ndash;1 ช่วงแคบกำลังดี)<br>
+              &bull; <code>wald</code>: สูตรมือ &pm;1.96&middot;SE ข้อเสียคือตัวอย่างเล็กอาจเลยขอบ &lt;0 หรือ &gt;1
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: Immediate Commands (1-Sample, CI Calculator, 2-Proportion)</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s2" aria-label="คัดลอกคำสั่ง STATA สำหรับ Immediate Commands">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s2"><span class="stata-comment">* 1) เทียบค่าเฉลี่ยกลุ่มเดียวกับค่ามาตรฐาน mu0 (ไม่ต้องรัน sdtest!):</span>
+ttesti 25 112 20 120                  <span class="stata-comment">// เรียง: &lt;n&gt; &lt;sample_mean&gt; &lt;sample_sd&gt; &lt;null_mu0&gt;</span>
+<span class="stata-comment">* กรณีมีข้อมูลดิบในไฟล์อยู่แล้ว: ttest sbp == 120</span>
+<span class="stata-comment">* กรณีโจทย์ระบุ SD ของประชากร (&sigma;) มาชัดเจนเท่านั้น: ztesti 100 85 10.2 120</span>
+
+<span class="stata-comment">* 2) คำนวณ 95% CI ของ Mean และ Proportion:</span>
+cii means 15 96 35                    <span class="stata-comment">// เรียง: &lt;n&gt; &lt;mean&gt; &lt;sd&gt;</span>
+cii proportions 60 12, wilson         <span class="stata-comment">// เรียง: &lt;N_total&gt; &lt;k_events&gt; (เลือก exact / wald / wilson / jeffreys)</span>
+
+<span class="stata-comment">* 3) เทียบสัดส่วน 2 กลุ่ม (ระวัง! สัดส่วนต้องเป็นทศนิยม 0 ถึง 1 ห้ามใส่จำนวนคน!):</span>
+prtesti 300 0.08 500 0.03             <span class="stata-comment">// เรียง: &lt;n1&gt; &lt;p1_decimal&gt; &lt;n2&gt; &lt;p2_decimal&gt;</span></code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; <code>ttesti</code>: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Classical tests of hypotheses &rarr; t test calculator</code><br>
+          &bull; <code>prtesti</code>: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Classical tests of hypotheses &rarr; Proportion test calculator</code><br>
+          &bull; <code>cii</code>: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Summary and descriptive statistics &rarr; Normal mean / Proportion CI calculator</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s2" aria-label="คัดลอกประโยคตอบข้อสอบ S2">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s2">[1-Sample t-test] จากการทดสอบด้วย One-sample t-test (n = ..., Mean = ..., SD = ...) เทียบกับค่ามาตรฐาน [mu0 = ...] พบว่า p = [ค่าตรงกลาง Pr(|T|&gt;|t|)] และ 95% CI คือ [... ถึง ...] ([คร่อม / ไม่คร่อม] ค่ามาตรฐาน ...) จึง [ไม่มี / มี] หลักฐานเพียงพอที่จะสรุปว่าค่าเฉลี่ยแตกต่างจากค่ามาตรฐานอย่างมีนัยสำคัญทางสถิติที่ระดับ 0.05</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: <code>ttesti 25 112 20 120</code>, <code>cii proportions 60 12, wilson</code> &amp; <code>prtesti</code></summary>
+          <div class="worked-inner">
+            <pre class="stata-out">. ttesti 25 112 20 120
+   x | Obs = 25 | Mean = 112 | SE = 4 | SD = 20 | [95% CI]: <mark class="hl-ci">103.7444  120.2556</mark>  (คร่อม 120!)
+Ha: mean != 120  --&gt;  <mark class="hl-p">Pr(|T| &gt; |t|) = 0.0569</mark>  (&ge; 0.05 ไม่ Sig &mdash; อ่านช่องกลางเสมอ!)
+
+. cii proportions 60 12, exact    --&gt; Prop = .20, [95% CI] = <mark class="hl-ci">.1078  .3233</mark>
+. cii proportions 60 12, wilson   --&gt; Prop = .20, [95% CI] = <mark class="hl-ci">.1183  .3178</mark>
+
+. prtesti 300 0.08 500 0.03
+diff = .05 | [95% CI]: <mark class="hl-ci">.0159  .0841</mark> | z = 3.1793 | <mark class="hl-p">Pr(|Z| &gt; |z|) = 0.0015</mark></pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 3: 2 INDEPENDENT GROUPS -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s3-two-indep" data-cat="two-group" data-keywords="unpaired ttest sdtest unequal satterthwaite welch reverse ranksum mann-whitney 2 กลุ่มอิสระ wide long">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S3 &bull; 2 INDEPENDENT GROUPS</span>
+            <h3>เปรียบเทียบค่าต่อเนื่อง 2 กลุ่มอิสระ: Unpaired t-test vs Welch vs Mann-Whitney U</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "เปรียบเทียบ [ตัวแปรต่อเนื่อง] ระหว่าง 2 กลุ่มที่อิสระต่อกัน (เช่น เพศชาย vs หญิง, กลุ่มยา vs ยาหลอก, อ้วน vs ไม่อ้วน)"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label">Step 1: เช็ค Normal <u>แยกทีละกลุ่ม</u></span>
+            <p>
+              ใช้ <code>bysort group: swilk y</code> + <code>histogram y, normal by(group)</code><br>
+              &bull; ถ้ากลุ่มใดกลุ่มหนึ่ง <strong>p &lt; 0.05</strong> หรือเบ้/Outlier หนัก &rarr; ย้ายไปสาย Non-parametric ทันที!<br>
+              &bull; ถ้าผ่าน Normal <strong>ทั้ง 2 กลุ่ม</strong> (p &ge; 0.05) &rarr; ไป Step 2 เช็ค <code>sdtest y, by(group)</code>
+            </p>
+          </div>
+          <div class="gate-box para">
+            <span class="gate-label">Step 2 (ถ้า Normal): เช็ค <code>sdtest</code></span>
+            <p>
+              ดูช่องกลาง <code>Ha: ratio != 1</code> (<code>2*Pr(F &lt; f)</code> หรือ <code>2*Pr(F &gt; f)</code>):<br>
+              &bull; <strong>p &ge; 0.05</strong> (Equal variance) &rarr; <code>ttest y, by(g)</code><br>
+              &bull; <strong>p &lt; 0.05</strong> (Unequal variance) &rarr; <code>ttest y, by(g) <strong>unequal</strong></code> (Welch / Satterthwaite's df)
+            </p>
+          </div>
+          <div class="gate-box nonpara">
+            <span class="gate-label">สาย Non-parametric: <code>ranksum</code></span>
+            <p>
+              ใช้ <code>ranksum y, by(g)</code> + <code>tabstat y, by(g) stats(n p50 p25 p75 iqr)</code><br>
+              &bull; อ่าน <code>Prob &gt; |z|</code> (หรือ <code>Exact prob</code> เมื่อ <i>n</i> &le; 200)<br>
+              &bull; <strong>ข้อจำกัด:</strong> ไม่สามารถคำนวณ Mean Diff และ 95% CI ของผลต่างได้!
+            </p>
+          </div>
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; ทริค Long vs Wide &amp; <code>, reverse</code></span>
+            <p>
+              &bull; <strong>Long format</strong> (1 คอลัมน์ค่า, 1 คอลัมน์กลุ่ม): <code>ttest y, by(g)</code><br>
+              &bull; <strong>Wide format</strong> (2 คอลัมน์อิสระคนละชุด): <code>ttest grp1 == grp2, <strong>unpaired</strong></code><br>
+              &bull; <strong><code>, reverse</code></strong>: สลับให้กลุ่มรหัสสูง (เช่น Yes=1) ขึ้นก่อน No=0 เพื่ออ่านผลต่างในทิศทางการแพทย์ (p 2-sided เท่าเดิม!)
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: ลำดับขั้นตอนเช็ค 2 กลุ่มอิสระครบจบในชุดเดียว</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s3" aria-label="คัดลอกคำสั่ง STATA สำหรับ S3 เปรียบเทียบ 2 กลุ่มอิสระ">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s3"><span class="stata-comment">* 1. ตรวจ Normal แยกแต่ละกลุ่มก่อนเสมอ:</span>
+bysort sex: swilk ldl_fu
+histogram ldl_fu, normal by(sex)
+
+<span class="stata-comment">* 2A. ถ้า Normal ทั้ง 2 กลุ่ม --&gt; ตรวจ Equal Variance ก่อน:</span>
+sdtest ldl_fu, by(sex)
+ttest ldl_fu, by(sex)                 <span class="stata-comment">// ถ้า sdtest p &gt;= 0.05 (เช่น bwt by smoke, p = 0.229)</span>
+ttest ldl_fu, by(sex) reverse unequal <span class="stata-comment">// ถ้า sdtest p &lt; 0.05 (เช่น ldl_fu by sex, p &lt; 0.0001)</span>
+
+<span class="stata-comment">* 2B. ถ้าไม่ Normal / เบ้ / มี Outlier (เช่น tg by obese) --&gt; Non-parametric:</span>
+ranksum tg, by(obese)
+tabstat tg, by(obese) stats(n p50 p25 p75 iqr)</code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Variance test: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Classical tests of hypotheses &rarr; Variance-comparison test</code><br>
+          &bull; Unpaired t-test: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Classical tests of hypotheses &rarr; t test (mean-comparison test)</code> (เลือก <em>Two-sample using groups</em>, ติ๊ก <em>Unequal variances</em> เมื่อ <code>sdtest</code> p &lt; 0.05)<br>
+          &bull; Mann-Whitney U: <code>Statistics &rarr; Nonparametric analysis &rarr; Tests of hypotheses &rarr; Wilcoxon rank-sum test</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (เลือกตามสายที่ผ่านเกณฑ์)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s3" aria-label="คัดลอกประโยคตอบข้อสอบ S3">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s3">[กรณี Normal: Equal / Unequal t-test] จากการทดสอบ Normality พบว่าทั้งสองกลุ่มมีการแจกแจงปกติ (Shapiro-Wilk p = ... และ ...) และการทดสอบความแปรปรวนด้วย Variance ratio test ได้ p = ... ([เท่ากัน / ไม่เท่ากัน]) จึงเลือกใช้ [Student's / Welch's] unpaired t-test พบว่ากลุ่ม [A] มีค่าเฉลี่ยเท่ากับ ... &plusmn; ... หน่วย ซึ่ง [สูงกว่า/ต่ำกว่า] กลุ่ม [B] (Mean ... &plusmn; ...) เฉลี่ย [diff] หน่วย (95% CI: ... ถึง ...) อย่างมีนัยสำคัญทางสถิติที่ระดับ 0.05 (p = [Pr(|T|&gt;|t|)])
+
+[กรณี Non-Normal: Mann-Whitney U] เนื่องจากข้อมูลมีการแจกแจงเบ้ (Shapiro-Wilk p &lt; 0.05) จึงใช้ Mann-Whitney U test พบว่าค่ากลางกลุ่ม [A] เท่ากับ Median ... (IQR ...) เทียบกับกลุ่ม [B] Median ... (IQR ...) แตกต่างกันอย่างมีนัยสำคัญทางสถิติ (p = [Prob &gt; |z|]) (หมายเหตุ: สถิติ Non-parametric ไม่ให้ค่า Mean diff และ 95% CI)</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: Welch t-test (<code>ldl_fu by sex</code>, df = 175.76) &amp; Mann-Whitney (<code>tg by obese</code>)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out"><span style="color:#93c5fd">// ตัวอย่าง A: Normal ทั้งคู่ (sex=0: p=0.0613, sex=1: p=0.1252) แต่ Variance ไม่เท่ากัน!</span>
+. sdtest ldl_fu, by(sex)
+  ratio = sd(0)/sd(1) | Ha: ratio != 1 --&gt; <mark class="hl-p">2*Pr(F &lt; f) = 0.0000</mark> (&lt; 0.05 ต้องใส่ , unequal!)
+
+. ttest ldl_fu, by(sex) reverse unequal
+  Group 1 (Male): n=117, Mean = 134.98 (SD 32.90) | Group 0 (Female): n=123, Mean = 116.84 (SD 17.66)
+  diff = mean(1)-mean(0) = <mark class="hl-est">18.13212</mark> | [95% CI]: <mark class="hl-ci">11.35654  24.90771</mark> | Satterthwaite df = <mark class="hl-est">175.76</mark>
+  Ha: diff != 0 --&gt; <mark class="hl-p">Pr(|T| &gt; |t|) = 0.0000</mark> (p &lt; 0.001)
+
+<span style="color:#93c5fd">// ตัวอย่าง B: tg เบ้และมี outlier --&gt; ใช้ Mann-Whitney ranksum + tabstat:</span>
+. ranksum tg, by(obese)
+  H0: tg(obese==0) = tg(obese==1) --&gt; z = -5.828 | <mark class="hl-p">Prob &gt; |z| = 0.0000</mark>
+. tabstat tg, by(obese) stats(n mean sd p50 p25 p75 iqr)
+  obese=0: p50 = <mark class="hl-est">112</mark> (p25=84, p75=148, IQR=64) | obese=1: p50 = <mark class="hl-est">155</mark> (p25=114.5, p75=216, IQR=101.5)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 4: PAIRED / PRE-POST 2 GROUPS -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s4-paired" data-cat="two-group" data-keywords="paired signrank diff ก่อนหลัง ในคนเดียวกัน matched pre post wilcoxon signed-rank">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S4 &bull; 2 PAIRED / PRE-POST MEASUREMENTS</span>
+            <h3>เปรียบเทียบ 2 ค่าที่ไม่อิสระ (ก่อน-หลัง / คนเดียวกัน / จับคู่): Paired t-test vs Wilcoxon Signed-Rank</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "วัดซ้ำในคนเดียวกัน ก่อน-หลัง (Pre vs Post)", "เปรียบเทียบกลุ่มยา <code>trt==3</code> ก่อนและหลังรักษา", "Matched pairs"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; หัวใจสำคัญ: เช็ค Normality ที่ตัวแปรผลต่าง (<code>diff</code>) เท่านั้น!</span>
+            <p>
+              <strong>ไม่ต้อง</strong>เช็ค <code>pre</code> หรือ <code>post</code> แยกกัน และ <strong>ไม่ต้อง</strong>รัน <code>sdtest</code>!<br>
+              ต้องสร้าง <code>gen diff = post - pre</code> แล้วตรวจ <code>swilk diff</code> เท่านั้น! (ตัวอย่างในไฟล์ Thiazide BMD: ในกลุ่ม <code>trt == 3</code>, <code>swilk diff</code> ได้ p = 0.0225 &lt; 0.05 &rarr; ต้องใช้ <code>signrank</code>!)
+            </p>
+          </div>
+          <div class="gate-box para">
+            <span class="gate-label">ตัดสินใจ: <code>swilk diff</code></span>
+            <p>
+              &bull; <strong>p &ge; 0.05 (Diff Normal):</strong> <code>ttest y_post == y_pre</code> (เครื่องหมาย <code>==</code> สองตัว) &rarr; อ่าน <code>Pr(|T| &gt; |t|)</code> + Mean diff &amp; 95% CI<br>
+              &bull; <strong>p &lt; 0.05 (Diff Non-normal):</strong> <code>signrank y_post = y_pre</code> (<strong>ระวัง: ใช้ <code>=</code> ตัวเดียว!</strong>) &rarr; อ่าน <code>Prob &gt; |z|</code>
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: สร้างผลต่าง &rarr; เช็ค Normal &rarr; Paired t / Signrank</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s4" aria-label="คัดลอกคำสั่ง STATA สำหรับ S4 เปรียบเทียบข้อมูลจับคู่ก่อน-หลัง">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s4"><span class="stata-comment">* 1. สร้างตัวแปรผลต่าง และตรวจ Normality ของ diff (ถ้าเฉพาะกลุ่มให้ใส่ if ท้ายสุด!):</span>
+gen diff_sbp = sbp_fu - sbp_base
+swilk diff_sbp if trt == 1
+histogram diff_sbp if trt == 1, normal
+
+<span class="stata-comment">* 2A. ถ้า diff Normal (p &gt;= 0.05) --&gt; Paired t-test (ใช้ ==):</span>
+ttest sbp_fu == sbp_base if trt == 1
+
+<span class="stata-comment">* 2B. ถ้า diff ไม่ Normal (p &lt; 0.05) --&gt; Wilcoxon Signed-Rank (ใช้ = ตัวเดียว!):</span>
+signrank fuhip = basehip if trt == 3
+tabstat fuhip basehip diff if trt == 3, stats(n p50 p25 p75 iqr)</code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Paired t-test: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Classical tests of hypotheses &rarr; t test (mean-comparison test)</code> &rarr; เลือก <em>Paired</em><br>
+          &bull; Wilcoxon Signed-Rank: <code>Statistics &rarr; Nonparametric analysis &rarr; Tests of hypotheses &rarr; Wilcoxon matched-pairs signed-rank test</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s4" aria-label="คัดลอกประโยคตอบข้อสอบ S4">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s4">จากการตรวจ Normality ของค่าผลต่าง (diff = หลัง - ก่อน) พบว่า [Normal (swilk p = ...) &rarr; ใช้ Paired t-test พบว่าค่าเฉลี่ยหลังเทียบก่อนเปลี่ยนแปลงเฉลี่ย ... หน่วย (95% CI: ... ถึง ...), p = ...] / [ไม่เป็น Normal (swilk p = 0.0225) &rarr; จึงใช้ Wilcoxon signed-rank test พบว่าค่ามัธยฐานของผลต่างเปลี่ยนแปลงอย่างมีนัยสำคัญ (p = [Prob &gt; |z|])]</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: กลุ่ม <code>trt == 1</code> SBP (Paired t-test ผ่าน) vs <code>trt == 3</code> BMD (Signrank ไม่ผ่าน Normal)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out"><span style="color:#93c5fd">// ตัวอย่าง A: sbp ใน Placebo (trt == 1) --&gt; diff_sbp Normal (p = 0.4350)</span>
+. ttest sbp_fu == sbp_base if trt == 1
+  diff (sbp_fu - sbp_base) = <mark class="hl-est">-.5225</mark> | 95% CI: <mark class="hl-ci">-1.9691  .9241</mark> | t = -0.7189 | df = 79
+  Ha: mean(diff) != 0 --&gt; <mark class="hl-p">Pr(|T| &gt; |t|) = 0.4743</mark> (Not Sig &rarr; Placebo ความดันคงที่!)
+
+<span style="color:#93c5fd">// ตัวอย่าง B: Thiazide trt == 3 --&gt; swilk diff ได้ Prob&gt;z = 0.02247 (&lt; 0.05!)</span>
+. signrank fuhip = basehip if trt == 3
+  Positive = 65 | Negative = 35 | Zero = 2 | z = 2.991
+  <mark class="hl-p">Prob &gt; |z| = 0.0028</mark> (Exact prob = 0.0025)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 5: >= 3 GROUPS ANOVA vs KRUSKAL-WALLIS -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s5-anova" data-cat="multi-group" data-keywords="oneway anova bartlett bonferroni scheffe pwmean kwallis with ties kwallis2 fwer เติมตาราง anova df SS MS F">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S5 &bull; &ge; 3 INDEPENDENT GROUPS</span>
+            <h3>เปรียบเทียบ &ge;3 กลุ่ม: One-way ANOVA (+ Post-hoc) vs Kruskal-Wallis (+ เติมตาราง)</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "เปรียบเทียบ &ge;3 กลุ่ม (เช่น Low/Moderate/High, Trt 1/2/3, 3 เชื้อชาติ)", "คู่ไหนต่างกันบ้าง (Post-hoc)?", "เติมเลขในช่องว่างตาราง ANOVA", "ทำไมไม่ใช้ Unpaired t-test หลายรอบ?"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label">เหตุผลทฤษฎี + 2 Assumptions ของ ANOVA</span>
+            <p>
+              <strong>ห้ามใช้ t-test ซ้ำ</strong> เพราะเกิด Type I Error Inflation: <code>&alpha;<sub>total</sub> = 1 &minus; (1 &minus; 0.05)<sup>k</sup></code> (เช่น 3 คู่ = 14.3%!)<br>
+              1) <strong>Normality ทุกกลุ่มย่อย:</strong> <code>bysort g: swilk y</code> (&ge; 0.05 ทุกกลุ่ม)<br>
+              2) <strong>Equal Variance:</strong> ดูท้ายตาราง <code>oneway</code> บรรทัด <strong>Bartlett's test: Prob&gt;chi2 &ge; 0.05</strong>
+            </p>
+          </div>
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; กับดักชี้ชีวิต: ถ้า Bartlett หรือ Normal พัง!</span>
+            <p>
+              เช่น ข้อมูล <code>exercise5_68.dta</code> (BMI by PA_level): แม้ <code>oneway</code> จะพิมพ์ <code>Prob &gt; F = 0.0169</code> ออกมา แต่ <strong>Bartlett Prob&gt;chi2 = 0.007 (&lt; 0.05!)</strong> &rarr; ผล ANOVA นั้นเชื่อไม่ได้ ต้องสลับเป็น <strong>Kruskal-Wallis</strong> (<code>Prob = 0.0506</code> &rarr; สรุปว่า <strong>ไม่ Sig!</strong>) และ<strong>ระวัง</strong>อย่าอ่านเลข Bartlett เป็น p-value ของ ANOVA!
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: One-way ANOVA + pwmean (95% CI) vs Kruskal-Wallis (with ties &amp; kwallis2)</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s5" aria-label="คัดลอกคำสั่ง STATA สำหรับ S5 เปรียบเทียบ 3 กลุ่มขึ้นไป">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s5"><span class="stata-comment">* 1. ตรวจ Normal ทีละกลุ่ม + รัน ANOVA (ได้ Bartlett พร้อม Post-hoc เลย):</span>
+bysort trt: swilk sbp_fu
+oneway sbp_fu trt, tabulate bonferroni  <span class="stata-comment">// ดู Prob&gt;chi2 ของ Bartlett ก่อน! ถ้า &ge;0.05 ค่อยอ่าน Prob &gt; F</span>
+pwmean sbp_fu, over(trt) mcompare(bonferroni) effects  <span class="stata-comment">// ดู Mean diff + [95% CI] รายคู่!</span>
+<span class="stata-comment">* (หมายเหตุ: , scheffe จะอนุรักษนิยม/เข้มกว่า CI กว้างกว่า และ p สูงกว่า bonferroni)</span>
+
+<span class="stata-comment">* 2. ถ้า Normal หรือ Bartlett ไม่ผ่าน (&lt;0.05) --&gt; Kruskal-Wallis:</span>
+kwallis tg, by(trt)                     <span class="stata-comment">// ยึดบรรทัด "chi2(df) with ties" เสมอ!</span>
+tabstat tg, by(trt) stats(n p50 p25 p75 iqr)
+<span class="stata-comment">* ถ้า kwallis Sig แล้วอยากหาคู่ต่าง (Post-hoc): ต้องติดตั้งเพิ่ม 1 ครั้งแล้วรัน:</span>
+<span class="stata-comment">* ssc install kwallis2</span>
+<span class="stata-comment">* kwallis2 tg, by(trt)                  // ไม่มีใน GUI ต้องพิมพ์คำสั่ง!</span></code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; ANOVA: <code>Statistics &rarr; Linear models and related &rarr; ANOVA/MANOVA &rarr; One-way ANOVA</code><br>
+          &bull; Pairwise 95% CI: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Summary and descriptive statistics &rarr; Pairwise comparisons of means</code><br>
+          &bull; Kruskal-Wallis: <code>Statistics &rarr; Nonparametric analysis &rarr; Tests of hypotheses &rarr; Kruskal-Wallis rank test</code>
+        </div>
+
+        <!-- ANOVA Table Fill-in Cheat Box -->
+        <div class="formula-strip">
+          <div class="formula-tile">
+            <strong>สูตรเติมตาราง ANOVA (<i>k</i> กลุ่ม, <i>N</i> คน)</strong><br>
+            &bull; <code>df<sub>B</sub> = k &minus; 1</code> &nbsp;|&nbsp; <code>df<sub>W</sub> = N &minus; k</code> &nbsp;|&nbsp; <code>df<sub>T</sub> = N &minus; 1</code><br>
+            &bull; <code>SS<sub>T</sub> = SS<sub>B</sub> + SS<sub>W</sub></code>
+          </div>
+          <div class="formula-tile">
+            <strong>หา MS และ F-ratio</strong><br>
+            &bull; <code>MS<sub>B</sub> = SS<sub>B</sub> / df<sub>B</sub></code><br>
+            &bull; <code>MS<sub>W</sub> = SS<sub>W</sub> / df<sub>W</sub></code><br>
+            &bull; <code>F = MS<sub>B</sub> / MS<sub>W</sub></code> (กราฟ F เบ้ขวา, F &ge; 0 เสมอ)
+          </div>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s5" aria-label="คัดลอกประโยคตอบข้อสอบ S5">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s5">จากการตรวจ Normality ทุกกลุ่ม (p &ge; 0.05) และ Bartlett's test ได้ Prob&gt;chi2 = ... (&ge; 0.05 ความแปรปรวนเท่ากัน) จึงใช้ One-way ANOVA พบว่ามีอย่างน้อย 1 คู่ที่ค่าเฉลี่ยแตกต่างกันอย่างมีนัยสำคัญ (F(..., ...) = ..., p &lt; 0.001) และจากการเปรียบเทียบรายคู่ด้วย Bonferroni (<code>pwmean</code>) พบคู่ที่แตกต่างกันอย่างมีนัยสำคัญ ได้แก่ [กลุ่ม ... vs ...] (ต่าง ... หน่วย, 95% CI: ... ถึง ..., p = ...) ส่วนคู่ [กลุ่ม ... vs ...] ไม่แตกต่างกัน (p = ...)</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: <code>oneway sbp_fu trt</code> + <code>pwmean</code> vs กับดัก Bartlett (<code>exercise5_68</code>)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out"><span style="color:#93c5fd">// ตัวอย่าง A (ผ่านครบ): sbp_fu by trt (N=240, k=3)</span>
+  Between groups: SS = 5746.37 | df = 2 | MS = 2873.19 | F = 23.88 | <mark class="hl-p">Prob &gt; F = 0.0000</mark>
+  Within groups:  SS = 28512.0 | df = 237 | MS = 120.30
+  Bartlett's test: chi2(2) = 0.6957 | <mark class="hl-est">Prob&gt;chi2 = 0.706</mark> (&ge;0.05 ผ่าน!)
+  pwmean (Bonferroni): 2 vs 1: diff = -8.35 (<mark class="hl-ci">-12.53 to -4.17</mark>, p=0.000) | 3 vs 2: diff = -3.28 (<mark class="hl-ci">-7.46 to 0.91</mark>, p=0.181 NS)
+
+<span style="color:#93c5fd">// ตัวอย่าง B (พัง Bartlett!): exercise5_68.dta: oneway bmi PA_level</span>
+  ANOVA Prob &gt; F = <mark class="hl-bad">0.0169</mark> (ห้ามเชื่อ! เพราะ Bartlett Prob&gt;chi2 = <mark class="hl-bad">0.007</mark> &lt; 0.05!)
+  kwallis bmi, by(PA_level) --&gt; chi2(2) with ties = 5.968, <mark class="hl-p">Prob = 0.0506</mark> (&ge; 0.05 สรุปว่า Not Sig!)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 6: 2x2 / R x C CHI-SQUARE vs FISHER -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s6-cat-chi2" data-cat="categorical" data-keywords="chi2 expected exact fisher cochran tabi ตาราง 2x2 นับความถี่ categorical row col">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S6 &bull; CATEGORICAL ASSOCIATION</span>
+            <h3>ตารางไขว้ 2&times;2 หรือ R&times;C: Pearson &chi;&sup2; vs Fisher's Exact (กฎ Cochran)</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "ทดสอบความสัมพันธ์ระหว่างตัวแปรกลุ่ม 2 ตัว (เช่น สูบบุหรี่ vs โรคหัวใจ, ความดันสูง vs ทารกน้ำหนักน้อย)", "ตารางแจกแจงความถี่ที่มี Expected count &lt; 5"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label">กฎ Cochran's Rule (ตรวจ Expected Frequency ก่อนเสมอ)</span>
+            <p>
+              &bull; <strong>ตาราง 2&times;2:</strong> <u>ทุกช่อง (ทั้ง 4 ช่อง)</u> ต้องมี <code>Expected &ge; 5</code> (ถ้ามีแม้แต่ 1 ช่องที่ &lt; 5 &rarr; ใช้ Fisher!)<br>
+              &bull; <strong>ตาราง R&times;C (ใหญ่กว่า 2&times;2):</strong> ช่องที่ <code>E &lt; 5</code> ต้อง <strong>&le; 20%</strong> ของช่องทั้งหมด และต้อง<strong>ไม่มีช่องใด E &lt; 1</strong>
+            </p>
+          </div>
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; กับดัก Fisher's Exact ที่หักคะแนนบ่อยสุด!</span>
+            <p>
+              1) <strong>ห้ามอ่าน <code>1-sided Fisher's exact</code> เด็ดขาด!</strong> ในไฟล์ <code>LBW189</code> และ <code>Final_Exam</code> บรรทัด <code>1-sided</code> ได้ <code>0.042</code> / <code>0.046</code> (ดูเหมือน Sig) แต่บรรทัดบน <strong><code>Fisher's exact</code> (2-sided) ได้ <code>0.052</code> / <code>0.079</code> (&rarr; Not Sig!)</strong><br>
+              2) การดู % ให้ใส่ <code>, row</code> เมื่อตั้ง Exposure เป็นแถว (เพื่อเทียบ Incidence ระหว่างกลุ่ม)
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: มีไฟล์ข้อมูล (<code>tab</code>) vs ไม่มีไฟล์ใส่ตารางเอง (<code>tabi</code>)</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s6" aria-label="คัดลอกคำสั่ง STATA สำหรับ S6 ตารางไขว้ Chi-square และ Fisher Exact">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s6"><span class="stata-comment">* 1. จากไฟล์ข้อมูล:</span>
+tab ckd cv_event, row expected chi2 exact
+
+<span class="stata-comment">* 2. จากตัวเลขตาราง 2x2 ที่โจทย์พิมพ์ให้ (แถวคั่นด้วย \):</span>
+tabi 179 48 \ 7 6, expected chi2 exact</code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Path:</strong> <code>Statistics &rarr; Summaries, tables, and tests &rarr; Frequency tables &rarr; Two-way table with measures of association</code> (ติ๊ก &check; Pearson's chi-squared, Fisher's exact test, Expected frequencies, Within-row relative frequencies)
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s6" aria-label="คัดลอกประโยคตอบข้อสอบ S6">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s6">จากการตรวจสอบ Expected frequency ในตาราง 2&times;2 พบว่า [ทุกช่องมีค่า &ge; 5 &rarr; ใช้ Pearson's chi-square ได้ p = ...] / [มี ... ช่อง (เช่น ช่อง ckd=1, cv_event=1 มีค่า E = 2.9 &lt; 5) จึงผิดกฎของ Cochran ต้องรายงานด้วย 2-sided Fisher's exact test ได้ค่า p = 0.079 (&ge; 0.05) สรุปว่าไม่มีความสัมพันธ์กันอย่างมีนัยสำคัญทางสถิติ แม้ Pearson chi2 จะได้ p = 0.036 ก็ตาม]</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: กับดัก Pearson vs 2-sided Fisher vs 1-sided Fisher (<code>tab ckd cv_event</code>)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out">       ckd |   cv_event=0   cv_event=1 | Total
+-----------+---------------------------+------
+         0 | 179 (175.9) |  48 (51.1)  |  227
+         1 |   7 ( 10.1) |   <mark class="hl-bad">6 ( 2.9)</mark>  |   13  &lt;-- ช่องนี้ Expected = 2.9 (&lt; 5)!
+-----------+---------------------------+------
+  Pearson chi2(1) = 4.4101    <mark class="hl-bad">Pr = 0.036</mark>  (ห้ามใช้!)
+   Fisher's exact =              <mark class="hl-p">0.079</mark>    &lt;-- อ่านบรรทัดนี้เท่านั้น! (Not Sig!)
+1-sided Fisher's  =              <mark class="hl-bad">0.046</mark>    (ห้ามอ่าน!)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 7: STRENGTH OF ASSOCIATION (RR vs OR + SIGN RULE) -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s7-epi-rr-or" data-cat="categorical" data-keywords="cs csi cc cci risk ratio odds ratio risk difference attributable cohort case-control cross-sectional เครื่องหมาย + - null">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S7 &bull; STRENGTH OF ASSOCIATION &amp; SIGN RULE</span>
+            <h3>เลือก Report RR vs OR ตาม Study Design (<code>cs</code> vs <code>cc</code>) &amp; กฎเครื่องหมาย <code>+</code>/<code>-</code></h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "งานวิจัยแบบ Cohort / RCT / Case-Control / Cross-Sectional ควรคำนวณ Strength of association ค่าใด?", "แปลความหมาย RR, RD, OR, AF", "เครื่องหมาย +/- หน้าผลลัพธ์บอกอะไร?"
+        </div>
+
+        <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="cap-design">
+          <table id="tbl-design">
+            <caption id="cap-design">ตารางเลือก Strength of Association ตาม Study Design และคำสั่ง STATA (ต้องรหัสตัวแปรเป็น 0/1 เสมอ)</caption>
+            <thead>
+              <tr>
+                <th scope="col">Study Design</th>
+                <th scope="col">ค่าที่ต้อง Report</th>
+                <th scope="col">คำสั่ง (<strong>[โรค] ขึ้นก่อน [ปัจจัย]!</strong>)</th>
+                <th scope="col">เหตุผล &amp; ข้อห้ามสำคัญ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Cohort / RCT</th>
+                <td><strong>Risk Ratio (RR)</strong> + <strong>Risk Difference (RD)</strong> + AF<sub>exp</sub></td>
+                <td><code>cs dis exp</code><br>ไม่มีไฟล์: <code>csi a b c d</code></td>
+                <td>ติดตามไปข้างหน้า จึงคำนวณ Incidence (Risk) ได้จริง (ระวัง <code>Attr. frac. pop</code> ใช้ตรงๆ ไม่ได้ถ้าไม่สุ่มตามสัดส่วนประชากรจริง)</td>
+              </tr>
+              <tr>
+                <th scope="row">Case-Control</th>
+                <td><strong>Odds Ratio (OR) เท่านั้น!</strong></td>
+                <td><code>cc dis exp</code><br>ไม่มีไฟล์: <code>cci a b c d</code></td>
+                <td><span class="badge-bad">ห้ามรายงาน RR/RD เด็ดขาด!</span> เพราะผู้วิจัยกำหนดจำนวน Cases/Controls เอง OR ประมาณ RR ได้เมื่อโรคพบน้อย (&lt; 5&ndash;10%: <em>Rare Disease Assumption</em>)</td>
+              </tr>
+              <tr>
+                <th scope="row">Cross-Sectional</th>
+                <td><strong>Prevalence Ratio (PR)</strong> หรือ <strong>POR</strong></td>
+                <td><code>cs dis exp</code> (อ่านเป็น PR) หรือ <code>cc</code></td>
+                <td>วัด ณ จุดเวลาเดียว ไม่มีข้อมูล Incidence ใหม่ ห้ามเรียกว่า "อุบัติการณ์"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label">ค่าย 1 (Null = 0): Mean Diff, RD, <i>r</i>/&rho;, &beta;</span>
+            <p>
+              &bull; <strong>มี <code>+</code> และ <code>-</code> ได้!</strong><br>
+              &bull; <code>+</code> = ตัวตั้งสูงกว่า / แปรผันตามกัน; <code>-</code> = ต่ำกว่า / แปรผกผัน<br>
+              &bull; <strong>Sig (p &lt; 0.05):</strong> เมื่อ 95% CI <strong>ไม่คร่อม 0</strong>
+            </p>
+          </div>
+          <div class="gate-box nonpara">
+            <span class="gate-label">ค่าย 2 (Null = 1): RR, OR, HR (อัตราส่วน)</span>
+            <p>
+              &bull; <strong>ไม่มีเครื่องหมายติดลบ!</strong> (มีค่า 0 ถึง +&infin;, โดย OR = e<sup>&beta;</sup>)<br>
+              &bull; <code>&gt; 1</code> (&beta; &gt; 0) = เพิ่มเสี่ยง | <code>&lt; 1</code> (&beta; &lt; 0) = ป้องกัน (ลดลง (1 &minus; OR)&times;100%)<br>
+              &bull; <strong>Sig (p &lt; 0.05):</strong> เมื่อ 95% CI <strong>ไม่คร่อม 1</strong>
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: Cohort (cs/csi) vs Case-Control (cc/cci)</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s7" aria-label="คัดลอกคำสั่ง STATA สำหรับ S7 Cohort cs และ Case-Control cc">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s7"><span class="stata-comment">* 1. Cohort Study (ต้องเรียง &lt;disease_01&gt; &lt;exposure_01&gt; เสมอ!):</span>
+cs cv_event smoke_num
+<span class="stata-comment">* Immediate (ไม่มีไฟล์): เรียง csi &lt;Cases_Exp a&gt; &lt;Cases_Unexp b&gt; &lt;Noncases_Exp c&gt; &lt;Noncases_Unexp d&gt;</span>
+csi 24 15 276 485
+
+<span class="stata-comment">* 2. Case-Control Study (เรียง &lt;disease_01&gt; &lt;exposure_01&gt; เสมอ!):</span>
+cc lbw smoke
+cci 40 10 51 49</code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Cohort (<code>cs</code> / <code>csi</code>): <code>Statistics &rarr; Epidemiology and related &rarr; Tables for epidemiologists &rarr; Cohort study risk-ratio etc. (หรือ ... calculator)</code><br>
+          &bull; Case-Control (<code>cc</code> / <code>cci</code>): <code>Statistics &rarr; Epidemiology and related &rarr; Tables for epidemiologists &rarr; Case-control odds ratio (หรือ ... calculator)</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s7" aria-label="คัดลอกประโยคตอบข้อสอบ S7">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s7">[Cohort/RCT] เนื่องจากเป็นการศึกษาแบบ [Cohort/RCT] จึงรายงานด้วย Risk Ratio (RR) และ Risk Difference (RD): กลุ่มที่สัมผัส [exposure] มีความเสี่ยงเกิด [disease] เท่ากับ ...% เทียบกับกลุ่มไม่สัมผัส ...% คิดเป็น RR = ... (95% CI: ... ถึง ..., ไม่คร่อม 1, p = ...) และความเสี่ยงเพิ่มขึ้นสุทธิ (RD) = +... (+... จุดเปอร์เซ็นต์) โดยร้อยละ ... (AF<sub>exp</sub> = ...%) ของการเกิดโรคในกลุ่มสัมผัสมีสาเหตุร่วมจากปัจจัยนี้
+
+[Case-Control] เนื่องจากเป็นการศึกษาแบบ Case-Control ไม่สามารถคำนวณอุบัติการณ์ (Incidence) ได้ จึงรายงานด้วย Odds Ratio (OR) เท่านั้น (ห้ามรายงาน RR): กลุ่มที่มี [exposure] มีแต้มต่อ (Odds) ของการเป็น [disease] เป็น ... เท่าของกลุ่มไม่มี [exposure] (OR = ..., 95% CI: ... ถึง ..., p = ...)</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: <code>cs cv_event smoke_num</code> (N=238) &amp; <code>csi 24 15 276 485</code> &amp; <code>cci 40 10 51 49</code></summary>
+          <div class="worked-inner">
+            <pre class="stata-out">. cs cv_event smoke_num
+  Risk (Exposed=1): .3696 | Risk (Unexposed=0): .1370
+  Risk difference: <mark class="hl-est">.2325789</mark>  [95% CI: <mark class="hl-ci">.1193  .3459</mark>]  (ไม่คร่อม 0)
+  Risk ratio:      <mark class="hl-est">2.697826</mark>  [95% CI: <mark class="hl-ci">1.6580 4.3897</mark>]  (ไม่คร่อม 1)
+  Attr. frac. ex.: .6293312  | chi2(1) = 17.40 | <mark class="hl-p">Pr&gt;chi2 = 0.0000</mark>
+
+. cci 40 10 51 49  --&gt; Odds ratio = <mark class="hl-est">3.843137</mark> [95% CI: <mark class="hl-ci">1.6477  9.5139</mark> (exact)], <mark class="hl-p">Pr&gt;chi2 = 0.0006</mark></pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 8: CORRELATION & PRE-POST 3 APPROACHES (HW6) -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s8-corr-prepost" data-cat="regression" data-keywords="corr correlate pwcorr spearman rho graph box scatter placebo pre-post ancova follow-up change r>0.5 hw6">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S8 &bull; CORRELATION &amp; PRE-POST 3 METHODS (HW6)</span>
+            <h3>สหสัมพันธ์ (Pearson vs Spearman) &amp; กฎเลือกวิเคราะห์ Pre-Post 3 แนวทาง</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "หาความสัมพันธ์ระหว่างตัวแปรต่อเนื่อง 2 ตัว (เช่น BMI กับ TG, Pre กับ Post)", "<i>n</i> ไม่เท่ากันใช้ <code>corr</code> หรือ <code>pwcorr</code>?", "เลือกวิธีวิเคราะห์ Pre-Post (Follow-up only / Change score / ANCOVA) อย่างไร?"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label">Pearson Assumptions + Placebo Rule</span>
+            <p>
+              &bull; เช็คเชิงเส้น: <code>twoway (scatter y x)</code><br>
+              &bull; เช็ค <strong>Normal แยกทีละตัวทั้ง X และ Y</strong>: <code>graph box x</code> + <code>graph box y</code> + <code>swilk x y</code><br>
+              &bull; ถ้า X หรือ Y ไม่ Normal / เบ้ / มี Outlier (เช่น <code>tg</code>) &rarr; เปลี่ยนเป็น <strong><code>spearman x y, stats(obs p)</code></strong> (&rho;, H<sub>0</sub>: &rho; = 0)<br>
+              &bull; <strong>เช็ค Correlation ธรรมชาติ Pre-Post ใน RCT:</strong> ต้องใส่ <code>if trt == 1</code> (Placebo เท่านั้น!) เพื่อไม่ให้ฤทธิ์ยารบกวน!
+            </p>
+          </div>
+          <div class="gate-box para">
+            <span class="gate-label">เลือกวิเคราะห์ข้อมูลก่อน-หลัง 3 แนวทาง (HW6)</span>
+            <p>
+              &bull; <strong>Observational study:</strong> ใช้ <strong>ANCOVA ดีที่สุดเสมอ!</strong> (กลุ่มมักมี Baseline ไม่เท่ากัน)<br>
+              &bull; <strong>RCT (Experimental):</strong> ทั้ง 3 วิธีได้ผลคล้ายกัน แต่ <strong>ANCOVA ยังดีที่สุดเสมอ</strong> (SE แคบสุด/Power สูงสุด)<br>
+              &bull; <strong>ระหว่าง Follow-up vs Change:</strong> ดูที่ Correlation (<i>r</i>):<br>
+              &nbsp;&nbsp;&rarr; <strong><i>r</i> &gt; 0.5 (สูง):</strong> Follow-up only (<code>oneway fu trt</code>)<br>
+              &nbsp;&nbsp;&rarr; <strong><i>r</i> &le; 0.5 (ต่ำ):</strong> Change analysis (<code>oneway change trt, bon</code>)
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: Check Assumptions &rarr; pwcorr (pairwise) vs spearman</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s8" aria-label="คัดลอกคำสั่ง STATA สำหรับ S8 Correlation และ Pre-Post Check">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s8"><span class="stata-comment">* 1. ตรวจ Linearity &amp; Normal แยกทีละตัว:</span>
+twoway (scatter tg bmi)
+graph box tg
+graph box bmi
+swilk tg bmi
+
+<span class="stata-comment">* 2A. ถ้า Normal ทั้ง X และ Y --&gt; ใช้ pwcorr (เก็บคู่ครบสุดเมื่อ n ไม่เท่า + โชว์ p-value):</span>
+pwcorr sbp_fu sbp_base if trt == 1, obs sig
+<span class="stata-comment">* (correlate จะตัดคนไข้แบบ Listwise Complete-case ทั้งแถวถ้ามีค่าว่างแม้แต่ 1 ช่อง และไม่มี p-value!)</span>
+
+<span class="stata-comment">* 2B. ถ้า X หรือ Y ไม่ Normal (เช่น tg) --&gt; ใช้ Spearman rank correlation:</span>
+spearman tg bmi, stats(obs p)</code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Scatter / Box plot: <code>Graphics &rarr; Two-way graph (scatter, line, etc.)</code> / <code>Graphics &rarr; Box plot</code><br>
+          &bull; <code>pwcorr</code>: <code>Statistics &rarr; Summaries, tables, and tests &rarr; Summary and descriptive statistics &rarr; Pairwise correlations</code><br>
+          &bull; <code>spearman</code>: <code>Statistics &rarr; Nonparametric analysis &rarr; Tests of hypotheses &rarr; Spearman's rank correlation</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Copy &amp; Fill)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s8" aria-label="คัดลอกประโยคตอบข้อสอบ S8">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s8">[Correlation] จากการตรวจสอบ Normality แยกทั้ง X และ Y พบว่า [ทั้งสองตัวเป็น Normal &rarr; ใช้ Pearson's r จาก pwcorr ได้ r = ..., p = ...] / [ตัวแปร ... ไม่เป็น Normal (swilk p &lt; 0.05) &rarr; ใช้ Spearman's rank correlation ได้ &rho; = ..., p = ...] แสดงว่า X และ Y มีความสัมพันธ์เชิงเส้นในทิศทาง[บวก (แปรผันตามกัน)/ลบ (แปรผกผัน)] ในระดับ [อ่อน/ปานกลาง/สูง] อย่างมีนัยสำคัญทางสถิติ (p = ...)
+
+[Pre-Post Method] ควรเลือกใช้ ANCOVA ดีที่สุดเพราะ [คุม Baseline/ตัวแปรกวนใน Observational study และลด Residual Variance ใน RCT] หากเลือกวิธีเดิม ตรวจพบ r ในกลุ่ม Placebo = ... ([&gt; 0.5 &rarr; Follow-up only] / [&le; 0.5 &rarr; Change score])</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: <code>pwcorr tg bmi age, obs sig</code> (<i>r</i> = 0.1208, NS) vs <code>spearman tg bmi</code> (&rho; = 0.3574, p &lt; 0.001!)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out">. pwcorr tg bmi age, obs sig
+             |       tg      bmi      age
+  bmi        |   0.1208  (บรรทัด 1 = r, n=237)
+             |   <mark class="hl-bad">0.0633</mark>  (บรรทัด 2 = p-value: Outlier 2450 ทำให้ Pearson หลุด Sig!)
+             |      237  (สังเกต: คู่ tg-age ยังคงใช้ n=240 ครบ ไม่ถูกตัดทิ้งเหมือน correlate!)
+
+. spearman tg bmi, stats(obs p)
+  Number of obs = 237 | Spearman's rho = <mark class="hl-est">0.3574</mark> | <mark class="hl-p">Prob = 0.0000</mark> (จับสัมพันธ์จริงได้ชัดเจน!)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 9: LINEAR REGRESSION & ANCOVA -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s9-linear-ancova" data-cat="regression" data-keywords="regress ancova residual ols slope extrapolation hettest rvfplot vif testparm r(198) ib# parallel slopes">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S9 &bull; LINEAR REGRESSION &amp; ANCOVA</span>
+            <h3>Linear Regression &amp; ANCOVA: แปลค่า Slope/Adjusted Effect + ตรวจ 4 Assumptions + คำเตือน Extrapolation</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "ปรับตัวแปรกวน / คุม Baseline (ANCOVA)", "Residual คืออะไร?", "แปลความหมายความชัน <i>m</i>", "เอาสมการไปทำนายคนอายุเกินช่วงข้อมูลได้ไหม?", "ตรวจ Homoscedasticity / Normality of residuals / VIF / Parallel Slopes"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label">4 Key Concept Questions ที่ออกสอบบ่อยมาก</span>
+            <p>
+              &bull; <strong>Residual (<i>e<sub>i</sub></i>):</strong> <code>Y<sub>จริง</sub> &minus; Y<sub>ทำนาย (Fitted จากโมเดล)</sub></code> ของคนไข้แต่ละคน (OLS ทำให้ &Sigma;<i>e<sub>i</sub></i><sup>2</sup> น้อยสุด)<br>
+              &bull; <strong>t-test &hArr; Regression:</strong> <code>regress y i.g</code> ได้ Coef, SE, t, p, 95% CI เท่ากับ <code>ttest y, by(g) reverse</code> 100% แต่ Regression คุม Confounder เพิ่มได้!<br>
+              &bull; <strong>Extrapolation Warning:</strong> <strong>ห้าม</strong>นำสมการไปทำนายนอกช่วงอายุ/ค่าตั้งต้นของกลุ่มตัวอย่างตั้งต้น!<br>
+              &bull; ถ้าความชัน <i>m</i> = 0 &rarr; X กับ Y ไม่มีความสัมพันธ์เชิงเส้นตรง
+            </p>
+          </div>
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; Post-Estimation Gate (ทุกข้อต้อง p &ge; 0.05!)</span>
+            <p>
+              1) <strong>Constant Variance:</strong> <code>rvfplot, yline(0)</code> + <code>estat hettest</code> (p &ge; 0.05 = ผ่าน)<br>
+              2) <strong>Residual Normality:</strong> <code>predict r, resid</code> &rarr; <code>swilk r</code> (p &ge; 0.05 = ผ่าน)<br>
+              3) <strong>Multicollinearity:</strong> <code>estat vif</code> (VIF &lt; 5&ndash;10 = ผ่าน)<br>
+              4) <strong>Parallel Slopes (ANCOVA):</strong> รัน interaction <code>##</code> แล้วใช้ <strong><code>testparm c.base#i.trt</code></strong> (p &ge; 0.05 = เส้นขนาน ใช้ ANCOVA มาตรฐานได้! <strong>ห้าม</strong>พิมพ์ <code>test (c.base#i.trt)</code> จะ Error <code>r(198)</code>!)
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: ANCOVA Model + เทียบกลุ่มรอง + 4 Post-estimation Diagnostics</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s9" aria-label="คัดลอกคำสั่ง STATA สำหรับ S9 Linear Regression และ ANCOVA Assumptions">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s9"><span class="stata-comment">* 1. รัน ANCOVA / Multiple Linear Regression (ใช้ i. สำหรับกลุ่ม, ใช้ ib#. เปลี่ยน Reference):</span>
+regress sbp_fu i.trt sbp_base age i.sex
+test 2.trt = 3.trt                        <span class="stata-comment">// ทดสอบคู่ที่ไม่ใช่ Ref (เช่น Trt 2 vs Trt 3)</span>
+
+<span class="stata-comment">* 2. ตรวจ Assumptions ทั้ง 4 ข้อหลังรันโมเดลหลัก:</span>
+rvfplot, yline(0)                         <span class="stata-comment">// ดูจุดกระจายสุ่มคล้ายหมอก (Linearity + Variance)</span>
+estat hettest                             <span class="stata-comment">// H0: Constant variance (p &ge; 0.05 = ผ่าน!)</span>
+predict r, resid
+swilk r                                   <span class="stata-comment">// Normality ของ Residual (p &ge; 0.05 = ผ่าน!)</span>
+estat vif                                 <span class="stata-comment">// Multicollinearity (VIF &lt; 5-10 = ผ่าน!)</span>
+
+<span class="stata-comment">* 3. ตรวจ Parallel Slopes สำหรับ ANCOVA:</span>
+regress sbp_fu i.trt##c.sbp_base age i.sex
+testparm c.sbp_base#i.trt                 <span class="stata-comment">// ต้องใช้ testparm! (p &ge; 0.05 = ขนานกัน ผ่าน!)</span></code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Linear Regression: <code>Statistics &rarr; Linear models and related &rarr; Linear regression</code><br>
+          &bull; Diagnostics (<code>hettest</code>/<code>vif</code>): <code>Statistics &rarr; Linear models and related &rarr; Regression diagnostics &rarr; Specification tests, etc.</code><br>
+          &bull; Residual-vs-Fitted Plot: <code>Graphics &rarr; Regression diagnostic plots &rarr; Residual-versus-fitted</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Slope <i>m</i> + ANCOVA + Assumptions)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s9" aria-label="คัดลอกประโยคตอบข้อสอบ S9">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s9">[ค่าความชันตัวแปรต่อเนื่อง m] เมื่อควบคุมตัวแปรอื่นในโมเดลให้คงที่ ค่า [X] ที่เปลี่ยนแปลงไป 1 หน่วย ทำให้ค่าเฉลี่ยของ [Y] เปลี่ยนแปลงไป [m] หน่วย ในทิศทาง[เพิ่มขึ้น/ลดลง] (95% CI: ... ถึง ..., p = [P&gt;|t|])
+
+[ตัวแปรกลุ่มใน ANCOVA] เมื่อควบคุมค่าตั้งต้น ([baseline]) และตัวแปรกวน ([...]) ให้คงที่แล้ว กลุ่ม [Trt 3] มีค่าเฉลี่ย [outcome] [ต่ำกว่า/สูงกว่า] กลุ่มอ้างอิง ([Placebo]) เฉลี่ย [|Coef|] หน่วย อย่างมีนัยสำคัญ (95% CI: ... ถึง ..., p = ...) โดยโมเดลผ่านเกณฑ์ Assumption ครบถ้วน (hettest p = ..., swilk r p = ..., Mean VIF = ..., testparm p = ...)</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: ANCOVA <code>sbp_fu i.trt sbp_base age sex</code> + 4 Diagnostics (<code>N = 240</code>)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out">. regress sbp_fu i.trt sbp_base age sex
+  Prob &gt; F = <mark class="hl-p">0.0000</mark> | Adj R-squared = 0.7542
+  trt 2 vs 1: <mark class="hl-est">-5.8686</mark> | P&gt;|t| = <mark class="hl-p">0.000</mark> | [95% CI]: <mark class="hl-ci">-7.7296  -4.0076</mark>
+  trt 3 vs 1: <mark class="hl-est">-12.1219</mark>| P&gt;|t| = <mark class="hl-p">0.000</mark> | [95% CI]: <mark class="hl-ci">-13.9891 -10.2548</mark>
+  sbp_base:   <mark class="hl-est">.8033</mark>   | P&gt;|t| = <mark class="hl-p">0.000</mark> | (SBP base เพิ่ม 1 mmHg &rarr; SBP fu เพิ่ม +0.80 mmHg)
+  age/sex:    p = 0.707 / 0.843 (Not Sig) | <span style="color:#fca5a5">อย่าสับสนอ่าน P&gt;|t| ของ _cons (0.000)!</span>
+
+. estat hettest         --&gt; chi2(1) = 0.00, <mark class="hl-est">Prob &gt; chi2 = 0.9606</mark> (&ge;0.05 ผ่าน!)
+. swilk r               --&gt; Prob&gt;z = <mark class="hl-est">0.36093</mark> (&ge;0.05 ผ่าน!)
+. estat vif             --&gt; Mean VIF = <mark class="hl-est">1.16</mark> (&lt; 5-10 ผ่าน!)
+. testparm c.sbp_base#i.trt --&gt; F(2, 232) = 0.40, <mark class="hl-est">Prob &gt; F = 0.6701</mark> (&ge;0.05 ขนานกัน ผ่าน!)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- SCENARIO 10: LOGISTIC REGRESSION -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="s10-logistic" data-cat="regression" data-keywords="logistic logit odds ratio beta gof hosmer-lemeshow binary epv ib# crude adjusted">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag">SCENARIO S10 &bull; BINARY OUTCOME (0/1)</span>
+            <h3>Logistic Regression: <code>logistic</code> (OR) vs <code>logit</code> (&beta;) &amp; Goodness-of-Fit (<code>estat gof</code>)</h3>
+          </div>
+        </div>
+
+        <div class="trigger-keywords">
+          <strong>คีย์เวิร์ดในโจทย์:</strong> "ตัวแปรตามเป็น 0/1 (เช่น ป่วย/ไม่ป่วย, ตาย/รอด, คลอดน้ำหนักน้อย)", "หา Adjusted Odds Ratio (aOR) คุมตัวแปรกวน", "ตรวจว่าโมเดลฟิตดีไหม (Hosmer-Lemeshow)"
+        </div>
+
+        <div class="gate-grid">
+          <div class="gate-box assumption">
+            <span class="gate-label"><code>logistic</code> vs <code>logit</code> &amp; การเช็ค Fit</span>
+            <p>
+              &bull; <strong><code>logistic y x1 x2</code>:</strong> แสดง <strong>Odds Ratio (OR)</strong> ทันที<br>
+              &bull; <strong><code>logit y x1 x2</code>:</strong> แสดงค่า <strong>Coefficient (&beta;)</strong> (Log-odds ที่มีเครื่องหมาย +/-); เติม <code>, or</code> เพื่อให้โชว์ OR<br>
+              &bull; <strong>ไม่ต้องเช็ค Normality / Constant variance ของ Residual!</strong> ให้เช็ค Goodness-of-fit ด้วย <strong><code>estat gof, group(10)</code></strong> &rarr; <strong>Prob &gt; chi2 &ge; 0.05 = ฟิตดี!</strong><br>
+              &bull; Events Per Variable (EPV): ควรมีจำนวน Event (<code>y==1</code>) &ge; 10&ndash;20 ต่อจำนวนตัวแปรต้น
+            </p>
+          </div>
+          <div class="gate-box trap">
+            <span class="gate-label">&#9888; การเปลี่ยน Reference + แปลผล OR &lt; 1</span>
+            <p>
+              &bull; เปลี่ยน Reference Group เช่น ใช้ Asia (รหัส 2) เป็นฐาน: <code>logistic lbw smoke age <strong>ib2.</strong>race</code><br>
+              &bull; เมื่อ <strong>OR &lt; 1</strong> (เช่น OR = 0.3842): <strong>ลด Odds ลง (1 &minus; 0.3842)&times;100 = 61.6%</strong> (โดย 95% CI ต้อง &lt; 1 ทั้งคู่, ห้ามคร่อม 1!)<br>
+              &bull; <strong>อย่าอ่าน P&gt;|z| ของ <code>_cons</code></strong> (มันแค่ทดสอบ Baseline odds = 1 เท่านั้น!)
+            </p>
+          </div>
+        </div>
+
+        <div class="code-card">
+          <div class="code-header">
+            <span>STATA Syntax: Adjusted OR + Log-odds + Hosmer-Lemeshow GOF</span>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="code-s10" aria-label="คัดลอกคำสั่ง STATA สำหรับ S10 Logistic Regression และ GOF">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <pre><code id="code-s10">logistic cv_event smoke_num age i.trt bmi   <span class="stata-comment">// ได้ Odds Ratio (aOR)</span>
+logit cv_event smoke_num age i.trt bmi      <span class="stata-comment">// ได้ Log-odds Beta (+/-)</span>
+estat gof, group(10)                        <span class="stata-comment">// Hosmer-Lemeshow test (p &ge; 0.05 = ฟิตดี!)</span></code></pre>
+        </div>
+
+        <div class="gui-path">
+          <strong>GUI Menu Paths:</strong>
+          &bull; Logistic Regression: <code>Statistics &rarr; Binary outcomes &rarr; Logistic regression</code><br>
+          &bull; Goodness-of-Fit: <code>Statistics &rarr; Binary outcomes &rarr; Postestimation &rarr; Goodness-of-fit after logistic/logit/probit</code>
+        </div>
+
+        <div class="template-card">
+          <div class="template-header">
+            <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (OR &gt; 1, OR &lt; 1 และตัวแปรต่อเนื่อง)</h4>
+            <span class="copy">
+              <button type="button" class="copy-button" command="--copy" commandfor="tpl-s10" aria-label="คัดลอกประโยคตอบข้อสอบ S10">
+                <svg class="icon icon-copy" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <svg class="icon icon-check" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"></path></svg>
+                <svg class="icon icon-fail" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+              </button>
+              <span class="tip" role="status"></span>
+            </span>
+          </div>
+          <div class="template-body" id="tpl-s10">จากการวิเคราะห์ Multivariable Logistic Regression (Hosmer-Lemeshow GOF p = ... &ge; 0.05 โมเดลมีความเหมาะสมดี) พบว่าเมื่อควบคุมตัวแปรอื่นในโมเดลให้คงที่แล้ว:
+&bull; [ปัจจัยเสี่ยง OR &gt; 1]: กลุ่ม [สูบบุหรี่] มีแต้มต่อ (Odds) การเกิด [cv_event] เป็น [4.75] เท่าของกลุ่มอ้างอิงอย่างมีนัยสำคัญ (aOR = 4.75, 95% CI: 2.36&ndash;9.55, p &lt; 0.001)
+&bull; [ปัจจัยป้องกัน OR &lt; 1]: กลุ่ม [Trt 3] มีแต้มต่อลดลง (1 &minus; 0.384)&times;100 = [61.6%] เมื่อเทียบกับกลุ่ม Placebo (aOR = 0.38, 95% CI: 0.16&ndash;0.91, p = 0.030)
+&bull; [ตัวแปรต่อเนื่อง]: ทุก 1 ปีที่อายุเพิ่มขึ้น สัมพันธ์กับแต้มต่อการเกิดโรคที่เพิ่มขึ้น (1.073 &minus; 1)&times;100 = 7.3% ต่อปี (aOR = 1.07, 95% CI: 1.03&ndash;1.12, p = 0.001)</div>
+        </div>
+
+        <details class="worked-log">
+          <summary>ดู Output จริง: <code>logistic cv_event smoke_num age i.trt bmi</code> + <code>logit</code> + <code>estat gof</code> (N=235)</summary>
+          <div class="worked-inner">
+            <pre class="stata-out">. logistic cv_event smoke_num age i.trt bmi     (Prob &gt; chi2 = 0.0000)
+  smoke_num | aOR = <mark class="hl-est">4.7523</mark>   | <mark class="hl-p">P&gt;|z| = 0.000</mark> | [95% CI: <mark class="hl-ci">2.3650   9.5495</mark>]  (&beta; in logit = +1.5586)
+  age       | aOR = <mark class="hl-est">1.0726</mark>   | <mark class="hl-p">P&gt;|z| = 0.001</mark> | [95% CI: <mark class="hl-ci">1.0298   1.1172</mark>]  (&beta; in logit = +0.0701)
+  trt 2 vs1 | aOR = .6895    | P&gt;|z| = 0.344 | [95% CI: .3191    1.4899]  (คร่อม 1 = Not Sig!)
+  trt 3 vs1 | aOR = <mark class="hl-est">.3842</mark>    | <mark class="hl-p">P&gt;|z| = 0.030</mark> | [95% CI: <mark class="hl-ci">.1622    .9103</mark>]   (&beta; in logit = -0.9565, ลด odds 61.6%)
+  bmi       | aOR = 1.0161   | P&gt;|z| = 0.671 | [95% CI: .9440    1.0936]  (คร่อม 1 = Not Sig!)
+
+. estat gof, group(10) --&gt; Hosmer-Lemeshow chi2(8) = 10.31 | <mark class="hl-est">Prob &gt; chi2 = 0.2442</mark> (&ge;0.05 ฟิตดี!)</pre>
+          </div>
+        </details>
+      </article>
+
+      <!-- ================================================================ -->
+      <!-- PART SOS: EMERGENCY P-VALUE COORDINATE MAP & PRE-SUBMIT CHECKLIST -->
+      <!-- ================================================================ -->
+      <article class="playbook-card" id="emergency-map" data-cat="emergency" data-keywords="p-value map checklist สรุป จุดดูค่า p กับดัก ก่อนส่งข้อสอบ">
+        <div class="card-header">
+          <div>
+            <span class="scenario-tag danger">EMERGENCY LOOKUP &bull; ONE-GLANCE MAP</span>
+            <h3>ตารางชี้จุดดู p-value ทุกคำสั่ง + เช็คลิสต์ 30 วินาทีก่อนกดส่งข้อสอบ</h3>
+          </div>
+        </div>
+
+        <div class="table-wrapper" tabindex="0" role="region" aria-labelledby="cap-pmap">
+          <table id="tbl-pmap">
+            <caption id="cap-pmap">แผนที่จุดดู p-value ที่ถูกต้องใน STATA Output (ระวังคอลัมน์หรือบรรทัดหลอก)</caption>
+            <thead>
+              <tr>
+                <th scope="col">คำสั่ง STATA</th>
+                <th scope="col">ตำแหน่ง p-value ที่ถูกต้อง</th>
+                <th scope="col">จุดหลอกที่ห้ามหยิบผิด!</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row"><code>swilk var</code></th>
+                <td>คอลัมน์ขวาสุด <code>Prob&gt;z</code> (p &ge; 0.05 = Normal)</td>
+                <td>ดู <code>V</code> แล้วนึกว่า p; สลับ &lt;0.05 เป็นผ่าน (ผิด! &ge;0.05 จึง Normal)</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>sdtest y, by(g)</code></th>
+                <td><strong>ตัวกลาง</strong> <code>Ha: ratio != 1</code> (<code>2*Pr(F&lt;f)</code> หรือ <code>2*Pr(F&gt;f)</code>)</td>
+                <td>หยิบซ้ายสุด <code>Pr(F&lt;f)</code> หรือขวาสุด <code>Pr(F&gt;f)</code> (ได้ ~0.9997)</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>ttest</code> / <code>ttesti</code> / <code>prtesti</code></th>
+                <td><strong>ตัวกลาง</strong> <code>Ha: diff != 0</code> &rarr; <code>Pr(|T| &gt; |t|)</code> / <code>Pr(|Z| &gt; |z|)</code></td>
+                <td>หยิบซ้าย/ขวา (1-sided) เมื่อโจทย์ถามแค่ "แตกต่างกันหรือไม่"</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>ranksum</code> / <code>signrank</code></th>
+                <td><code>Prob &gt; |z|</code> (หรือ <code>Exact prob</code> เมื่อ <i>n</i> &le; 200)</td>
+                <td>พยายามเขียนรายงาน Mean diff &amp; 95% CI (Non-parametric ไม่มี!)</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>oneway y g, bon</code></th>
+                <td>ขวาสุดในตาราง ANOVA <code>Prob &gt; F</code> (ตัวบน!)</td>
+                <td>หยิบ <code>Prob&gt;chi2</code> ของ Bartlett ด้านล่างมาตอบเป็นผล ANOVA!</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>kwallis y, by(g)</code></th>
+                <td><strong>คู่ล่างสุด <code>with ties</code> &rarr; <code>Prob = ...</code></strong></td>
+                <td>ลืมดูบรรทัด <code>with ties</code> เมื่อข้อมูลจริงมีเลขซ้ำกันหลายตัว</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>tab ..., chi2 exp exact</code></th>
+                <td>ผ่าน Cochran: <code>Pearson chi2 Pr</code> &bull; พัง: <code>Fisher's exact</code> (บน)</td>
+                <td>อ่าน <strong><code>1-sided Fisher's exact</code></strong> (บรรทัดล่างสุด!)</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>cs</code> / <code>cc</code> / <code>csi</code> / <code>cci</code></th>
+                <td>บรรทัดล่างสุด <code>Pr&gt;chi2</code> + เช็ค CI ไม่คร่อม 1 (RR/OR) หรือ 0 (RD)</td>
+                <td>เอา <code>Attr. frac. pop</code> ไปอ้างทั่วไปโดยไม่ได้สุ่มกลุ่มจากประชากรจริง</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>pwcorr ..., obs sig</code></th>
+                <td>ในแต่ละช่องตาราง <strong>ตัวเลขบรรทัดที่ 2</strong> (ใต้ค่า <i>r</i>)</td>
+                <td>ใช้ <code>correlate</code> ปกติ (ไม่มี p และตัดเคส Missing ทิ้งหมดทั้งแถว!)</td>
+              </tr>
+              <tr>
+                <th scope="row"><code>spearman ..., stats(obs p)</code></th>
+                <td><code>Prob = ...</code> ด้านล่าง (หรือบรรทัดล่างของคู่ในเมทริกซ์)</td>
+                <td>รายงานสัญลักษณ์เป็น <i>r</i> แทน Spearman's <strong>&rho; (rho)</strong></td>
+              </tr>
+              <tr>
+                <th scope="row"><code>regress</code> / <code>logistic</code> / <code>logit</code></th>
+                <td>ทั้งโมเดล: <code>Prob &gt; F</code> / <code>Prob &gt; chi2</code> &bull; รายตัว: <code>P&gt;|t|</code> / <code>P&gt;|z|</code></td>
+                <td>อ่าน p-value ของ <strong><code>_cons</code></strong> แทนตัวแปรต้น! หรือลืมเช็ค <code>hettest</code>/<code>swilk r</code>/<code>vif</code>/<code>gof</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="gate-box para" style="margin-bottom: 0;">
+          <span class="gate-label">&#9745; เช็คลิสต์ 5 ข้อสุดท้ายก่อนกดส่งคำตอบ (30 วินาที)</span>
+          <ol style="margin: 0.25rem 0 0 1.25rem; padding: 0; font-size: 0.9rem;">
+            <li>รายงาน <strong>Effect Size + 95% CI + exact p-value</strong> (เช่น <code>p &lt; 0.001</code> แทน <code>0.000</code> และอย่าเขียน <code>p = NS</code>)</li>
+            <li>เช็คทิศทางเครื่องหมาย <code>+</code>/<code>-</code> ว่าเป็นกลุ่มใดลบกลุ่มใด (เช่น <code>mean(1)-mean(0)</code> หรือ ใช้ <code>, reverse</code> หรือตั้ง Reference <code>ib#.</code> ถูกกลุ่มหรือไม่)</li>
+            <li>สำหรับงานระบาด: Cohort/RCT รายงาน <strong>RR / RD</strong>, Case-Control รายงาน <strong>OR เท่านั้น!</strong></li>
+            <li>สำหรับ Pre-Post &ge;3 กลุ่ม (HW6): ระบุเหตุผลได้ครบไหมว่าทำไม <strong>ANCOVA</strong> ดีที่สุดทั้งใน Observational และ RCT?</li>
+            <li>สำหรับ Excel: ตรวจ <code>tab var, missing</code> หลังสร้างตัวแปรทุกครั้งว่าคนไข้ Missing ไม่ได้หลุดไปเข้ากลุ่ม "อ้วน/เสี่ยง"!</li>
+          </ol>
+        </div>
+      </article>
+
+        </div>
+      </section>
+
       <!-- Footer -->
       <footer style="margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--border); text-align: center; font-size: 13px; color: var(--text-muted);">
-        เอกสารสรุปเตรียมสอบ STATA Final Master Guide (Post-Midterm ถึง Final) &bull; ข้อมูลอ้างอิงผ่านการรันตรวจสอบด้วย StataNow 19.5 SE ทุกตาราง
+        เอกสารสรุปเตรียมสอบ STATA Final Master Guide + Open-Book Field Playbook (Scenario &amp; Excel) &bull; ตรวจสอบจริงด้วย StataNow 19.5 SE ทุกตาราง
       </footer>
 
     </main>
@@ -2018,7 +4307,12 @@ Log likelihood = -109.4311                              Pseudo R2     = 0.0674
         document.getElementById('chapter-2'),
         document.getElementById('chapter-3'),
         document.getElementById('chapter-4'),
-        document.getElementById('chapter-5')
+        document.getElementById('chapter-5'),
+        document.getElementById('playbook-hub'),
+        document.getElementById('finder-section'),
+        document.getElementById('excel-workflow'),
+        document.getElementById('s1-descriptive'),
+        document.getElementById('emergency-map')
       ].filter(Boolean);
 
       function updateActiveNav() {
@@ -2041,6 +4335,313 @@ Log likelihood = -109.4311                              Pseudo R2     = 0.0674
 
       window.addEventListener('scroll', updateActiveNav, { passive: true });
       updateActiveNav();
+
+      // 1. Copy-to-Clipboard (MWG copy-button: Invoker Commands + fallback + legacyCopy for file://)
+      // ================================================================
+      const copyTimers = new WeakMap();
+      let lastCopiedMessage = '';
+
+      function legacyCopy(text) {
+        const field = Object.assign(document.createElement('textarea'), { value: text });
+        field.setAttribute('readonly', '');
+        field.style.cssText = 'position:fixed;inset-block-start:0;opacity:0;';
+        document.body.append(field);
+        field.select();
+        try {
+          return document.execCommand('copy');
+        } finally {
+          field.remove();
+        }
+      }
+
+      function reportCopy(button, ok) {
+        const tip = button.nextElementSibling;
+        clearTimeout(copyTimers.get(button));
+        button.removeAttribute('data-copied');
+        button.removeAttribute('data-failed');
+
+        let message = ok ? 'คัดลอกแล้ว' : 'คัดลอกไม่สำเร็จ';
+        if (message === lastCopiedMessage) {
+          message += '\u00A0'; // Ensure VoiceOver announces repeated copies cleanly
+        }
+        lastCopiedMessage = message;
+
+        if (tip) tip.textContent = '';
+        void button.offsetWidth;
+        button.setAttribute(ok ? 'data-copied' : 'data-failed', '');
+        if (tip) requestAnimationFrame(() => { tip.textContent = message; });
+
+        copyTimers.set(button, setTimeout(() => {
+          button.removeAttribute('data-copied');
+          button.removeAttribute('data-failed');
+          if (tip) tip.textContent = '';
+        }, 2000));
+      }
+
+      async function copyTarget(button, target) {
+        if (!target) return;
+        const text = target.matches('input, textarea') ? target.value : target.innerText.trim();
+        if (!text) return;
+        try {
+          try {
+            await navigator.clipboard.writeText(text);
+          } catch {
+            if (!legacyCopy(text)) throw new Error('Copy failed');
+          }
+          reportCopy(button, true);
+        } catch {
+          reportCopy(button, false);
+        }
+      }
+
+      // Register exactly ONE path depending on Invoker Commands support
+      if ('CommandEvent' in window) {
+        document.addEventListener('command', (event) => {
+          if (typeof event.command === 'string' && event.command.startsWith('--copy')) {
+            copyTarget(event.source, event.target);
+          }
+        }, true);
+      } else {
+        document.addEventListener('click', (event) => {
+          const button = event.target.closest('button[command^="--copy"]');
+          if (!button) return;
+          const target = document.getElementById(button.getAttribute('commandfor'));
+          if (target) copyTarget(button, target);
+        });
+      }
+
+      // ================================================================
+      // 2. Live Search & Category Filter (Playbook Hub)
+      // ================================================================
+      const pbSearchInput = document.getElementById('scenario-search');
+      const clearBtn = document.getElementById('clear-search-btn');
+      const toggleLogsBtn = document.getElementById('toggle-all-logs-btn');
+      const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
+      const cards = Array.from(document.querySelectorAll('.playbook-card'));
+      const statusBar = document.getElementById('search-status');
+      let activeCat = 'all';
+
+      function applyFilters() {
+        const q = (pbSearchInput ? pbSearchInput.value : '').trim().toLowerCase();
+        let shown = 0;
+
+        for (const card of cards) {
+          const cats = (card.getAttribute('data-cat') || '').split(/\s+/);
+          const matchCat = activeCat === 'all' || cats.includes(activeCat);
+          const hay = ((card.getAttribute('data-keywords') || '') + ' ' + card.innerText).toLowerCase();
+          const matchText = !q || hay.includes(q);
+          const visible = matchCat && matchText;
+
+          card.classList.toggle('is-hidden', !visible);
+          if (visible) shown++;
+        }
+
+        if (statusBar) {
+          if (shown === 0) {
+            statusBar.textContent = 'ไม่พบหัวข้อที่ตรงกับคำค้น — ลองล้างคำค้นหรือกด "ทั้งหมด"';
+          } else if (activeCat === 'all' && !q) {
+            statusBar.textContent = `แสดงครบทุก ${cards.length} ส่วน (ใช้ Ctrl+F / Cmd+F ในเบราว์เซอร์ร่วมด้วยได้)`;
+          } else {
+            statusBar.textContent = `กำลังแสดง ${shown} จาก ${cards.length} ส่วนตามเงื่อนไขที่กรอง`;
+          }
+        }
+      }
+
+      if (pbSearchInput) {
+        pbSearchInput.addEventListener('input', applyFilters);
+      }
+
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (pbSearchInput) pbSearchInput.value = '';
+          activeCat = 'all';
+          filterBtns.forEach(b => b.setAttribute('aria-pressed', b.dataset.cat === 'all' ? 'true' : 'false'));
+          applyFilters();
+          if (pbSearchInput) pbSearchInput.focus();
+        });
+      }
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeCat = btn.dataset.cat || 'all';
+          filterBtns.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+          applyFilters();
+        });
+      });
+
+      if (toggleLogsBtn) {
+        toggleLogsBtn.addEventListener('click', () => {
+          const logs = Array.from(document.querySelectorAll('details.worked-log'));
+          const shouldOpen = toggleLogsBtn.getAttribute('aria-pressed') !== 'true';
+          logs.forEach(d => { d.open = shouldOpen; });
+          toggleLogsBtn.setAttribute('aria-pressed', shouldOpen ? 'true' : 'false');
+          toggleLogsBtn.textContent = shouldOpen ? 'ปิดตัวอย่าง Output ทั้งหมด' : 'เปิดตัวอย่าง Output ทั้งหมด';
+        });
+      }
+
+      // ================================================================
+      // 3. 3-Step Instant Test Finder Logic
+      // ================================================================
+      const resTitle = document.getElementById('finder-res-title');
+      const resCmd = document.getElementById('finder-res-cmd');
+      const resNote = document.getElementById('finder-res-note');
+      const resJump = document.getElementById('finder-jump');
+
+      function updateFinder() {
+        const outcomeEl = document.querySelector('input[name="f-outcome"]:checked');
+        const designEl = document.querySelector('input[name="f-design"]:checked');
+        const assumpEl = document.querySelector('input[name="f-assump"]:checked');
+        if (!outcomeEl || !designEl || !assumpEl) return;
+
+        const out = outcomeEl.value;
+        const des = designEl.value;
+        const asm = assumpEl.value;
+
+        let title = '';
+        let cmd = '';
+        let note = '';
+        let href = '#s3-two-indep';
+
+        if (out === 'summary') {
+          if (des === '1grp') {
+            title = 'Immediate 1-Sample / CI Calculator';
+            cmd = '<code>ttesti n mean sd mu0</code> &nbsp;|&nbsp; <code>cii means n mean sd</code> &nbsp;|&nbsp; <code>cii proportions N k, wilson</code>';
+            note = '<strong>กฎ:</strong> แม้ n &ge; 100 ถ้าไม่ทราบ &sigma; ประชากร ให้ยังใช้ <code>ttesti</code>! (ใช้ <code>ztesti</code> เมื่อทราบ &sigma; ประชากรเท่านั้น)';
+            href = '#s2-immediate';
+          } else if (des === '2indep') {
+            title = 'เทียบสัดส่วน 2 กลุ่ม (<code>prtesti</code>) หรือ ตาราง 2&times;2 (<code>tabi</code> / <code>csi</code> / <code>cci</code>)';
+            cmd = '<code>prtesti n1 p1 n2 p2</code> &nbsp;|&nbsp; <code>tabi a b \\ c d, expected chi2 exact</code> &nbsp;|&nbsp; <code>csi</code> / <code>cci</code>';
+            note = '<strong>ระวัง:</strong> <code>prtesti</code> ต้องใส่ <code>p1, p2</code> เป็นทศนิยม [0,1] ห้ามใส่จำนวนคน! Cohort &rarr; <code>csi</code> (RR), Case-Control &rarr; <code>cci</code> (OR)';
+            href = '#s2-immediate';
+          } else {
+            title = 'Immediate Calculator (1-Sample / 2&times;2 Summary Tables)';
+            cmd = '<code>ttesti</code> / <code>prtesti</code> / <code>tabi</code> / <code>csi</code> / <code>cci</code>';
+            note = 'ใช้กลุ่ม Immediate commands เมื่อโจทย์ไม่ได้ให้ไฟล์ข้อมูลดิบ ดูคำอธิบายครบใน S2 และ S6&ndash;S7';
+            href = '#s2-immediate';
+          }
+        } else if (out === 'cat') {
+          if (des === 'multi') {
+            title = 'Multivariable Logistic Regression (คุมตัวแปรกวน Outcome 0/1)';
+            cmd = '<code>logistic y x1 i.x2 x3</code> &nbsp;+&nbsp; <code>estat gof, group(10)</code>';
+            note = '<strong>เช็ค Fit:</strong> <code>estat gof, group(10)</code> ต้อง p &ge; 0.05 (ไม่ต้องเช็ค residual normal!); แปลผลเป็น aOR + 95% CI';
+            href = '#s10-logistic';
+          } else if (asm === 'fail') {
+            title = '2-sided Fisher\'s Exact Test (ผิดกฎ Cochran: Expected &lt; 5)';
+            cmd = '<code>tab exp dis, row expected chi2 exact</code>';
+            note = '<strong>ห้ามลืม:</strong> อ่านแถว <code>Fisher\'s exact</code> (บน = 2-sided) ห้ามอ่าน <code>1-sided Fisher\'s exact</code>! แล้วรายงาน RR/OR ตาม Design ด้วย <code>cs</code> / <code>cc</code>';
+            href = '#s6-cat-chi2';
+          } else {
+            title = 'Pearson\'s Chi-Square Test + Cohort (<code>cs</code>) / Case-Control (<code>cc</code>)';
+            cmd = '<code>tab exp dis, row expected chi2</code> &nbsp;+&nbsp; <code>cs dis exp</code> (หรือ <code>cc dis exp</code>)';
+            note = '<strong>ลำดับตัวแปรสำคัญ:</strong> ใน <code>cs</code>/<code>cc</code> ต้องเอา <strong>[โรค] ขึ้นก่อน [ปัจจัย]</strong>! Cohort/RCT รายงาน RR+RD, Case-Control รายงาน OR เท่านั้น';
+            href = '#s7-epi-rr-or';
+          }
+        } else if (out === 'corr') {
+          if (des === 'multi') {
+            title = 'Multiple Linear Regression / ANCOVA + 4 Post-Estimation Checks';
+            cmd = '<code>regress y i.trt base age i.sex</code> &rarr; <code>estat hettest</code> &rarr; <code>predict r, resid</code> &rarr; <code>swilk r</code> &rarr; <code>estat vif</code>';
+            note = '<strong>เช็ค ANCOVA Parallel Slopes:</strong> <code>regress y i.trt##c.base</code> แล้ว <code>testparm c.base#i.trt</code> (p &ge; 0.05 ขนานกัน! ห้าม <code>test (...)</code> จะ Error r(198))';
+            href = '#s9-linear-ancova';
+          } else if (asm === 'fail') {
+            title = 'Spearman\'s Rank Correlation (&rho;)';
+            cmd = '<code>spearman y x, stats(obs p)</code>';
+            note = '<strong>เหตุผล:</strong> X หรือ Y ตัวใดตัวหนึ่งไม่ Normal (<code>graph box</code>/<code>swilk</code>) หรือมี Outlier / เป็น Ordinal';
+            href = '#s8-corr-prepost';
+          } else {
+            title = 'Pearson\'s Correlation (<code>pwcorr</code> เก็บคู่ครบสุด + โชว์ p-value)';
+            cmd = '<code>pwcorr y x, obs sig</code> (Pre-Post ใน RCT ใส่ <code>if trt == 1</code>)';
+            note = '<strong>เช็คก่อนรัน:</strong> <code>twoway (scatter y x)</code> + <code>graph box</code> แยกทั้ง X และ Y; ใช้ <code>pwcorr</code> แทน <code>correlate</code> เมื่อ n ไม่เท่ากัน';
+            href = '#s8-corr-prepost';
+          }
+        } else {
+          // out === 'cont'
+          if (des === '1grp') {
+            title = asm === 'fail'
+              ? 'สรุปด้วย Median (IQR) &amp; จับ Outliers'
+              : 'สรุปด้วย Mean (SD) หรือ 1-Sample t-test (<code>ttest y == mu0</code>)';
+            cmd = asm === 'fail'
+              ? '<code>sum y, detail</code> &nbsp;+&nbsp; <code>swilk y</code> &nbsp;+&nbsp; <code>tabstat y, stats(n p50 p25 p75 iqr)</code>'
+              : '<code>sum y, detail</code> &nbsp;+&nbsp; <code>swilk y</code> &nbsp;+&nbsp; <code>ttest y == mu0</code>';
+            note = 'เช็ค Normal (Skew &approx; 0, Kurtosis &approx; 3 ใน STATA, <code>swilk</code> p &ge; 0.05) ก่อนเลือกรายงาน Mean (SD) vs Median (IQR)';
+            href = '#s1-descriptive';
+          } else if (des === '2indep') {
+            if (asm === 'fail') {
+              title = 'Mann-Whitney U Test (Wilcoxon Rank-Sum)';
+              cmd = '<code>ranksum y, by(g)</code> &nbsp;+&nbsp; <code>tabstat y, by(g) stats(n p50 p25 p75 iqr)</code>';
+              note = 'อ่าน <code>Prob &gt; |z|</code> (หรือ <code>Exact prob</code> เมื่อ n &le; 200); ข้อจำกัด: ไม่ให้ Mean diff &amp; 95% CI';
+            } else if (asm === 'unequal') {
+              title = 'Welch\'s Unpaired t-test (Unequal Variances)';
+              cmd = '<code>sdtest y, by(g)</code> (p &lt; 0.05) &rarr; <code>ttest y, by(g) unequal</code>';
+              note = 'ใช้ Satterthwaite\'s df เมื่อ <code>bysort g: swilk y</code> ผ่านทั้ง 2 กลุ่ม แต่ <code>sdtest</code> ได้ <code>2*Pr(F&lt;f) &lt; 0.05</code> (ใช้ <code>, reverse</code> ได้)';
+            } else {
+              title = 'Student\'s Unpaired t-test (Equal Variances)';
+              cmd = '<code>bysort g: swilk y</code> &rarr; <code>sdtest y, by(g)</code> (p &ge; 0.05) &rarr; <code>ttest y, by(g)</code>';
+              note = 'ถ้าข้อมูลเป็น 2 คอลัมน์อิสระ (Wide format) ให้ใช้ <code>ttest var1 == var2, unpaired</code>';
+            }
+            href = '#s3-two-indep';
+          } else if (des === '2paired') {
+            if (asm === 'fail') {
+              title = 'Wilcoxon Signed-Rank Test (diff ไม่ Normal)';
+              cmd = '<code>gen diff = y_post - y_pre</code> &rarr; <code>swilk diff</code> (&lt;0.05) &rarr; <code>signrank y_post = y_pre</code>';
+              note = '<strong>สังเกตเครื่องหมาย:</strong> <code>signrank</code> ใช้ <code>=</code> ตัวเดียว! และอ่าน <code>Prob &gt; |z|</code> + รายงาน Median (IQR)';
+            } else {
+              title = 'Paired t-test (<code>diff</code> มีการแจกแจงปกติ)';
+              cmd = '<code>gen diff = y_post - y_pre</code> &rarr; <code>swilk diff</code> (&ge;0.05) &rarr; <code>ttest y_post == y_pre</code>';
+              note = 'ต้องเช็ค Normality บนตัวแปร <code>diff</code> เท่านั้น ไม่ได้เช็คที่ pre/post แยกกัน!';
+            }
+            href = '#s4-paired';
+          } else if (des === '3plus') {
+            if (asm === 'pass') {
+              title = 'One-way ANOVA + Post-hoc Bonferroni (<code>pwmean</code>)';
+              cmd = '<code>oneway y g, tabulate bonferroni</code> &nbsp;+&nbsp; <code>pwmean y, over(g) mcompare(bonferroni) effects</code>';
+              note = 'ต้องผ่าน <code>bysort g: swilk y</code> (&ge;0.05 ทุกกลุ่ม) และ <code>Bartlett Prob&gt;chi2 &ge; 0.05</code>; ระวังอย่าหยิบ p ของ Bartlett มาตอบ ANOVA!';
+            } else {
+              title = 'Kruskal-Wallis Test (+ Post-hoc <code>kwallis2</code>)';
+              cmd = '<code>kwallis y, by(g)</code> &nbsp;+&nbsp; <code>tabstat y, by(g) stats(n p50 p25 p75 iqr)</code> &nbsp;(+ <code>kwallis2 y, by(g)</code>)';
+              note = 'ใช้เมื่อกลุ่มใดไม่ Normal หรือ Bartlett p &lt; 0.05; ยึดบรรทัด <code>chi2(df) with ties</code> เสมอ!';
+            }
+            href = '#s5-anova';
+          } else {
+            // multi cont
+            title = 'ANCOVA / Multiple Linear Regression (คุมตัวแปรกวน / Baseline)';
+            cmd = '<code>regress fu i.trt base age i.sex</code> &rarr; <code>estat hettest</code>, <code>swilk r</code>, <code>estat vif</code>, <code>testparm c.base#i.trt</code>';
+            note = '<strong>HW6 Rule:</strong> ANCOVA ดีที่สุดทั้งใน Observational study และ RCT เพราะปรับ Baseline/ลด Residual Variance (SE แคบสุด)!';
+            href = '#s9-linear-ancova';
+          }
+        }
+
+        resTitle.innerHTML = 'ผลแนะนำ: ' + title;
+        resCmd.innerHTML = '<strong>คำสั่งหลัก:</strong> ' + cmd;
+        resNote.innerHTML = note;
+        resJump.setAttribute('href', href);
+      }
+
+      if (resJump) {
+        resJump.addEventListener('click', () => {
+          const href = resJump.getAttribute('href');
+          const targetEl = href ? document.querySelector(href) : null;
+          if (targetEl && targetEl.classList.contains('is-hidden') && clearBtn) {
+            clearBtn.click();
+          }
+        });
+      }
+
+      document.querySelectorAll('input[name="f-outcome"], input[name="f-design"], input[name="f-assump"]').forEach(el => {
+        el.addEventListener('change', updateFinder);
+      });
+      updateFinder();
+
+      // Clear filter automatically if user clicks a Playbook jump pill to a currently filtered card
+      document.querySelectorAll('#playbook-hub .pb-pill-nav a').forEach(link => {
+        link.addEventListener('click', () => {
+          const href = link.getAttribute('href');
+          const targetEl = href ? document.querySelector(href) : null;
+          if (targetEl && targetEl.classList.contains('is-hidden') && clearBtn) {
+            clearBtn.click();
+          }
+        });
+      });
+
     });
   </script>
 </body>
