@@ -14,11 +14,12 @@
   * ตารางเช็ค Assumption ครบทุกสถิติ (ตรวจตัวแปรไหน, คำสั่ง STATA, เกณฑ์ผ่าน `p >= 0.05` vs Main test `p < 0.05`)
   * ตารางพิกัดดูค่า `p-value` และ `95% CI` ใน Stata Result ทุกคำสั่ง
   * กฎเครื่องหมาย `+` / `-` และกฎการเลือกรายงาน **RR vs. OR** ตาม Study Design
+  * กฎลำดับการใส่ตัวแปร (Y vs X) และลำดับตัวเลข Immediate Commands (`csi`, `cci`, `tabi`, `sdtesti`, `ttesti`, `prtesti`, `cii`)
 * **บทที่ 1:** คำสั่งพื้นฐาน การจัดการข้อมูล และสถิติพรรณนา (`sum`, `sum, detail`, `tabstat`, `gen`, `replace`, Missing Value & `if` Traps, `tab`, `tabi`)
 * **บทที่ 2:** การเปรียบเทียบค่าเฉลี่ย 1–2 กลุ่ม (`ttest`, `ttesti`, `ztesti`, `prtesti`, `cii`, `sdtest`, Mann-Whitney U `ranksum`, Wilcoxon Signed-Rank `signrank`)
 * **บทที่ 3:** การเปรียบเทียบค่าเฉลี่ย ≥ 3 กลุ่ม (`oneway` ANOVA, FWER, Bartlett's test, Bonferroni vs. Scheffe, `pwmean`, สูตรเติมตาราง ANOVA, Kruskal-Wallis `kwallis` & `kwallis2`)
 * **บทที่ 4:** ข้อมูลกลุ่มและการวัดทางระบาดวิทยา (Cochran's Rule, Fisher's Exact Test, Cohort/RCT `cs`/`csi`, Case-Control `cc`/`cci`, Rare Disease Assumption)
-* **บทที่ 5:** ความสัมพันธ์และการวิเคราะห์การถดถอย (Pearson vs. Spearman, `corr` vs. `pwcorr`, Pre-Post 3 วิธี & ANCOVA, Simple/Multiple Linear Regression, OLS & Extrapolation, LINE Assumptions & Parallel Slopes, Logistic Regression `logistic` vs. `logit`)
+* **บทที่ 5:** ความสัมพันธ์และการวิเคราะห์การถดถอย (Pearson vs. Spearman, `corr` vs. `pwcorr`, Pre-Post 3 วิธี & ANCOVA, Simple/Multiple Linear Regression, OLS & Extrapolation, LINE Assumptions & Parallel Slopes, Logistic Regression `logistic` vs. `logit`, และวิธีเขียนสมการพหุตัวแปรถดถอย + แทนค่าทำนาย)
 * **บทที่ 6 (Open-Book Exam Field Playbook):** ตัวช่วยเลือกสถิติใน 10 วินาที, Workflow ล้างไฟล์ Excel (`.xlsx`) + กับดัก `if` และ `!missing()`, การ์ดลุยโจทย์ Scenario S1–S10 พร้อมปุ่ม One-Click Copy Do-File / GUI Menu Paths (StataNow 19.5 SE) / ประโยคเขียนตอบข้อสอบมาตรฐาน และ Emergency p-value Map & Checklist 30 วินาที
 
 ---

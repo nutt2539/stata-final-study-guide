@@ -1701,6 +1701,10 @@
           <span class="icon">➕</span>
           <span>4. กฎ +/- และ RR vs OR</span>
         </a>
+        <a href="#syntax-order-cheat" class="nav-item" data-keywords="syntax order argument dependent independent csi cci tabi ttesti ztesti sdtesti cii prtesti เรียงตัวแปร ตัวเลข">
+          <span class="icon">⌨️</span>
+          <span>5. กฎเรียงตัวแปร Y/X &amp; Immediate</span>
+        </a>
 
         <div class="nav-group-title">Chapter Modules (เนื้อหา 5 บท)</div>
         <a href="#chapter-1" class="nav-item" data-keywords="sum summarize detail tabstat iqr skewness kurtosis gen egen replace missing label tab tabulate nolabel tabi">
@@ -1719,9 +1723,13 @@
           <span class="icon">📑</span>
           <span>บทที่ 4: Chi-sq, Fisher, cs, cc</span>
         </a>
-        <a href="#chapter-5" class="nav-item" data-keywords="correlation pearson spearman corr pwcorr obs sig placebo pre-post follow-up change ancova regress ols slope extrapolation residual rvfplot hettest swilk vif parallel testparm logistic logit or log-odds gof hosmer ib2">
+        <a href="#chapter-5" class="nav-item" data-keywords="correlation pearson spearman corr pwcorr obs sig placebo pre-post follow-up change ancova regress ols slope extrapolation residual rvfplot hettest swilk vif parallel testparm logistic logit or log-odds gof hosmer ib2 สมการพหุคูณ">
           <span class="icon">📈</span>
           <span>บทที่ 5: Corr, Linear, ANCOVA, Logit</span>
+        </a>
+        <a href="#regression-equations" class="nav-item" data-keywords="equation regression multiple linear ancova logistic logit dummy intercept beta slope สมการพหุตัวแปร ถดถอย แทนค่า">
+          <span class="icon">📐</span>
+          <span>5.6 เขียนสมการ Regression</span>
         </a>
         <div class="nav-group-title">Open-Book Playbook (ลุยข้อสอบจริง)</div>
         <a href="#playbook-hub" class="nav-item" data-keywords="playbook field open-book scenario excel ลุยข้อสอบ copy template">
@@ -1773,11 +1781,13 @@
         <a href="#assumption-matrix" class="quick-btn">🧪 เช็ค Assumption</a>
         <a href="#p-value-master-table" class="quick-btn">🎯 จุดดู p-value ทุกคำสั่ง</a>
         <a href="#direction-rules" class="quick-btn">⚖️ กฎ RR vs OR &amp; +/-</a>
+        <a href="#syntax-order-cheat" class="quick-btn">⌨️ เรียงตัวแปร/เลข</a>
         <a href="#chapter-1" class="quick-btn">📦 sum, gen, tab</a>
         <a href="#chapter-2" class="quick-btn">⚖️ t-test &amp; cii</a>
         <a href="#chapter-3" class="quick-btn">📊 ANOVA &amp; KW</a>
         <a href="#chapter-4" class="quick-btn">📑 Chi-sq, cs, cc</a>
         <a href="#chapter-5" class="quick-btn">📈 Linear &amp; Logistic Reg</a>
+        <a href="#regression-equations" class="quick-btn">📐 สมการ Regression</a>
         <a href="#finder-section" class="quick-btn" style="background: #ecfdf5; border-color: #6ee7b7; color: #065f46;">⚡ 10-Sec Finder (Playbook)</a>
         <a href="#excel-workflow" class="quick-btn" style="background: #eff6ff; border-color: #93c5fd; color: #1e40af;">📗 Excel &amp; S1&ndash;S10</a>
       </div>
@@ -1979,7 +1989,7 @@
             </thead>
             <tbody>
               <tr>
-                <td><code>sdtest y, by(g)</code><br><code>sdtesti n1 m1 s1 n2 m2 s2</code></td>
+                <td><code>sdtest y, by(g)</code><br><code>sdtesti n1 . s1 n2 . s2</code></td>
                 <td>บรรทัดล่างสุด <strong>ตรงกลาง</strong>:<br><code>Ha: ratio != 1</code> &rarr; <strong><code>2*Pr(F > f)</code></strong></td>
                 <td><code>ratio = sd(1)/sd(2)</code>, ค่า <i>f</i> และ <i>df</i></td>
                 <td>ห้ามดูช่องซ้าย/ขวา (1-sided)! และ <strong>p &ge; 0.05 = Variance เท่ากัน</strong></td>
@@ -2142,6 +2152,135 @@
               </p>
             </div>
           </div>
+        </div>
+
+        <!-- Syntax Order & Immediate Input Mapping -->
+        <h3 id="syntax-order-cheat">⌨️ 5. กฎการใส่สมการและลำดับตัวแปร / ตัวเลข Immediate ในทุกคำสั่ง (เรียงอะไรก่อน-หลัง?)</h3>
+        <div class="callout callout-danger" style="margin-top: 8px;">
+          <div class="callout-title">🚨 จุดที่คนชอบสลับบ่อยที่สุดในห้องสอบ: ตัวแปรตาม (Outcome <i>Y</i>) vs ตัวแปรต้น (Exposure/Predictor <i>X</i>)</div>
+          <p style="font-size: 13.5px; margin-bottom: 0;">
+            &bull; คำสั่งวิเคราะห์ค่าเฉลี่ย/ถดถอย (<code>regress</code>, <code>logistic</code>, <code>oneway</code>, <code>ttest</code>, <code>kwallis</code>, <code>scatter</code>): เอา <strong>ตัวแปรตาม (<i>Y</i>) ขึ้นก่อน</strong> เสมอ!<br>
+            &bull; คำสั่งตารางไขว้ <code>tab</code> vs ระบาดวิทยา <code>cs</code> / <code>cc</code>: <strong>ทิศทางกลับกัน!</strong>
+            <code>tab <strong>exp dis</strong>, row</code> (ตัวแปรต้นเป็นแถว ขึ้นก่อน) <strong>VS</strong> <code>cs <strong>dis exp</strong></code> / <code>cc <strong>dis exp</strong></code> (<span style="color:#991b1b; font-weight:700;">ต้องเอาโรค/ตัวแปรตาม <code>dis</code> ขึ้นก่อนปัจจัย <code>exp</code>!</span>)
+          </p>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 24%;">กลุ่มคำสั่ง</th>
+                <th style="width: 32%;">ไวยากรณ์ (ลำดับตัวแปรห้ามสลับ)</th>
+                <th style="width: 44%;">ความหมาย &amp; จุดต้องระวัง</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Regression (Linear / ANCOVA)</strong></td>
+                <td><code>regress <strong>y</strong> x1 x2 i.grp</code></td>
+                <td>ตัวแรกสุด = <strong>ตัวแปรตาม <i>Y</i></strong> (ต่อเนื่อง); ตัวถัดไป = ตัวแปรต้นทั้งหมด (กลุ่มใส่ <code>i.</code>, เปลี่ยนกลุ่มฐานใส่ <code>ib#.</code>)</td>
+              </tr>
+              <tr>
+                <td><strong>Logistic Regression</strong></td>
+                <td><code>logistic <strong>y_01</strong> x1 i.grp</code><br><code>logit <strong>y_01</strong> x1 i.grp</code></td>
+                <td>ตัวแรกสุด = <strong>ตัวแปรตาม 0/1</strong> (1=ป่วย/เกิดเหตุ); ตัวถัดไป = ตัวแปรต้น (<code>logistic</code> ให้ OR, <code>logit</code> ให้ &beta; ไปเขียนสมการ)</td>
+              </tr>
+              <tr>
+                <td><strong>2 กลุ่ม &amp; &ge;3 กลุ่มอิสระ</strong></td>
+                <td><code>ttest <strong>y</strong>, by(g) [, unequal reverse]</code><br><code>ranksum <strong>y</strong>, by(g)</code><br><code>oneway <strong>y</strong> g, tab bon</code><br><code>kwallis <strong>y</strong>, by(g)</code></td>
+                <td><strong>ตัวแปรตาม <i>Y</i> ขึ้นก่อน</strong>เสมอ! สังเกตความต่าง:<br>&bull; <code>ttest</code> / <code>sdtest</code> / <code>ranksum</code> / <code>kwallis</code> ใส่กลุ่มหลัง comma ด้วย <code>, by(g)</code><br>&bull; <code>oneway</code> เขียน <code>y g</code> ติดกันได้เลย <strong>ไม่มี <code>by()</code>!</strong></td>
+              </tr>
+              <tr>
+                <td><strong>จับคู่ / ก่อน-หลัง (Paired)</strong></td>
+                <td><code>ttest <strong>y_post</strong> == <strong>y_pre</strong></code><br><code>signrank <strong>y_post</strong> = <strong>y_pre</strong></code></td>
+                <td>คิดผลต่างเป็น <strong>ตัวซ้าย &minus; ตัวขวา</strong> (<code>post &minus; pre</code>) เพื่อดูความเปลี่ยนแปลง<br>&bull; <code>ttest</code> ใช้ <code>==</code> สองตัว (ถ้าอิสระ 2 คอลัมน์เติม <code>, unpaired</code>)<br>&bull; <code>signrank</code> ใช้ <strong><code>=</code> ตัวเดียว!</strong></td>
+              </tr>
+              <tr>
+                <td><strong>ตารางไขว้ Chi-square / Fisher</strong></td>
+                <td><code>tab <strong>exp</strong> <strong>dis</strong>, row exp chi2 exact</code></td>
+                <td>ตัวแรก (<code>exp</code>) = <strong>แถว (Row)</strong>, ตัวที่สอง (<code>dis</code>) = <strong>คอลัมน์ (Col)</strong>; ใส่ <code>, row</code> เพื่อดู % อุบัติการณ์ของแต่ละกลุ่ม Exposure</td>
+              </tr>
+              <tr>
+                <td><strong>Cohort / Case-Control</strong></td>
+                <td><code>cs <strong>dis_01</strong> <strong>exp_01</strong></code><br><code>cc <strong>dis_01</strong> <strong>exp_01</strong></code></td>
+                <td>🚨 <strong>ตัวแรก = โรค/Outcome (0/1)</strong>, <strong>ตัวที่สอง = ปัจจัยเสี่ยง/Exposure (0/1)</strong> (สลับฝั่งกับ <code>tab</code>!) ถ้าสลับตัวแปรจะได้ค่ากลับเศษเป็นส่วนผิดทันที!</td>
+              </tr>
+              <tr>
+                <td><strong>กราฟ &amp; Correlation</strong></td>
+                <td><code>twoway (scatter <strong>y</strong> <strong>x</strong>)</code><br><code>pwcorr <strong>y x</strong>, obs sig</code><br><code>spearman <strong>y x</strong>, stats(obs p)</code></td>
+                <td>&bull; ใน <code>scatter</code> เอาแกนตั้ง (<strong>ตาม Y</strong>) ขึ้นก่อนแกนนอน (<strong>ต้น X</strong>)<br>&bull; ใน <code>pwcorr</code> / <code>spearman</code> สลับตำแหน่ง X กับ Y ได้ค่า <i>r</i> / &rho; เท่าเดิม</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">🔢 ลำดับการกรอกตัวเลขในคำสั่ง Immediate (เมื่อโจทย์ให้มาเฉพาะตัวเลข ไม่มีไฟล์ข้อมูล)</div>
+          <div class="grid-2" style="margin-top: 8px; margin-bottom: 10px;">
+            <div style="background: white; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border);">
+              <strong style="color: #991b1b;">1) ตาราง 2&times;2 ใน <code>csi</code> / <code>cci</code> (STATA Layout!)</strong>
+              <p style="font-size: 12.5px; margin: 6px 0;">
+                ⚠️ <strong>ระวังต่างจากตำราบางเล่ม!</strong> STATA เอา <strong>Cases อยู่แถวบน</strong>, Noncases/Controls อยู่แถวล่าง และ <strong>Exposed อยู่ซ้าย</strong>, Unexposed อยู่ขวา:
+              </p>
+              <pre class="stata-out" style="margin: 6px 0; font-size: 11.5px; padding: 10px 12px;"><code>            |  Exposed (สัมผัส)   Unexposed (ไม่สัมผัส)
+------------+-------------------------------------------
+Cases (ป่วย) |       a (#1)             b (#2)
+Noncases    |       c (#3)             d (#4)
+--&gt; คำสั่ง:  csi a b c d   หรือ   cci a b c d
+ตัวอย่างจริง: csi 24 15 276 485   |   cci 40 10 51 49</code></pre>
+            </div>
+            <div style="background: white; padding: 12px 14px; border-radius: 8px; border: 1px solid var(--border);">
+              <strong style="color: #1e40af;">2) ตาราง 2&times;2 ใน <code>tabi</code> (ใส่ตามแถวจริง คั่นด้วย <code>\</code>)</strong>
+              <p style="font-size: 12.5px; margin: 6px 0;">
+                กรอกเลขทีละแถวจากซ้ายไปขวา คั่นขึ้นแถวใหม่ด้วยเครื่องหมาย backslash (<code>\</code>) สามารถใช้กับตารางขนาดใหญ่กว่า 2&times;2 (R&times;C) ได้ด้วย:
+              </p>
+              <pre class="stata-out" style="margin: 6px 0; font-size: 11.5px; padding: 10px 12px;"><code>tabi #แถว1ซ้าย #แถว1ขวา \ #แถว2ซ้าย #แถว2ขวา, expected chi2 exact
+ตัวอย่างจริง: tabi 179 48 \ 7 6, expected chi2 exact
+(3 แถว: tabi 10 20 \ 15 25 \ 8 12, chi2 expected exact)</code></pre>
+            </div>
+          </div>
+
+          <table style="background: white; margin-bottom: 0;">
+            <thead>
+              <tr>
+                <th style="width: 24%;">คำสั่ง Immediate</th>
+                <th style="width: 38%;">ลำดับตัวเลขที่ต้องพิมพ์</th>
+                <th style="width: 38%;">ตัวอย่างจริง &amp; จุดห้ามพลาด</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>ttesti</code> / <code>ztesti</code> (1 กลุ่ม)</td>
+                <td><code>ttesti <strong>n  mean  sd  mu0</strong></code></td>
+                <td><code>ttesti 25 112 20 120</code> (จำนวนคน, ค่าเฉลี่ย, SD, ค่ามาตรฐาน)</td>
+              </tr>
+              <tr>
+                <td><code>ttesti</code> / <code>ztesti</code> (2 กลุ่ม)</td>
+                <td><code>ttesti <strong>n1  m1  sd1  n2  m2  sd2</strong></code> [, unequal]</td>
+                <td><code>ttesti 30 140 12 30 130 10</code> (เรียงกลุ่ม1 ครบ 3 ตัว &rarr; กลุ่ม2 ครบ 3 ตัว)</td>
+              </tr>
+              <tr>
+                <td><code>sdtesti</code> (2 กลุ่ม)</td>
+                <td><code>sdtesti <strong>n1  .  sd1  n2  .  sd2</strong></code></td>
+                <td>🚨 <strong>ต้องใส่จุด <code>.</code> (หรือ Mean) คั่นตำแหน่งที่ 2 และ 5</strong> เช่น <code>sdtesti 30 . 12 30 . 10</code></td>
+              </tr>
+              <tr>
+                <td><code>cii means</code></td>
+                <td><code>cii means <strong>n  mean  sd</strong></code></td>
+                <td><code>cii means 15 96 35</code> (มีแค่ 3 ตัว ไม่มี <code>mu0</code>)</td>
+              </tr>
+              <tr>
+                <td><code>cii proportions</code></td>
+                <td><code>cii proportions <strong>N_total  k_events</strong>, wilson</code></td>
+                <td><code>cii proportions 60 12, wilson</code> (ใส่ <strong>ยอดรวมทั้งหมดก่อน</strong> แล้วค่อยจำนวนที่เกิดเหตุการณ์)</td>
+              </tr>
+              <tr>
+                <td><code>prtesti</code> (เทียบ 2 สัดส่วน)</td>
+                <td><code>prtesti <strong>n1  p1  n2  p2</strong></code></td>
+                <td><code>prtesti 300 0.08 500 0.03</code> (🚨 <code>p1, p2</code> <strong>ต้องเป็นทศนิยม [0, 1] ห้ามใส่จำนวนคนหรือ %</strong>!)</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -2321,7 +2460,7 @@ H0: mean = 120                                   Degrees of freedom =       14
         <p>ต้องตรวจ Assumptions ตามลำดับ 2 ด่าน ก่อนรัน <code>ttest</code>:</p>
         <div style="background: var(--surface-alt); padding: 14px 18px; border-radius: var(--radius-md); margin-bottom: 14px; font-size: 13.5px;">
           <strong>ด่านที่ 1 (Normality):</strong> <code>histogram bwt, normal by(smoke)</code> / <code>bysort smoke: sum bwt, detail</code> (ตรวจแยกทีละกลุ่ม)<br>
-          <strong>ด่านที่ 2 (Equal Variances):</strong> <code>sdtest bwt, by(smoke)</code> (ถ้าไม่มีไฟล์ดิบใช้ <code>sdtesti n1 m1 s1 n2 m2 s2</code>)
+          <strong>ด่านที่ 2 (Equal Variances):</strong> <code>sdtest bwt, by(smoke)</code> (ถ้าไม่มีไฟล์ดิบใช้ <code>sdtesti n1 . s1 n2 . s2</code> &mdash; ใส่จุด <code>.</code> หรือ Mean คั่น!)
         </div>
 
         <pre class="stata-output"><code>. sdtest bwt, by(smoke)
@@ -2696,11 +2835,19 @@ Kruskal–Wallis equality-of-populations rank test
                                chi2(1) =     4.92  <mark class="p-value">Pr&gt;chi2 = 0.0265</mark></code></pre>
 
         <div class="callout callout-info">
-          <div class="callout-title">📌 เทคนิคคำสั่ง Immediate ทางระบาด (ใช้เมื่อโจทย์ให้ตาราง 2&times;2 ไม่มีไฟล์ข้อมูล)</div>
+          <div class="callout-title">📌 เทคนิคคำสั่ง Immediate ทางระบาด &amp; แผนผังเรียง <code>a b c d</code> (ห้ามสับสนกับตารางตำรา!)</div>
+          <p style="font-size: 13.5px; margin: 0 0 8px;">
+            <strong>กฎลำดับตัวแปรใน <code>cs</code> / <code>cc</code>:</strong> เอา <strong>[ตัวแปรโรค/ตาม]</strong> ขึ้นก่อน <strong>[ตัวแปรปัจจัย/ต้น]</strong> เสมอ (ตรงข้ามกับ <code>tab</code>!)<br>
+            <strong>กฎเรียงเลข 4 ช่องใน <code>csi a b c d</code> และ <code>cci a b c d</code>:</strong> ใน STATA แถวบน = <strong>Cases (ป่วย)</strong>, แถวล่าง = <strong>Non-cases (ไม่ป่วย)</strong>; คอลัมน์ซ้าย = <strong>Exposed</strong>, ขวา = <strong>Unexposed</strong>:
+          </p>
+          <pre class="stata-out" style="margin: 6px 0 8px;"><code>                 |  Exposed (สัมผัส)   |  Unexposed (ไม่สัมผัส)
+-----------------+---------------------+------------------------
+Cases (ป่วย)     |     a (ช่อง #1)     |      b (ช่อง #2)
+Noncases/Control |     c (ช่อง #3)     |      d (ช่อง #4)</code></pre>
           <p style="font-size: 13.5px; margin: 0;">
-            เรียงลำดับพารามิเตอร์ตามสูตรตาราง <code>a b c d</code> (<code>a</code> = Exposed Cases, <code>b</code> = Unexposed Cases, <code>c</code> = Exposed Non-cases, <code>d</code> = Unexposed Non-cases):<br>
-            &bull; Cohort (24 exposed cases, 15 unexposed cases, 276 exposed non-cases, 485 unexposed non-cases): <code>csi 24 15 276 485</code><br>
-            &bull; Case-Control (40 exposed cases, 10 unexposed cases, 51 exposed controls, 49 unexposed controls): <code>cci 40 10 51 49</code><br>
+            &bull; <strong>Cohort (24 ป่วย+สัมผัส, 15 ป่วย+ไม่สัมผัส, 276 ไม่ป่วย+สัมผัส, 485 ไม่ป่วย+ไม่สัมผัส):</strong> <code>csi 24 15 276 485</code><br>
+            &bull; <strong>Case-Control (40 ป่วย+สัมผัส, 10 ป่วย+ไม่สัมผัส, 51 ไม่ป่วย+สัมผัส, 49 ไม่ป่วย+ไม่สัมผัส):</strong> <code>cci 40 10 51 49</code><br>
+            &bull; 🚨 <strong>ถ้าโจทย์ให้ตารางแนวนอนแบบตำรา (Exposed อยู่แถวบน):</strong> ให้หยิบ <strong>คอลัมน์ป่วยขึ้นก่อน</strong> (a=Exp+Case+, b=Unexp-Case+, c=Exp+Noncase-, d=Unexp-Noncase-) อย่าพิมพ์สลับ <code>b</code> กับ <code>c</code> เด็ดขาด!<br>
             &bull; <strong>GUI Menu:</strong> Statistics &rarr; Epidemiology and related &rarr; Tables for epidemiologists &rarr; Cohort / Case-control
           </p>
         </div>
@@ -2897,6 +3044,90 @@ Log likelihood = -109.4311                              Pseudo R2     = 0.0674
           &bull; <strong>บุหรี่ (Binary, OR &gt; 1):</strong> เมื่อควบคุมอายุและเชื้อชาติมารดาแล้ว มารดาที่สูบบุหรี่มี <strong>แต้มต่อ (Odds) คลอดลูกน้ำหนักน้อยเป็น 3.01 เท่า</strong> ของมารดาที่ไม่สูบบุหรี่อย่างมีนัยสำคัญทางสถิติ (aOR = 3.01, 95% CI: 1.45&ndash;6.23, p = 0.003)<br>
           &bull; <strong>อายุ (Continuous, OR &lt; 1):</strong> อายุที่เพิ่มขึ้นทุก 1 ปี สัมพันธ์กับแต้มต่อการเกิด LBW ที่ลดลง 3.4% ต่อปี (OR = 0.966) แต่<strong>ไม่มีนัยสำคัญทางสถิติ</strong> (95% CI: 0.905&ndash;1.031 คร่อม 1, p = 0.296)<br>
           &bull; <strong>White vs Asia (เมื่อตั้ง Asia เป็น Ref ด้วย <code>ib2.race</code>, OR = 0.348 &lt; 1):</strong> มารดาผิวขาวมีแต้มต่อคลอดลูก LBW เป็น 0.35 เท่าของมารดาเอเชีย หรือ <strong>ลดลง 65.2%</strong> อย่างมีนัยสำคัญทางสถิติ (1 &minus; 0.348 = 0.652, p = 0.009)
+        </div>
+
+        <h3 id="regression-equations">5.6 วิธีเขียนสมการพหุตัวแปรถดถอย (Multiple Linear, ANCOVA &amp; Logistic Regression) จาก Output STATA</h3>
+        <p>
+          เมื่อข้อสอบสั่งให้ <strong>"เขียนสมการถดถอยพหุคูณ (Multiple Regression Equation)"</strong> หรือ <strong>"ทำนายค่า Y / ความน่าจะเป็นของคนไข้ 1 ราย"</strong> ให้ทำตาม 3 ขั้นนี้จากคอลัมน์ <code>Coefficient</code> ใน Output ของ STATA ได้ทันที:
+        </p>
+
+        <h4>ส่วนที่ 1: สมการพหุตัวแปรถดถอยเชิงเส้น (Multiple Linear Regression &amp; ANCOVA &mdash; คำสั่ง <code>regress y x1 x2 ...</code>)</h4>
+        <div class="formula-box" style="text-align: left;">
+          <strong>1) รูปสมการทั่วไปในประชากร (มีพจน์เศษเหลือ <i>e<sub>i</sub></i>):</strong><br>
+          <i>Y<sub>i</sub></i> = <i>&beta;</i><sub>0</sub> + <i>&beta;</i><sub>1</sub><i>X</i><sub>1<i>i</i></sub> + <i>&beta;</i><sub>2</sub><i>X</i><sub>2<i>i</i></sub> + &hellip; + <i>&beta;</i><sub><i>k</i></sub><i>X</i><sub><i>ki</i></sub> + <i>e<sub>i</sub></i> &nbsp;&nbsp;(โดย <i>e<sub>i</sub></i> = Residual = <i>Y</i><sub>จริง</sub> &minus; <i>&#374;</i><sub>ทำนาย</sub>)<br><br>
+          <strong>2) รูปสมการทำนาย (Fitted Equation จากตาราง STATA &mdash; ไม่มี + <i>e</i>):</strong><br>
+          <i>&#374;</i> = <i>b</i><sub>0</sub> (ค่า <code>_cons</code>) + <i>b</i><sub>1</sub><i>X</i><sub>1</sub> + <i>b</i><sub>2</sub><i>X</i><sub>2</sub> + &hellip; + <i>b</i><sub><i>k</i></sub><i>X</i><sub><i>k</i></sub>
+        </div>
+
+        <div class="callout callout-info">
+          <div class="callout-title">📐 หลักแปลงตัวแปรจาก STATA Output มาเขียนเป็นสมการ (ห้ามลืม Dummy Variable!)</div>
+          <ul style="margin-left: 20px; font-size: 13.5px; line-height: 1.7; margin-bottom: 0;">
+            <li><strong>ตัวที่ 1 (ค่าคงที่ <code>_cons</code>):</strong> คือ <strong>&beta;<sub>0</sub> (Intercept)</strong> &mdash; วางไว้หน้าสุดของสมการเลย!</li>
+            <li><strong>ตัวแปรต่อเนื่อง</strong> (เช่น <code>basehip</code>, <code>sbp_base</code>, <code>age</code>): หยิบเลขในคอลัมน์ <code>Coefficient</code> มาคูณชื่อตัวแปรนั้นตรงๆ พร้อมเครื่องหมาย <code>+</code> หรือ <code>&minus;</code></li>
+            <li><strong>ตัวแปรกลุ่ม <code>i.var</code> (Dummy Variables):</strong> STATA ตัดกลุ่มอ้างอิง (Reference, เช่น <code>trt=1</code>) ออกไปรวมใน <code>_cons</code> แล้วสร้างตัวแปรหุ่น <strong><i>D</i></strong> ให้เฉพาะกลุ่มที่โชว์ในตาราง (เช่น <code>D<sub>trt=2</sub> = 1</code> ถ้าอยู่กลุ่ม 2, มิฉะนั้น = 0; <code>D<sub>trt=3</sub> = 1</code> ถ้าอยู่กลุ่ม 3, มิฉะนั้น = 0 &mdash; ถ้าเป็นกลุ่ม Placebo แทน <i>D</i><sub>2</sub>=0 และ <i>D</i><sub>3</sub>=0 ทั้งคู่!)</li>
+          </ul>
+        </div>
+
+        <div class="grid-2">
+          <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;">
+            <strong style="color: #1e40af; font-size: 14px;">ตัวอย่าง A: สมการ ANCOVA จากข้อมูล Thiazide BMD (จาก 5.4)</strong>
+            <p style="font-size: 13px; margin: 6px 0;">
+              จากคำสั่ง <code>regress fuhip i.trt basehip</code> อ่านคอลัมน์ Coefficient:<br>
+              &bull; <code>_cons</code> = 0.0039, <code>2.trt</code> = +0.0044, <code>3.trt</code> = +0.0051, <code>basehip</code> = +0.9926
+            </p>
+            <div style="background: #ffffff; border: 1px solid #bfdbfe; border-radius: 6px; padding: 10px 12px; font-size: 13px;">
+              <strong>สมการที่ได้:</strong><br>
+              <code>fuhip&#770; = 0.0039 + 0.0044(D<sub>trt=2</sub>) + 0.0051(D<sub>trt=3</sub>) + 0.9926(basehip)</code><br><br>
+              <em>ตัวอย่างแทนค่า:</em> คนไข้ได้ High Dose (<code>trt=3</code> &rarr; D<sub>2</sub>=0, D<sub>3</sub>=1) มีมวลกระดูกตั้งต้น <code>basehip = 0.85</code>:<br>
+              <code>fuhip&#770; = 0.0039 + 0.0044(0) + 0.0051(1) + 0.9926(0.85) = <strong>0.8527 g/cm&sup2;</strong></code>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px;">
+            <strong style="color: #065f46; font-size: 14px;">ตัวอย่าง B: Multiple ANCOVA (<code>Stata_Final_Exam_Dataset.xlsx</code>, N=240)</strong>
+            <p style="font-size: 13px; margin: 6px 0;">
+              จาก <code>regress sbp_fu i.trt sbp_base age sex</code> (ดู Output จริงได้ใน S9):<br>
+              &bull; <code>_cons</code> = 26.8920, <code>2.trt</code> = &minus;5.8686, <code>3.trt</code> = &minus;12.1219, <code>sbp_base</code> = +0.8033, <code>age</code> = +0.0166, <code>sex</code> = &minus;0.1543
+            </p>
+            <div style="background: #ffffff; border: 1px solid #6ee7b7; border-radius: 6px; padding: 10px 12px; font-size: 13px;">
+              <strong>สมการที่ได้:</strong><br>
+              <code>sbp_fu&#770; = 26.8920 &minus; 5.8686(D<sub>trt=2</sub>) &minus; 12.1219(D<sub>trt=3</sub>) + 0.8033(sbp_base) + 0.0166(age) &minus; 0.1543(sex)</code><br><br>
+              <em>แทนค่า (ผู้ชาย sex=1, อายุ 60, BP ตั้งต้น 150, ได้ trt=3):</em><br>
+              <code>sbp_fu&#770; = 26.8920 &minus; 12.1219(1) + 0.8033(150) + 0.0166(60) &minus; 0.1543(1) = <strong>136.11 mmHg</strong></code>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <div class="callout-title">🔗 สมการเมื่อมีพจน์ปฏิสัมพันธ์ (Interaction Model สำหรับตรวจ Parallel Slopes ใน ANCOVA)</div>
+          <p style="font-size: 13px; margin: 0;">
+            เมื่อรัน <code>regress fuhip i.trt##c.basehip</code> สมการจะมี <strong>พจน์คูณ</strong> เพิ่มขึ้นมาเพื่อดูว่าความชันต่างกันตามกลุ่มหรือไม่:<br>
+            <code>fuhip&#770; = 0.0064 &minus; 0.0074(D<sub>2</sub>) + 0.0087(D<sub>3</sub>) + 0.9896(basehip) + 0.0142(D<sub>2</sub>&times;basehip) &minus; 0.0044(D<sub>3</sub>&times;basehip)</code><br>
+            &bull; คำสั่ง <code>testparm c.basehip#i.trt</code> ทดสอบว่าสัมประสิทธิ์พจน์คูณทั้งสอง (<code>+0.0142</code> และ <code>&minus;0.0044</code>) เท่ากับ <code>0</code> พร้อมกันหรือไม่ (ได้ p = 0.3148 &ge; 0.05 &rarr; <strong>เส้นขนานกัน!</strong> กลับไปใช้สมการหลักแบบไม่มี Interaction ด้านบนได้เลย) และ <strong>🛑 ห้ามทำนายค่า X ที่อยู่นอกเหนือช่วงข้อมูลตั้งต้น (Extrapolation)!</strong>
+          </p>
+        </div>
+
+        <h4>ส่วนที่ 2: สมการพหุตัวแปร Logistic Regression (คำสั่ง <code>logit</code> vs <code>logistic</code>)</h4>
+        <div class="callout callout-danger">
+          <div class="callout-title">🚨 กฎเหล็ก: เขียนสมการ Logistic ต้องใช้ <code>Coefficient (&beta;)</code> จากคำสั่ง <code>logit</code> เท่านั้น!</div>
+          <p style="font-size: 13.5px; margin: 0;">
+            &bull; <strong>ห้ามเอาค่า Odds Ratio (<code>OR</code>) จาก <code>logistic</code> มาใส่เป็นสมการบวกตรงๆ เด็ดขาด!</strong> เพราะ <code>OR = <i>e</i><sup>&beta;</sup></code> (หรือ <code>&beta; = ln(OR)</code>)<br>
+            &bull; <strong>รูป Log-odds (จาก <code>logit</code>):</strong> <code>ln(Odds) = ln(<i>p</i> / (1 &minus; <i>p</i>)) = &beta;<sub>0</sub> + &beta;<sub>1</sub><i>X</i><sub>1</sub> + &beta;<sub>2</sub><i>X</i><sub>2</sub> + &hellip; + &beta;<sub><i>k</i></sub><i>X</i><sub><i>k</i></sub></code><br>
+            &bull; <strong>แปลงเป็นความน่าจะเป็น (Probability):</strong> ให้คำนวณก้อนขวา <code><i>z</i> = &beta;<sub>0</sub> + &beta;<sub>1</sub><i>X</i><sub>1</sub> + &hellip;</code> ก่อน แล้วหา <code><i>p&#770;</i> = 1 / (1 + <i>e</i><sup>&minus;<i>z</i></sup>)</code> (ส่วน <code>Odds = <i>e</i><sup><i>z</i></sup></code>)
+          </p>
+        </div>
+
+        <div style="background: #f5f3ff; border: 1.5px solid #c4b5fd; border-radius: 10px; padding: 14px 18px; font-size: 13.5px;">
+          <strong style="color: #4c1d95;">ตัวอย่างจริง: <code>logit cv_event smoke_num age i.trt bmi</code> (จากชุดข้อมูล Final Excel, N=235)</strong><br>
+          จากตาราง <code>logit</code> ได้ <code>_cons = &minus;5.9925</code>, <code>smoke_num = +1.5586</code>, <code>age = +0.0701</code>, <code>2.trt = &minus;0.3718</code>, <code>3.trt = &minus;0.9565</code>, <code>bmi = +0.0159</code><br>
+          <div style="background: #ffffff; border: 1px solid #ddd6fe; border-radius: 6px; padding: 10px 12px; margin: 8px 0;">
+            <strong>สมการ Log-odds:</strong><br>
+            <code>ln(Odds<sub>cv_event</sub>) = &minus;5.9925 + 1.5586(smoke_num) + 0.0701(age) &minus; 0.3718(D<sub>trt=2</sub>) &minus; 0.9565(D<sub>trt=3</sub>) + 0.0159(bmi)</code><br><br>
+            <strong>วิธีคำนวณทำนายโอกาสเกิด CV Event:</strong> (สมมติ สูบบุหรี่=1, อายุ 65 ปี, กลุ่มยาหลอก trt=1 &rarr; D<sub>2</sub>=0, D<sub>3</sub>=0, BMI = 25):<br>
+            1) หา <code><i>z</i> = &minus;5.9925 + 1.5586(1) + 0.0701(65) &minus; 0.3718(0) &minus; 0.9565(0) + 0.0159(25) = <strong>+0.5201</strong></code><br>
+            2) หา <code>Odds = <i>e</i><sup>0.5201</sup> = 1.6822</code> &rarr; หา <code>Prob(cv_event = 1) = 1 / (1 + <i>e</i><sup>&minus;0.5201</sup>) = <strong>62.7%</strong></code><br>
+            3) เช็คความสอดคล้องกับคำสั่ง <code>logistic</code>: <code>OR(smoke) = <i>e</i><sup>1.5586</sup> = 4.7523</code> และ <code>OR(trt 3) = <i>e</i><sup>&minus;0.9565</sup> = 0.3842</code> (ตรงกัน 100%!)
+          </div>
         </div>
       </section>
 
@@ -3257,9 +3488,10 @@ list id tg if tg &gt; 179 + 3*(179 - 95.5)</code></pre>
               <span class="tip" role="status"></span>
             </span>
           </div>
-          <pre><code id="code-s2"><span class="stata-comment">* 1) เทียบค่าเฉลี่ยกลุ่มเดียวกับค่ามาตรฐาน mu0 (ไม่ต้องรัน sdtest!):</span>
-ttesti 25 112 20 120                  <span class="stata-comment">// เรียง: &lt;n&gt; &lt;sample_mean&gt; &lt;sample_sd&gt; &lt;null_mu0&gt;</span>
-<span class="stata-comment">* กรณีมีข้อมูลดิบในไฟล์อยู่แล้ว: ttest sbp == 120</span>
+          <pre><code id="code-s2"><span class="stata-comment">* 1) เทียบค่าเฉลี่ยกลุ่มเดียว vs ค่ามาตรฐาน / 2 กลุ่มจากค่าสรุป (n, mean, sd):</span>
+ttesti 25 112 20 120                  <span class="stata-comment">// 1-Sample: &lt;n&gt; &lt;mean&gt; &lt;sd&gt; &lt;mu0&gt; (หรือ ttest sbp == 120)</span>
+ttesti 30 140 12 30 130 10            <span class="stata-comment">// 2-Sample: &lt;n1&gt; &lt;m1&gt; &lt;sd1&gt; &lt;n2&gt; &lt;m2&gt; &lt;sd2&gt; (ใส่ , unequal ได้)</span>
+sdtesti 30 . 12 30 . 10               <span class="stata-comment">// Variance Ratio: ต้องใส่จุด . (หรือ mean) คั่นตำแหน่ง 2 และ 5!</span>
 <span class="stata-comment">* กรณีโจทย์ระบุ SD ของประชากร (&sigma;) มาชัดเจนเท่านั้น: ztesti 100 85 10.2 120</span>
 
 <span class="stata-comment">* 2) คำนวณ 95% CI ของ Mean และ Proportion:</span>
@@ -3799,9 +4031,12 @@ tabi 179 48 \ 7 6, expected chi2 exact</code></pre>
               <span class="tip" role="status"></span>
             </span>
           </div>
-          <pre><code id="code-s7"><span class="stata-comment">* 1. Cohort Study (ต้องเรียง &lt;disease_01&gt; &lt;exposure_01&gt; เสมอ!):</span>
+          <pre><code id="code-s7"><span class="stata-comment">* 1. Cohort Study (ต้องเรียง &lt;disease_01&gt; &lt;exposure_01&gt; เสมอ! ตรงข้ามกับ tab!):</span>
 cs cv_event smoke_num
-<span class="stata-comment">* Immediate (ไม่มีไฟล์): เรียง csi &lt;Cases_Exp a&gt; &lt;Cases_Unexp b&gt; &lt;Noncases_Exp c&gt; &lt;Noncases_Unexp d&gt;</span>
+
+<span class="stata-comment">* Immediate 2x2 (csi / cci): แถวบน=Cases(ป่วย) แถวล่าง=Noncases | ซ้าย=Exposed ขวา=Unexposed</span>
+<span class="stata-comment">*   a (#1) = ป่วย+สัมผัส   |  b (#2) = ป่วย+ไม่สัมผัส</span>
+<span class="stata-comment">*   c (#3) = ไม่ป่วย+สัมผัส |  d (#4) = ไม่ป่วย+ไม่สัมผัส</span>
 csi 24 15 276 485
 
 <span class="stata-comment">* 2. Case-Control Study (เรียง &lt;disease_01&gt; &lt;exposure_01&gt; เสมอ!):</span>
@@ -4019,6 +4254,15 @@ testparm c.sbp_base#i.trt                 <span class="stata-comment">// ต้�
           &bull; Residual-vs-Fitted Plot: <code>Graphics &rarr; Regression diagnostic plots &rarr; Residual-versus-fitted</code>
         </div>
 
+        <div class="formula-strip">
+          <div class="formula-tile">
+            <strong>วิธีเขียนสมการพหุตัวแปรถดถอย (Fitted Equation จาก STATA):</strong><br>
+            <code><i>&#374;</i> = &beta;<sub>0</sub> (_cons) + &beta;<sub>1</sub><i>X</i><sub>1</sub> + &beta;<sub>2</sub><i>X</i><sub>2</sub> + &hellip; + &beta;<sub><i>k</i></sub><i>D</i><sub>กลุ่ม</sub></code> &nbsp;(ตัวแปรกลุ่ม <code>i.trt</code> แตกเป็น Dummy <code>D=1/0</code> เทียบ Ref)<br>
+            <strong>ตัวอย่างจริงจาก Output ด้านล่าง:</strong> <code>sbp_fu&#770; = 26.8920 &minus; 5.8686(D<sub>trt=2</sub>) &minus; 12.1219(D<sub>trt=3</sub>) + 0.8033(sbp_base) + 0.0166(age) &minus; 0.1543(sex)</code>
+            (<a href="#regression-equations">ดูวิธีแทนค่าและ Interaction เต็มที่ 5.6 &rarr;</a>)
+          </div>
+        </div>
+
         <div class="template-card">
           <div class="template-header">
             <h4>&#128221; ประโยคเขียนตอบข้อสอบมาตรฐาน (Slope <i>m</i> + ANCOVA + Assumptions)</h4>
@@ -4110,6 +4354,15 @@ estat gof, group(10)                        <span class="stata-comment">// Hosme
           <strong>GUI Menu Paths:</strong>
           &bull; Logistic Regression: <code>Statistics &rarr; Binary outcomes &rarr; Logistic regression</code><br>
           &bull; Goodness-of-Fit: <code>Statistics &rarr; Binary outcomes &rarr; Postestimation &rarr; Goodness-of-fit after logistic/logit/probit</code>
+        </div>
+
+        <div class="formula-strip">
+          <div class="formula-tile">
+            <strong>วิธีเขียนสมการ Logistic Regression (ต้องใช้ค่า <code>&beta;</code> จากคำสั่ง <code>logit</code> ห้ามเอา OR มาบวกตรงๆ!):</strong><br>
+            <code>ln(Odds) = ln(<i>p</i>/(1&minus;<i>p</i>)) = &beta;<sub>0</sub> + &beta;<sub>1</sub><i>X</i><sub>1</sub> + &hellip;</code> &nbsp;|&nbsp; <code><i>p&#770;</i> = 1 / (1 + <i>e</i><sup>&minus;<i>z</i></sup>)</code> &nbsp;|&nbsp; <code>OR = <i>e</i><sup>&beta;</sup></code><br>
+            <strong>ตัวอย่างจริง:</strong> <code>ln(Odds<sub>cv</sub>) = &minus;5.9925 + 1.5586(smoke) + 0.0701(age) &minus; 0.3718(D<sub>2</sub>) &minus; 0.9565(D<sub>3</sub>) + 0.0159(bmi)</code>
+            (<a href="#regression-equations">ดูตัวอย่างคำนวณ Probability เต็มที่ 5.6 &rarr;</a>)
+          </div>
         </div>
 
         <div class="template-card">
@@ -4303,11 +4556,13 @@ estat gof, group(10)                        <span class="stata-comment">// Hosme
         document.getElementById('assumption-matrix'),
         document.getElementById('p-value-master-table'),
         document.getElementById('direction-rules'),
+        document.getElementById('syntax-order-cheat'),
         document.getElementById('chapter-1'),
         document.getElementById('chapter-2'),
         document.getElementById('chapter-3'),
         document.getElementById('chapter-4'),
         document.getElementById('chapter-5'),
+        document.getElementById('regression-equations'),
         document.getElementById('playbook-hub'),
         document.getElementById('finder-section'),
         document.getElementById('excel-workflow'),
