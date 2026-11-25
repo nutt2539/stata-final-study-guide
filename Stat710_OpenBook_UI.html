@@ -822,6 +822,16 @@
         position: relative;
       }
 
+      .stata-block.stata-imm {
+        border: 1.5px solid var(--good);
+        border-inline-start: 4px solid var(--good);
+      }
+
+      .stata-block.stata-imm > .stata-head {
+        color: #6ee7b7;
+        font-weight: 700;
+      }
+
       .stata-head {
         display: flex;
         justify-content: space-between;
@@ -1062,7 +1072,60 @@
       }
 
       .var-desc {
-        color: var(--fg-main);
+        color: var(--fg-primary);
+      }
+
+      /* Blank-Table Formula Blueprint & Practice */
+      .cell-formula {
+        font-family: "Times New Roman", Cambria, Georgia, serif;
+        font-size: 0.96rem;
+        font-weight: 700;
+        color: var(--accent-fg);
+      }
+
+      .cell-sub {
+        display: block;
+        font-family: var(--font-sans);
+        font-size: 0.74rem;
+        color: var(--fg-muted);
+        margin-block-start: 0.14rem;
+      }
+
+      .blank-cell-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+        min-inline-size: 92px;
+      }
+
+      .blank-input {
+        inline-size: 100%;
+        max-inline-size: 132px;
+        padding: 0.24rem 0.45rem;
+        border: 1.5px solid var(--accent);
+        border-radius: var(--radius-sm);
+        background: var(--bg-surface);
+        color: var(--fg-primary);
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+      }
+
+      .blank-input.is-ok {
+        border-color: var(--good);
+        background: var(--good-soft);
+        color: var(--good-fg);
+      }
+
+      .blank-input.is-err {
+        border-color: var(--danger);
+        background: var(--danger-soft);
+        color: var(--danger-fg);
+      }
+
+      .blank-hint {
+        font-size: 0.73rem;
+        color: var(--fg-secondary);
+        line-height: 1.35;
       }
 
       @supports (interpolate-size: allow-keywords) {
@@ -1225,6 +1288,7 @@
       <ul class="nav-list">
         <li><a class="nav-link" href="#view-tree" data-view="view-tree" aria-current="page">🧭 <span>Master Decision Tree<span class="nav-sub">Flowchart เลือกสูตร + ตาราง Slide 2</span></span></a></li>
         <li><a class="nav-link" href="#view-stata" data-view="view-stata">💻 <span>Stata Clicks &amp; Output Lab<span class="nav-sub">Menu GUI + CLI + อ่านตารางผลสอบ</span></span></a></li>
+        <li><a class="nav-link" href="#view-tables" data-view="view-tables">📐 <span>Blank-Table Formulas<span class="nav-sub">สูตรเติมตาราง ANOVA / Reg / 2×2</span></span></a></li>
         <li><a class="nav-link" href="#view-traps" data-view="view-traps">⚠️ <span>Common Exam Traps<span class="nav-sub">จุดหลอกยอดฮิต &amp; Confusion Matrix</span></span></a></li>
         <li><a class="nav-link" href="#view-exam" data-view="view-exam">📝 <span>Mock Exam &amp; Examples<span class="nav-sub">ข้อสอบจำลอง + Q31 MIS-C + สไลด์</span></span></a></li>
       </ul>
@@ -1453,6 +1517,8 @@
             </div>
           </div>
 
+          <div id="immediate-cookbook-mount"></div>
+
           <div class="card">
             <h2 class="card-title">🔬 Interactive Stata Output Lab — คลิกช่องสีฟ้าในตารางเพื่อดูความหมาย &amp; วิธีเอาไปตอบข้อสอบ</h2>
             <div class="mode-tabs" role="tablist" aria-label="เลือกดูผลรัน Stata">
@@ -1520,6 +1586,29 @@
             </div>
           </div>
           <div id="exam-mount" class="view-inner"></div>
+        </div>
+      </section>
+
+      <!-- VIEW 11: BLANK-TABLE FORMULA BLUEPRINTS & SOLVER -->
+      <section id="view-tables" class="view-section" hidden="until-found">
+        <div class="view-inner">
+          <div class="hero-header">
+            <div>
+              <h1>📐 ตารางสูตรเติมค่าทุกช่อง (ANOVA / Regression / Logistic / 2×2)</h1>
+              <p class="text-sm text-muted">เตรียมรับข้อสอบที่ปิดตัวเลขบางช่องในตาราง Stata / SPSS — ดูสูตรเชื่อมโยงไป-กลับครบทุกช่อง พร้อมโหมดปิดช่องฝึกคำนวณ</p>
+            </div>
+            <div class="source-tags">
+              <button type="button" class="btn" data-jump-view="view-stata">💻 ไปหน้า Stata Output Lab</button>
+            </div>
+          </div>
+
+          <div class="mode-tabs" role="tablist" aria-label="เลือกโหมดตารางสูตรเติมค่า">
+            <button type="button" class="tab-btn" role="tab" id="tab-bt-blueprint" aria-selected="true" tabindex="0" data-tables-mode="blueprint">📐 โหมดแสดงสูตรครบทุกช่อง (Blueprint)</button>
+            <button type="button" class="tab-btn" role="tab" id="tab-bt-practice" aria-selected="false" tabindex="-1" data-tables-mode="practice">📝 โหมดปิดช่องฝึกคำนวณ &amp; กดเฉลย (Practice)</button>
+          </div>
+
+          <div id="tables-blueprint-pane" class="view-inner"></div>
+          <div id="tables-practice-pane" class="view-inner" hidden></div>
         </div>
       </section>
     </main>
@@ -1613,7 +1702,10 @@
           ["Z", "ค่าสถิติ Z จาก 2-Proportion Z-test"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table with measures of association (ติ๊ก Pearson's chi-squared & Expected frequencies)",
-        stataCLI: "tab var1 var2, chi2 expected row col",
+        stataImmediate: `tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, chi2 expected row col
+prtesti <#n1> <#events1> <#n2> <#events2>, count
+prtesti <#n1> <#p1_dec> <#n2> <#p2_dec>   /* กรณีโจทย์ให้ค่าสัดส่วนทศนิยม + n */`,
+        stataCLI: "tab <row_cat> <col_cat>, chi2 expected row col\nprtest <outcome_bin01>, by(<group_2cat>)",
         templateTH: "Ho: ตัวแปร A และ B ไม่มีความสัมพันธ์กัน (independent) | Ha: ตัวแปร A และ B มีความสัมพันธ์กัน — เนื่องจาก χ² = ... > critical value (df = ..., p < 0.05) จึงปฏิเสธ Ho สรุปว่า A สัมพันธ์กับ B อย่างมีนัยสำคัญทางสถิติ",
         templateEN: "Ho: There is no association between A and B (independent). Ha: There is an association between A and B. Reject Ho if χ² > critical value (p < 0.05)."
       },
@@ -1637,7 +1729,10 @@
           ["e, f, g, h", "ผลรวมขอบตาราง: แถวบน (a+b), แถวล่าง (c+d), คอลัมน์ซ้าย (a+c), คอลัมน์ขวา (b+d)"]
         ],
         stataGUI: "Stata 'tab' ไม่แสดง Yates โดยตรง (ดู Fisher's exact หรือคำนวณมือตามสูตร; ใน immediate table ใช้ mcci สำหรับ paired)",
-        stataCLI: "tab var1 var2, chi2 exact   /* เช็ก exact ควบคู่ */",
+        stataImmediate: `tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, exact chi2   /* เช็ก Pearson และ Fisher exact ควบคู่ */
+* คำนวณ Yates' χ² มือ: (|ad - bc| - n/2)^2 * n / (e*f*g*h)
+display ((abs(<#a>*<#d> - <#b>*<#c>) - <#n>/2)^2 * <#n>) / (<#e>*<#f>*<#g>*<#h>)`,
+        stataCLI: "tab <row_cat> <col_cat>, chi2 exact   /* เช็ก exact ควบคู่ */",
         templateTH: "ใช้ χ²<sub>corr</sub> เพื่อลดโอกาส Type I error (Conservative กว่าปกติ ทำให้ปฏิเสธ Ho ยากขึ้น)",
         templateEN: "Yates' continuity correction gives a smaller χ² and larger (more conservative) p-value."
       },
@@ -1653,7 +1748,8 @@
           ["Hypergeometric", "การแจกแจงใช้แทน χ² เมื่อ n เล็กหรือ Expected count &lt; 5"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table with measures of association (ติ๊ก Fisher's exact test)",
-        stataCLI: "tab var1 var2, exact\ntabi 15 5 5 \\ 7 3 3, exact   /* ตารางตัวเลขทันที */",
+        stataImmediate: `tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, exact   /* ตารางตัวเลขจำนวนคน (ใช้ \\ คั่นแถว; ขยาย r×c ได้) */`,
+        stataCLI: "tab <row_cat> <col_cat>, exact",
         templateTH: "เนื่องจากมีเซลล์ที่มี Expected count < 5 เกิน 20% (หรือ n เล็ก) จึงไม่ผ่านเงื่อนไข Chi-square ใช้ Fisher's exact test แทน ได้ค่า p = ...",
         templateEN: "Because expected cell frequencies violate the Chi-square assumption (>20% cells < 5), Fisher's exact test is used (p = ...)."
       },
@@ -1679,7 +1775,9 @@
           ["RD (AR)", "ส่วนต่างความเสี่ยง (Risk Difference = I₁ − I₀)"]
         ],
         stataGUI: "Statistics > Epidemiology and related > Tables for epidemiologists > Cohort study risk-ratio etc.",
-        stataCLI: "csi a b c d   /* หรือ cs outcome exposure */",
+        stataImmediate: `csi <#exp_dis> <#unexp_dis> <#exp_nodis> <#unexp_nodis>   /* ⚠️ เรียง: ป่วยก่อน (Exp, Unexp) แล้วค่อย ไม่ป่วย (Exp, Unexp) */
+* ได้ทั้ง RR, Risk Difference (RD), Attributable Fraction และ χ² p-value`,
+        stataCLI: "cs <outcome_bin01> <exp_bin01>",
         templateTH: "ผู้ที่สัมผัสปัจจัย (Exposed) มีความเสี่ยงในการเกิดโรคเป็น ... เท่า ของผู้ที่ไม่ได้สัมผัส (RR = ..., 95% CI ...–...) และส่วนต่างความเสี่ยง (AR) เท่ากับ ...",
         templateEN: "Exposed individuals have ... times the risk of developing the outcome compared to unexposed individuals (RR = ..., 95% CI ...–...)."
       },
@@ -1704,7 +1802,9 @@
           ["exp, ln", "ฟังก์ชัน e<sup>x</sup> และลอการิทึมฐาน e (แปลงช่วง ln OR กลับเป็น OR)"]
         ],
         stataGUI: "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio calculator",
-        stataCLI: "cci a b c d   /* ลำดับ: Cases(Exp, Unexp) Controls(Exp, Unexp) */\ncc casevar expvar",
+        stataImmediate: `cci <#case_exp> <#case_unexp> <#ctrl_exp> <#ctrl_unexp>, woolf   /* เรียง: Cases(+,-) แล้ว Controls(+,-) */
+* ตัด , woolf ออกได้ถ้าต้องการ Exact / Cornfield 95% CI (ค่าเริ่มต้นของ Stata)`,
+        stataCLI: "cc <case_bin01> <exp_bin01>",
         templateTH: "Ho: OR = 1 — กลุ่ม Cases มี Odds ของการสัมผัสปัจจัยเป็น ... เท่าของกลุ่ม Controls (OR = ..., 95% CI ...–...) หาก 95% CI คร่อม 1 แสดงว่าไม่ sig ที่ α=0.05",
         templateEN: "The odds of exposure among cases are ... times those among controls (OR = ..., 95% CI ...–...). Because the 95% CI includes/excludes 1, ..."
       },
@@ -1728,7 +1828,9 @@
           ["PR", "อัตราส่วนความชุก (Prevalence Ratio = Prev₁ / Prev₀)"]
         ],
         stataGUI: "Statistics > Epidemiology and related > Tables for epidemiologists > Cohort study risk-ratio etc.",
-        stataCLI: "tab group outcome, row chi2\ncsi a b c d   /* ดูช่อง Risk ratio = Prevalence ratio */",
+        stataImmediate: `csi <#grp_yes> <#ref_yes> <#grp_no> <#ref_no>   /* ⚠️ ป่วย(yes) 2 กลุ่มก่อน แล้วไม่ป่วย(no) 2 กลุ่ม -> ดู Risk ratio = PR */
+tabi <#grp_yes> <#grp_no> \\ <#ref_yes> <#ref_no>, row chi2`,
+        stataCLI: "tab <group_cat> <outcome_bin01>, row chi2\ncs <outcome_bin01> <group_bin01>",
         templateTH: "ความชุกในกลุ่ม A = ...% และกลุ่ม B = ...% คิดเป็น Prevalence Ratio = ... (กลุ่ม A มีความชุกของโรคเป็น ... เท่าของกลุ่ม B)",
         templateEN: "Prevalence in group A is ...% vs ...% in group B, giving a prevalence ratio of ... ."
       },
@@ -1752,7 +1854,20 @@
           ["T<sub>i</sub>", "ผลรวมตัวอย่างทั้งหมดในชั้นที่ i (= a<sub>i</sub>+b<sub>i</sub>+c<sub>i</sub>+d<sub>i</sub>)"]
         ],
         stataGUI: "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio (ใส่ตัวแปร Stratify)",
-        stataCLI: "cc outcome exposure [freq=count], by(confounder)",
+        stataImmediate: `* ป้อนตาราง 2×2 แยก Stratum (เช่น 2 ชั้น = 8 แถว) แล้วรัน Mantel-Haenszel:
+clear
+input stratum exp case cnt
+1 1 1 <#s1_exp_dis>
+1 1 0 <#s1_exp_nodis>
+1 0 1 <#s1_unexp_dis>
+1 0 0 <#s1_unexp_nodis>
+2 1 1 <#s2_exp_dis>
+2 1 0 <#s2_exp_nodis>
+2 0 1 <#s2_unexp_dis>
+2 0 0 <#s2_unexp_nodis>
+end
+cc case exp [fw=cnt], by(stratum)   /* ดู M-H OR และ Test of homogeneity p */`,
+        stataCLI: "cc <outcome_bin01> <exp_bin01> [freq=<count_var>], by(<confounder_cat>)",
         templateTH: "Test of homogeneity p = ... (>0.05) แสดงว่า OR ในแต่ละชั้นไม่ต่างกัน จึงรวมเป็น Adjusted OR_MH = ... (เทียบกับ Crude OR = ...) หลังปรับอิทธิพลตัวแปรกวนแล้ว พบความสัมพันธ์...",
         templateEN: "Test of homogeneity was non-significant (p > 0.05), allowing pooling into a Mantel–Haenszel adjusted OR = ... (95% CI ...–...)."
       },
@@ -1778,7 +1893,8 @@
           ["OR<sub>paired</sub>", "Matched Odds Ratio = b / c (ไม่ใช้ ad/bc)"]
         ],
         stataGUI: "Statistics > Epidemiology and related > Tables for epidemiologists > Matched case-control studies",
-        stataCLI: "mcc var_case var_ctrl   /* หรือ immediate: mcci a b c d */",
+        stataImmediate: "mcci <#both_pos> <#case_pos_ctrl_neg> <#case_neg_ctrl_pos> <#both_neg>   /* ใส่จำนวนคู่ 4 ช่อง -> ได้ χ², Exact p, และ OR = b/c */",
+        stataCLI: "mcc <case_bin01> <ctrl_bin01>",
         templateTH: "Ho: สัดส่วนความสำเร็จ/การสัมผัสไม่ต่างกัน (b = c) — จาก Discordant pairs b=..., c=... ได้ McNemar χ² = ... (p = ...) และ OR = b/c = ...",
         templateEN: "Ho: P(Success | Tx A) = P(Success | Tx B). Using discordant pairs (b, c), McNemar χ² = ... (p = ...), paired OR = b/c = ... ."
       },
@@ -1802,7 +1918,16 @@
           ["κ", "Cohen's Kappa (ความสอดคล้องสุทธิหลังหักโอกาสบังเอิญ)"]
         ],
         stataGUI: "Statistics > Epidemiology and related > Other > Interrater agreement, two unique raters",
-        stataCLI: "kap rater1 rater2",
+        stataImmediate: `* ไม่มี kapi ใน Stata! ป้อนตาราง 4 แถว (หรือมากกว่าสำหรับ 3×3+) ด้วย input:
+clear
+input r1 r2 cnt
+1 1 <#both_1>
+1 0 <#r1_1_r2_0>
+0 1 <#r1_0_r2_1>
+0 0 <#both_0>
+end
+kap r1 r2 [fw=cnt]`,
+        stataCLI: "kap <rater1_cat> <rater2_cat>",
         templateTH: "ค่าสังเกตความสอดคล้อง P_o = ... และโอกาสบังเอิญ P_e = ... ได้ค่า Kappa = ... อยู่ในระดับ (Excellent >0.7 / Good 0.4–0.7 / Poor <0.4)",
         templateEN: "Observed agreement Po = ..., expected chance agreement Pe = ..., giving Cohen's κ = ... (... agreement)."
       },
@@ -1829,7 +1954,11 @@
           ["FPR, FNR", "อัตราผลบวกลวง (1−Spec) และผลลบลวง (1−Sens)"]
         ],
         stataGUI: "คำสั่งพื้นฐานใช้ tab newtest gold, col row เพื่อดู % ตามคอลัมน์/แถว (หรือใช้แพ็กเกจเสริม diagt)",
-        stataCLI: "tab newtest gold, col row\n* ssc install diagt  ->  diagt gold newtest",
+        stataImmediate: `* คำนวณ Sens, Spec, PPV, NPV, Acc จาก TP, FP, FN, TN:
+display "Sens=" <#TP>/(<#TP>+<#FN>) "  Spec=" <#TN>/(<#FP>+<#TN>) "  PPV=" <#TP>/(<#TP>+<#FP>) "  NPV=" <#TN>/(<#FN>+<#TN>)
+display "Acc=" (<#TP>+<#TN>)/(<#TP>+<#FP>+<#FN>+<#TN>) "  LR+=" (<#TP>/(<#TP>+<#FN>))/(1-<#TN>/(<#FP>+<#TN>))
+cii proportions <#TP_plus_FN> <#TP>   /* Exact 95% CI ของ Sens (เปลี่ยนตัวเศษ-ส่วนเป็น Spec/PPV/NPV ได้) */`,
+        stataCLI: "tab <newtest_bin01> <gold_bin01>, col row\n* ssc install diagt  ->  diagt <gold_bin01> <newtest_bin01>",
         templateTH: "Sensitivity (ความไว) = ...%, Specificity (ความจำเพาะ) = ...%, PPV = ...%, NPV = ...%, Accuracy = ...%",
         templateEN: "Sensitivity = a/(a+c) = ...%, Specificity = d/(b+d) = ...%, PPV = ...%, NPV = ...%, Accuracy = ...%."
       },
@@ -1847,7 +1976,10 @@
           ["df", "องศาอิสระ = n − 1"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Classical tests of hypotheses > t test (เลือก Paired)",
-        stataCLI: "ttest after == before",
+        stataImmediate: `ttesti <#n_pairs> <#mean_diff> <#sd_diff> 0   /* Paired: ใส่ค่าเฉลี่ยผลต่างและ SD_diff เทียบกับ 0 */
+* กรณี 1-Sample เทียบค่าอ้างอิง μ0:
+ttesti <#n> <#mean> <#sd> <#mu0>`,
+        stataCLI: "ttest <after_cont> == <before_cont>",
         templateTH: "Ho: ค่าเฉลี่ยก่อนและหลังไม่ต่างกัน (μ_diff = 0) — ใช้ Paired t-test เพราะวัดซ้ำในกลุ่มคนเดิมและผลต่างแจกแจงปกติ",
         templateEN: "Paired t-test is used because measurements are from the same subjects and before–after differences are approximately normally distributed."
       },
@@ -1863,7 +1995,9 @@
           ["Rank (+/−)", "ผลรวมลำดับที่แยกฝั่งผลต่างเป็นบวกกับฝั่งลบ"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > Wilcoxon matched-pairs signed-rank test",
-        stataCLI: "signrank after = before",
+        stataImmediate: `* ไม่มี Immediate สำหรับ signrank จากข้อมูลดิบ; ถ้าโจทย์ให้ค่า Z มา หา Exact 2-sided p:
+display "p_wilcoxon = " 2*(1 - normal(abs(<#Z_stat>)))`,
+        stataCLI: "signrank <after_cont_or_ord> = <before_cont_or_ord>",
         templateTH: "ใช้ Wilcoxon signed-rank test เนื่องจากเป็นข้อมูลจับคู่และมีการแจกแจงไม่ปกติ / เป็นระดับ Ordinal",
         templateEN: "Wilcoxon signed-rank test is appropriate for paired observations with skewed continuous or ordinal outcomes."
       },
@@ -1879,7 +2013,10 @@
           ["SE(x̄₁ − x̄₂)", "ความคลาดเคลื่อนมาตรฐานของผลต่างค่าเฉลี่ย 2 กลุ่ม"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Classical tests of hypotheses > t test (เลือก Two-sample using groups)",
-        stataCLI: "ttest bwt, by(smoke)\nttest bwt, by(smoke) unequal   /* ถ้า variance ไม่เท่า */",
+        stataImmediate: `sdtesti <#n1> <#m1_or_.> <#sd1> <#n2> <#m2_or_.> <#sd2>   /* ⚠️ ใส่ 6 ค่าเสมอ (ใส่ Mean หรือ . คั่น); ถ้า F-test p < 0.05 ใช้ , unequal */
+ttesti <#n1> <#mean1> <#sd1> <#n2> <#mean2> <#sd2>
+ttesti <#n1> <#mean1> <#sd1> <#n2> <#mean2> <#sd2>, unequal`,
+        stataCLI: "ttest <outcome_cont>, by(<group_2cat>)\nttest <outcome_cont>, by(<group_2cat>) unequal   /* ถ้า variance ไม่เท่า */",
         templateTH: "Ho: μ₁ = μ₂ — ค่าเฉลี่ยกลุ่ม 1 กับกลุ่ม 2 ต่างกัน ... (95% CI ...–..., t = ..., p = ...)",
         templateEN: "Two-sample t-test shows a mean difference of ... (95% CI ...–..., p = ...)."
       },
@@ -1894,7 +2031,9 @@
           ["Rank sum", "ผลรวมลำดับที่ของแต่ละกลุ่มหลังนำข้อมูลทั้ง 2 กลุ่มมาเรียงรวมกัน"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > Wilcoxon rank-sum test",
-        stataCLI: "ranksum y, by(group)",
+        stataImmediate: `* ไม่มี Immediate สำหรับ ranksum จากข้อมูลดิบ; ถ้าโจทย์ให้ค่า Z มา หา Exact 2-sided p:
+display "p_MW = " 2*(1 - normal(abs(<#Z_stat>)))`,
+        stataCLI: "ranksum <outcome_cont_or_ord>, by(<group_2cat>)",
         templateTH: "ใช้ Mann–Whitney U test (Wilcoxon rank-sum) เนื่องจากเปรียบเทียบ 2 กลุ่มอิสระที่มีการแจกแจงไม่ปกติ",
         templateEN: "Mann–Whitney U (Wilcoxon rank-sum) test compares two independent groups with non-normal or ordinal outcomes."
       },
@@ -1922,7 +2061,11 @@
           ["α<sub>Bonferroni</sub>", "ระดับนัยสำคัญปรับใหม่ต่อ 1 คู่ (= α / C)"]
         ],
         stataGUI: "Statistics > Linear models and related > ANOVA/MANOVA > One-way ANOVA (เลือก Multiple comparison: Bonferroni / Scheffe)",
-        stataCLI: "oneway score program, bonferroni\noneway score program, scheffe",
+        stataImmediate: `* หา F และ Exact p จากตาราง ANOVA ปิดช่อง (หรือคำนวณจาก Mean Square):
+display "F = " <#MSB>/<#MSW> "  p = " Ftail(<#k_minus_1>, <#N_minus_k>, <#F_stat>)
+* ปรับ Bonferroni alpha: α/C โดย C = k(k-1)/2
+display "alpha_bonf = " 0.05 / (<#k>*(<#k>-1)/2)`,
+        stataCLI: "oneway <outcome_cont> <group_cat>, bonferroni\noneway <outcome_cont> <group_cat>, scheffe",
         templateTH: "Ho: μ₁ = μ₂ = ... = μk | Ha: มีอย่างน้อย 1 คู่ที่มีค่าเฉลี่ยแตกต่างกัน — Bartlett's p = ... (>0.05 ผ่านเกณฑ์ Equal var), ANOVA F = ..., p = ... (<0.05 ปฏิเสธ Ho) และ Post-hoc Bonferroni พบคู่ที่ต่างกันคือ ...",
         templateEN: "Ho: μ₁ = μ₂ = ... = μk; Ha: at least one mean differs. Bartlett's test p > 0.05 confirms equal variances. ANOVA F(..., ...) = ..., p = ...; Bonferroni post-hoc identifies ..."
       },
@@ -1938,7 +2081,9 @@
           ["k, df", "จำนวนกลุ่มทั้งหมด (องศาอิสระ df = k − 1)"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > Kruskal-Wallis rank test",
-        stataCLI: "kwallis score, by(program)\n* Post-hoc (แพ็กเกจเสริม ssc install dunntest):\ndunntest score, by(program)",
+        stataImmediate: `* ไม่มี Immediate จากข้อมูลดิบ; แปลงค่า χ² (H stat) ของ Kruskal–Wallis เป็น Exact p-value:
+display "p_kw = " chi2tail(<#k_minus_1>, <#H_or_chi2_stat>)`,
+        stataCLI: "kwallis <outcome_cont_or_ord>, by(<group_cat>)\n* Post-hoc (แพ็กเกจเสริม ssc install dunntest):\ndunntest <outcome_cont_or_ord>, by(<group_cat>)",
         templateTH: "ใช้ Kruskal–Wallis test เนื่องจากเปรียบเทียบ ≥ 3 กลุ่มอิสระที่มีข้อมูล Ordinal / เบ้มาก ไม่ผ่านเกณฑ์ ANOVA (ดู chi-squared with ties, p = ...)",
         templateEN: "Kruskal–Wallis test is most appropriate for comparing ≥ 3 independent groups with strongly skewed or ordinal outcomes."
       },
@@ -1953,7 +2098,9 @@
           ["id, time", "รหัสผู้ป่วยแต่ละราย (ตัวแปรจับคู่) และจุดเวลาที่วัดซ้ำ (≥ 3 เวลา)"]
         ],
         stataGUI: "Statistics > Linear models and related > ANOVA/MANOVA > Analysis of variance and covariance (repeated option)",
-        stataCLI: "anova y id time, repeated(time)\n* Non-param: ssc install friedman",
+        stataImmediate: `* หา Exact p-value จาก F-statistic ของ Repeated-Measures ANOVA:
+display "p_rep = " Ftail(<#df_time>, <#df_error>, <#F_stat>)`,
+        stataCLI: "anova <outcome_cont> <subject_id> <time_cat>, repeated(<time_cat>)\n* Non-param: ssc install friedman",
         templateTH: "วัดซ้ำในผู้ป่วยกลุ่มเดิมหลายช่วงเวลา (Longitudinal): หากข้อมูลปกติใช้ Repeated-measures ANOVA หากไม่ปกติใช้ Friedman test",
         templateEN: "For longitudinal repeated measurements across ≥3 timepoints, use repeated-measures ANOVA (normal) or Friedman test (non-parametric)."
       },
@@ -1976,7 +2123,10 @@
           ["R²", "สัดส่วนความผันแปรของ Y ที่อธิบายได้ด้วย X"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Summary and descriptive statistics > Pairwise correlations",
-        stataCLI: "scatter y x\npwcorr y x, sig",
+        stataImmediate: `* คำนวณ t-stat, R², p-value จาก r และ n; หรือเทียบ 2 ค่า r ด้วย Fisher's Z:
+display "R2 = " <#r>^2 "  t = " <#r>*sqrt((<#n>-2)/(1-<#r>^2)) "  p = " 2*ttail(<#n>-2, abs(<#r>*sqrt((<#n>-2)/(1-<#r>^2))))
+display "Z_fisher = " (0.5*ln((1+<#r1>)/(1-<#r1>)) - 0.5*ln((1+<#r2>)/(1-<#r2>))) / sqrt(1/(<#n1>-3) + 1/(<#n2>-3))`,
+        stataCLI: "scatter <y_cont> <x_cont>\npwcorr <y_cont> <x_cont>, sig",
         templateTH: "r = ... (p = ...) แสดงความสัมพันธ์เชิงเส้นทาง (บวก/ลบ) ระดับ (Good >0.8 / Fair >0.5–0.8 / Little 0.2–0.5) โดย X อธิบายความแปรปรวนของ Y ได้ R² = r² = ...% (ห้ามสรุปว่าทำให้เกิด/cause!)",
         templateEN: "There is a (strong/moderate/weak) (positive/negative) linear association (r = ..., p = ...); X explains R² = r² = ...% of the variation in Y."
       },
@@ -1991,7 +2141,9 @@
           ["ρ (rho)", "สัมประสิทธิ์สหสัมพันธ์ลำดับที่ของ Spearman (−1 ถึง +1)"]
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Summary and descriptive statistics > Spearman's rank correlation",
-        stataCLI: "spearman y x",
+        stataImmediate: `* คำนวณประมาณค่า p-value จากค่า Spearman rho และ n (t-approx df = n-2):
+display "t_approx = " <#rho>*sqrt((<#n>-2)/(1-<#rho>^2)) "  p = " 2*ttail(<#n>-2, abs(<#rho>*sqrt((<#n>-2)/(1-<#rho>^2))))`,
+        stataCLI: "spearman <y_cont_or_ord> <x_cont_or_ord>",
         templateTH: "ใช้ Spearman rank correlation เนื่องจากตัวแปรเบ้มาก/เป็น Ordinal ได้ Spearman's ρ = ..., p = ...",
         templateEN: "Spearman's rank correlation (ρ = ..., p = ...) is used due to skewed continuous or ordinal data."
       },
@@ -2020,7 +2172,12 @@
           ["n, k", "จำนวนตัวอย่างทั้งหมด (n) และจำนวนตัวทำนาย (k)"]
         ],
         stataGUI: "Statistics > Linear models and related > Linear regression (Postestimation: rvfplot & estat vif)",
-        stataCLI: "regress y x1 x2 i.catvar\nregress y x1 x2, beta   /* ดู Standardized Beta */\nestat vif\nrvfplot\nstepwise, pe(.2): regress y x1 i.race",
+        stataImmediate: `* คำนวณค่าทำนาย Ŷ, Adj R², VIF, Standardized Beta และ Exact p จากตาราง Regression:
+display "Y_hat = " <#b0> + <#b1>*<#X1> + <#b2>*<#X2>
+display "Adj_R2 = " 1 - (1 - <#R2>)*(<#n> - 1)/(<#n> - <#k> - 1) "  VIF = " 1/(1 - <#R2_j>)
+display "Beta_std = " <#b_j>*(<#SD_Xj>/<#SD_Y>) "  p_t = " 2*ttail(<#n>-<#k>-1, abs(<#b_j>/<#SE_bj>))
+display "p_F = " Ftail(<#k>, <#n>-<#k>-1, <#F_model>)`,
+        stataCLI: "regress <outcome_cont> <pred1_cont> <pred2_bin01> i.<pred3_multicat>\nregress <outcome_cont> <pred1_cont> <pred2_cont>, beta   /* ดู Standardized Beta */\nestat vif\nrvfplot\nstepwise, pe(<p_enter>): regress <outcome_cont> <pred1_cont> i.<pred_cat>",
         templateTH: "เมื่อ X เพิ่มขึ้น 1 หน่วย ค่าเฉลี่ย Y จะ (เพิ่ม/ลด) ลง B หน่วย เมื่อควบคุมตัวแปรอื่น ๆ ให้คงที่ (95% CI ..., p = ...); สมการอธิบายความแปรปรวนได้ Adjusted R² = ...%",
         templateEN: "Holding other covariates constant, each 1-unit increase in X changes mean Y by B units (95% CI ..., p = ...)."
       },
@@ -2050,7 +2207,11 @@
           ["SE", "Standard Error ของ β ใช้สร้าง 95% CI"]
         ],
         stataGUI: "Statistics > Binary outcomes > Logistic regression (logit แสดง Coef. β; logistic แสดง Odds Ratio)",
-        stataCLI: "logit dm age bmi male famhx\nlogistic dm age bmi male famhx\nestat classification\nlroc",
+        stataImmediate: `* แปลง Coef β เป็น Adjusted OR (1 หน่วย & Δ หน่วย), 95% CI, Predicted P และ LR test G:
+display "aOR_1 = " exp(<#beta>) "  95%CI: " exp(<#beta>-1.96*<#SE>) " to " exp(<#beta>+1.96*<#SE>)
+display "aOR_dX = " exp(<#delta>*<#beta>) "  P = " 1/(1 + exp(-(<#b0> + <#b1>*<#X1> + <#b2>*<#X2>)))
+display "G = " -2*(<#LL_null> - <#LL_full>) "  p_LR = " chi2tail(<#df>, -2*(<#LL_null> - <#LL_full>))`,
+        stataCLI: "logit <outcome_bin01> <pred1_cont> <pred2_bin01> i.<pred3_multicat>\nlogistic <outcome_bin01> <pred1_cont> <pred2_bin01> i.<pred3_multicat>\nestat classification\nlroc",
         templateTH: "เมื่อควบคุมตัวแปรอื่น ๆ ให้คงที่ ผู้ที่มีปัจจัย/X เพิ่ม Δ หน่วย มีแต้มต่อ (odds) ในการเกิดโรคเป็น aOR = e<sup>Δβ</sup> เท่า เทียบกับกลุ่มอ้างอิง (95% CI ..., p = ...)",
         templateEN: "After adjusting for other covariates, each Δ-unit increase in X is associated with an adjusted OR of ... (95% CI ..., p = ...)."
       },
@@ -2067,7 +2228,9 @@
           ["β<sub>i</sub>, HR", "Log Hazard Ratio ของ X<sub>i</sub> และ Hazard Ratio (= e<sup>β</sup>)"]
         ],
         stataGUI: "Statistics > Survival analysis > Regression models > Cox proportional hazards model",
-        stataCLI: "stset timevar, failure(event==1)\nstcox x1 x2",
+        stataImmediate: `* แปลง Coef β จาก Cox model เป็น Hazard Ratio (HR), Δ-unit HR และ 95% CI:
+display "HR_1 = " exp(<#beta>) "  HR_dX = " exp(<#delta>*<#beta>) "  95%CI: " exp(<#beta>-1.96*<#SE>) " to " exp(<#beta>+1.96*<#SE>)`,
+        stataCLI: "stset <time_cont>, failure(<event_bin01>==1)\nstcox <pred1_cont> <pred2_bin01> i.<pred3_multicat>",
         templateTH: "ใช้ Cox proportional hazards analysis เนื่องจาก Outcome เป็น Time-to-event (มี censored data)",
         templateEN: "Cox regression is used for censored time-to-event outcomes."
       },
@@ -2090,7 +2253,10 @@
           ["%dropout", "สัดส่วนคาดว่าจะไม่ตอบ/สูญหาย (ใส่ทศนิยม เช่น 0.10)"]
         ],
         stataGUI: "ใช้ 'sampsi' (ในสไลด์ตั้ง power(0.5) เพื่อล็อกสูตร precision) หรือเช็ก CI width ใน Power > Proportions > One sample",
-        stataCLI: "sampsi .2 .25, power(0.5) onesample   /* p=0.2, E=0.05 -> n=246 */",
+        stataImmediate: `sampsi <#p_expected> <#p_expected_plus_E>, power(0.5) onesample   /* power(0.5) ล็อกสูตร Precision */
+display "n_hand = " ceil((invnormal(0.975)^2 * <#p>*(1-<#p>)) / <#E>^2)
+display "n_enroll = " ceil(<#n> / (1 - <#dropout_prop>))`,
+        stataCLI: "",
         templateTH: "แทน p = ..., E = ..., Z = 1.96 ได้ n = ... (ปัดขึ้นเสมอ) หากเผื่อ non-response/dropout d% ต้องเก็บจริง n/(1−d) = ...",
         templateEN: "Using p = ..., E = ..., Z = 1.96 gives n = ...; adjusting for d% non-response yields n/(1−d) = ... ."
       },
@@ -2112,7 +2278,10 @@
           ["%dropout", "สัดส่วนการสูญหาย/ไม่ตอบกลับ (เช่น 0.10 สำหรับ 10%)"]
         ],
         stataGUI: "Statistics > Power, precision, and sample size (หรือใช้ sampsi พร้อม power(0.5) ตามสไลด์)",
-        stataCLI: "sampsi 120 125, sd(20) power(0.5) onesample   /* E=5, SD=20 -> n=62 */",
+        stataImmediate: `sampsi <#mean_expected> <#mean_expected_plus_E>, sd(<#sd_pop>) power(0.5) onesample
+display "n_hand = " ceil((invnormal(0.975)*<#sd>/<#E>)^2)
+display "n_enroll = " ceil(<#n> / (1 - <#dropout_prop>))`,
+        stataCLI: "",
         templateTH: "แทน Z = 1.96, σ = ..., E = ... ได้ n = ... (ปัดขึ้น) และปรับ non-response d%: n/(1−d) = ...; หากลด E เหลือครึ่งหนึ่ง n จะเพิ่มเป็น 4 เท่า เพราะ n แปรผกผันกับ E²",
         templateEN: "n = (Zσ/E)² = ...; adjusted for non-response: n/(1−d) = ... . Halving E quadruples n because n is inversely proportional to E²."
       },
@@ -2133,7 +2302,11 @@
           ["Z, E", "ค่าวิกฤต Z (1.96 สำหรับ 95% CI) และความคลาดเคลื่อน ±E"]
         ],
         stataGUI: "คำนวณจำนวนผู้ป่วย/ไม่ป่วยด้วยสูตร 1 proportion แล้วหาร Prev หรือ (1−Prev)",
-        stataCLI: "/* ตัวอย่าง Sens=0.9, E=0.05, Prev=0.4 */\ndisplay ceil((1.96^2 * 0.9 * 0.1) / 0.05^2) / 0.4",
+        stataImmediate: `/* Sensitivity หาร <prevalence> | Specificity หาร (1 - <prevalence>) */
+display "n_target = " ceil((<#Z_alpha>^2 * <#sens_or_spec> * (1-<#sens_or_spec>)) / <#E>^2)
+display "n_total_sens = " ceil((<#Z_alpha>^2 * <#sens> * (1-<#sens>)) / (<#E>^2 * <#prevalence>))
+display "n_total_spec = " ceil((<#Z_alpha>^2 * <#spec> * (1-<#spec>)) / (<#E>^2 * (1-<#prevalence>)))`,
+        stataCLI: "",
         templateTH: "หาจำนวนผู้ป่วยที่ต้องการ n* = Z²·Sens(1−Sens)/E² (ปัดขึ้น) แล้วหารด้วย Prevalence จะได้จำนวนคนทั้งหมดที่ต้องคัดกรอง",
         templateEN: "Required diseased cases n* = Z²·sens(1−sens)/E², divided by disease prevalence gives total sample size."
       },
@@ -2162,7 +2335,12 @@
           ["r", "อัตราส่วนขนาดกลุ่ม n₁ / n₂ (ขนาดเท่ากันใช้ r = 1)"]
         ],
         stataGUI: "Statistics > Power, precision, and sample size > Proportions > Two independent samples > Chi-squared test",
-        stataCLI: "power twoproportions 0.175 0.35, test(chi2) power(0.9)\npower twoproportions 0.35, test(chi2) rrisk(0.5) power(0.9)\npower twoproportions 0.3, test(chi2) oratio(3) power(0.9)\npower twoproportions 0.64 0.82, test(chi2) onesided",
+        stataImmediate: `power twoproportions <#p1_grp1> <#p2_grp2>, test(chi2) power(<#power>)
+power twoproportions <#p2_nonexp>, test(chi2) rrisk(<#RR>) power(<#power>)     /* Cohort */
+power twoproportions <#p2_ctrlexp>, test(chi2) oratio(<#OR>) power(<#power>)    /* Case-Control */
+power twoproportions <#p1_grp1> <#p2_grp2>, test(chi2) onesided power(<#power>)
+display "n_enroll_grp = " ceil(<#N_per_grp> / (1 - <#dropout_prop>))`,
+        stataCLI: "",
         templateTH: "กำหนด α=0.05 (Z=1.96), Power=...% (Z_1-β=...), p₁=..., p₂=..., p̄=... ได้ N ต่อกลุ่ม = ... คน หลังปรับ Dropout d% = ⌈N⌉/(1−d) = ... คน/กลุ่ม (รวม 2 กลุ่ม = ... คน)",
         templateEN: "With p₁=..., p₂=..., p̄=..., Z_1-α/2=1.96, Z_1-β=..., n per group = ...; adjusted for d% dropout: ... per group."
       },
@@ -2184,7 +2362,10 @@
           ["r", "อัตราส่วนขนาดกลุ่ม n₁ : n₂ (เท่ากัน 1:1 → r+1 = 2)"]
         ],
         stataGUI: "Statistics > Power, precision, and sample size > Means > Two independent samples > Test comparing two independent means",
-        stataCLI: "power twomeans 145 140, sd(10) power(0.9)\npower twomeans 145, diff(5) sd(10) power(0.9)",
+        stataImmediate: `power twomeans <#mean1> <#mean2>, sd(<#common_sd>) power(<#power>)
+power twomeans <#mean1>, diff(<#mean1_minus_mean2>) sd(<#common_sd>) power(<#power>)
+display "n_enroll_grp = " ceil(<#N_per_grp> / (1 - <#dropout_prop>))`,
+        stataCLI: "",
         templateTH: "แทน Sp = ..., Δ = ..., Z_1-α/2 = 1.96, Z_1-β = ... ได้ N ต่อกลุ่ม = ... ปรับ Dropout d% = ⌈N⌉/(1−d) คน/กลุ่ม",
         templateEN: "N per group = 2·Sp²·(Z_1-α/2 + Z_1-β)² / Δ² = ...; adjust for dropout via n/(1−d)."
       },
@@ -2206,7 +2387,9 @@
           ["Z<sub>1−α/2</sub>, Z<sub>1−β</sub>", "ค่า Z จาก α (1.96) และ Power (0.84 หรือ 1.28)"]
         ],
         stataGUI: "Statistics > Power, precision, and sample size > Means > Two paired samples",
-        stataCLI: "power pairedmeans 145 140, sddiff(10) power(0.9)",
+        stataImmediate: `power pairedmeans <#mean_pre> <#mean_post>, sddiff(<#sd_diff>) power(<#power>)
+display "n_enroll_pairs = " ceil(<#n_pairs> / (1 - <#dropout_prop>))`,
+        stataCLI: "",
         templateTH: "เนื่องจากเป็นข้อมูลคู่ (Dependent) มี Power สูงกว่า ใช้สูตรไม่มีเลข 2 ได้จำนวนคู่ n = ...",
         templateEN: "For dependent/paired means, n = S²(Z_1-α/2 + Z_1-β)² / (μ₁ − μ₂)² (smaller than independent design)."
       }
@@ -2263,7 +2446,11 @@
           }
         ],
         stataGUI: "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table with measures of association (ติ๊ก Pearson's chi-squared, Fisher's exact, Expected frequencies)",
-        stataCLI: `tab exercise BMICAT, chi2 expected row col\ntab var1 var2, exact        /* เมื่อ expected count < 5 */\ntabi 24 96 \\ 32 48, chi2    /* ใส่ตัวเลขตาราง 2x2 โดยไม่ต้องมี dataset */\nprtest bp, by(area)         /* 2-proportion Z-test + 95% CI ของ P1-P2 */`,
+        stataImmediate: `tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, chi2 expected row col   /* ใส่จำนวนคนตาราง 2×2 ทันที */
+tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, exact                  /* เมื่อ Expected < 5 */
+prtesti <#n1> <#events1> <#n2> <#events2>, count               /* 2-proportion Z-test + 95% CI */
+display "chi2_crit(0.05) = " invchi2tail(<#df>, 0.05) "  p = " chi2tail(<#df>, <#chi2_stat>)`,
+        stataCLI: `tab <row_cat> <col_cat>, chi2 expected row col\ntab <row_cat> <col_cat>, exact                       /* เมื่อ expected count < 5 */\nprtest <outcome_bin01>, by(<group_2cat>)            /* 2-proportion Z-test + 95% CI (P1-P2) */`,
         templates: {
           th: "Ho: ตัวแปร X และ Y ไม่มีความสัมพันธ์กัน (independent) | Ha: ตัวแปร X และ Y มีความสัมพันธ์กัน — จากการคำนวณ E_ij ทุกช่องมีค่า ≥ 5 จึงเป็นไปตามเงื่อนไข χ² คำนวณ χ² = ... (df = ..., critical value = 3.841 ที่ α=0.05) เนื่องจาก χ² > 3.841 จึง Reject Ho สรุปว่า X สัมพันธ์กับ Y อย่างมีนัยสำคัญทางสถิติ",
           en: "Ho: X and Y are independent (no association). Ha: X and Y are associated. All expected counts ≥ 5 (assumption met). Since χ² = ... > 3.841 (df = 1, α = 0.05), we reject Ho."
@@ -2314,7 +2501,10 @@
           }
         ],
         stataGUI: "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio calculator (หรือ Cohort study risk-ratio calculator)",
-        stataCLI: `cci 21 26 170 273   /* Case-Control immediate: Cases(Exp Unexp) Controls(Exp Unexp) */\ncsi 84 2916 87 4913 /* Cohort immediate: Exp(Dis NoDis) Unexp(Dis NoDis) -> RR & RD */\ncc casevar expvar\ncs outcome expvar`,
+        stataImmediate: `csi <#exp_dis> <#unexp_dis> <#exp_nodis> <#unexp_nodis>   /* ⚠️ Cohort Immediate: ป่วยก่อน (Exp, Unexp) แล้วไม่ป่วย (Exp, Unexp) */
+cci <#case_exp> <#case_unexp> <#ctrl_exp> <#ctrl_unexp>, woolf   /* Case-Control Immediate: Cases(+,-) แล้ว Controls(+,-) */
+tabi <#grp_yes> <#grp_no> \\ <#ref_yes> <#ref_no>, row chi2`,
+        stataCLI: `cs <outcome_bin01> <exp_bin01>                         /* Cohort / Cross-sectional (.dta) */\ncc <case_bin01> <exp_bin01>                              /* Case-Control (.dta) */\ntab <group_cat> <outcome_bin01>, row chi2`,
         templates: {
           th: "OR/RR = ... (>1 ปัจจัยเสี่ยง, <1 ปัจจัยป้องกัน, =1 ไม่สัมพันธ์): กลุ่มสัมผัสปัจจัยมีโอกาส/ความเสี่ยงเกิดโรคเป็น ... เท่าของกลุ่มไม่สัมผัส (95% CI ...–...; ไม่คร่อม 1 → มีนัยสำคัญทางสถิติ / คร่อม 1 → ไม่มีนัยสำคัญทางสถิติ)",
           en: "OR = ... (95% CI ...–...). Because the 95% CI includes/excludes 1, the association is not statistically significant / is statistically significant at α = 0.05."
@@ -2379,7 +2569,20 @@
           }
         ],
         stataGUI: "McNemar: Statistics > Epidemiology and related > Tables for epidemiologists > Matched case-control studies\nKappa: Statistics > Epidemiology and related > Other > Interrater agreement, two unique raters",
-        stataCLI: `mcc var_case var_ctrl       /* Matched 1:1 dataset -> McNemar + Exact + OR=b/c */\nmcci 100 12 28 200          /* Immediate McNemar (ตัวอย่าง Slide 16-18) */\nkap test1 test2             /* Cohen's Kappa */\ntab newtest gold, col row   /* ดู Sens/Spec (col) และ PPV/NPV (row) */\nttest after == before       /* Paired t-test (continuous normal) */\nsignrank after = before     /* Wilcoxon signed-rank (continuous non-normal/ordinal) */`,
+        stataImmediate: `mcci <#both_pos> <#case_pos_ctrl_neg> <#case_neg_ctrl_pos> <#both_neg>   /* McNemar Immediate 2×2 */
+ttesti <#n_pairs> <#mean_diff> <#sd_diff> 0                                  /* Paired t-test จาก diff & SD_diff */
+* Kappa จากตาราง (ไม่มี kapi ใช้ input 4 แถว):
+clear
+input r1 r2 cnt
+1 1 <#both_1>
+1 0 <#r1_1_r2_0>
+0 1 <#r1_0_r2_1>
+0 0 <#both_0>
+end
+kap r1 r2 [fw=cnt]
+* Diagnostic (TP, FP, FN, TN):
+display "Sens=" <#TP>/(<#TP>+<#FN>) "  Spec=" <#TN>/(<#FP>+<#TN>) "  PPV=" <#TP>/(<#TP>+<#FP>) "  NPV=" <#TN>/(<#FN>+<#TN>)`,
+        stataCLI: `mcc <case_bin01> <ctrl_bin01>                 /* Matched 1:1 dataset -> McNemar + OR=b/c */\nkap <rater1_cat> <rater2_cat>                 /* Cohen's Kappa (.dta) */\ntab <newtest_bin01> <gold_bin01>, col row     /* ดู Sens/Spec (col) และ PPV/NPV (row) */\nttest <after_cont> == <before_cont>           /* Paired t-test (continuous normal) */\nsignrank <after_ord_cont> = <before_ord_cont> /* Wilcoxon signed-rank */`,
         templates: {
           th: "McNemar: Ho: P(Success|Tx A) = P(Success|Tx B) (หรือ b = c) ได้ χ² = ..., p = ... สรุปว่า ... | Kappa: P_o = ..., P_e = ..., κ = ... แสดงความสอดคล้องระดับ (Excellent >0.7 / Good 0.4–0.7 / Poor <0.4)",
           en: "McNemar: Ho: P(+ on 1st) = P(+ on 2nd) (b = c). χ² = ..., p = ..., OR = b/c = ... . Kappa: κ = ... indicates ... agreement."
@@ -2427,7 +2630,11 @@
           }
         ],
         stataGUI: "ANOVA: Statistics > Linear models and related > ANOVA/MANOVA > One-way ANOVA (ติ๊ก Bonferroni / Scheffe)\nKruskal-Wallis: Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > Kruskal-Wallis rank test",
-        stataCLI: `oneway score program, bonferroni   /* มี Bartlett's test + ANOVA + Bonferroni */\noneway score program, scheffe      /* Post-hoc Scheffe */\nanova score program                /* แสดง R-squared & Root MSE ด้วย */\nkwallis score, by(program)         /* Non-parametric ≥3 กลุ่ม */\ndunntest score, by(program)        /* Post-hoc ของ K-W (ssc install dunntest) */`,
+        stataImmediate: `sdtesti <#n1> <#m1_or_.> <#sd1> <#n2> <#m2_or_.> <#sd2>              /* ⚠️ ใส่ 6 ค่าเสมอ (ใส่ Mean หรือ .) */
+ttesti <#n1> <#m1> <#sd1> <#n2> <#m2> <#sd2>                           /* Unpaired t-test (เพิ่ม , unequal ได้) */
+display "F = " <#MSB>/<#MSW> "  p_F = " Ftail(<#k_minus_1>, <#N_minus_k>, <#F_stat>)
+display "alpha_bonf = " 0.05 / (<#k>*(<#k>-1)/2) "  p_KW = " chi2tail(<#k_minus_1>, <#H_stat>)`,
+        stataCLI: `oneway <outcome_cont> <group_cat>, bonferroni   /* Bartlett + ANOVA + Bonferroni */\noneway <outcome_cont> <group_cat>, scheffe      /* Post-hoc Scheffe */\nanova <outcome_cont> <group_cat>                /* แสดง R-squared & Root MSE ด้วย */\nkwallis <outcome_ord_cont>, by(<group_cat>)     /* Non-parametric >= 3 กลุ่ม */\ndunntest <outcome_ord_cont>, by(<group_cat>)    /* Post-hoc ของ K-W (ssc install dunntest) */`,
         templates: {
           th: "Ho: μ₁ = μ₂ = ... = μk (ค่าเฉลี่ยทุกกลุ่มเท่ากัน) | Ha: มีอย่างน้อย 1 คู่ที่ค่าเฉลี่ยแตกต่างกัน — Bartlett's test p = ... (>0.05 แสดงว่า Variance เท่ากัน) จาก ANOVA ได้ F = ..., p = ... (<0.05 ปฏิเสธ Ho) และ Bonferroni พบคู่ที่แตกต่างกันคือ ...",
           en: "Ho: μ₁ = μ₂ = ... = μk; Ha: at least one pair of means differs. Bartlett's test (p = ... > 0.05) supports equal variances. One-way ANOVA yields F(..., ...) = ..., p = ...; Bonferroni post-hoc shows significant differences between ..."
@@ -2493,7 +2700,15 @@
           }
         ],
         stataGUI: "Statistics > Power, precision, and sample size → เลือก Proportions / Means / Odds ratio → Two independent samples (ใส่ Significance level, Power, Allocation ratio, p1/p2 หรือ Means & SD, Sides)",
-        stataCLI: `power twoproportions 0.175 0.35, test(chi2) power(0.9)\npower twoproportions 0.35, test(chi2) rrisk(0.5) power(0.9)   /* Cohort */\npower twoproportions 0.3, test(chi2) oratio(3) power(0.9)     /* Case-control */\npower twoproportions 0.64 0.82, test(chi2) onesided           /* One-tailed */\npower twomeans 145 140, sd(10) power(0.9)                     /* หรือ diff(5) */\nsampsi .2 .25, power(0.5) onesample                           /* 1-sample prop */\nsampsi 120 125, sd(20) power(0.5) onesample                   /* 1-sample mean */`,
+        stataImmediate: `power twoproportions <#p1_grp1> <#p2_grp2>, test(chi2) power(<#power>)
+power twoproportions <#p2_nonexp>, test(chi2) rrisk(<#RR>) power(<#power>)     /* Cohort */
+power twoproportions <#p2_ctrlexp>, test(chi2) oratio(<#OR>) power(<#power>)    /* Case-Control */
+power twoproportions <#p1_grp1> <#p2_grp2>, test(chi2) onesided power(<#power>)
+power twomeans <#mean1> <#mean2>, sd(<#common_sd>) power(<#power>)
+power pairedmeans <#mean_pre> <#mean_post>, sddiff(<#sd_diff>) power(<#power>)
+sampsi <#p_or_m_expected> <#expected_plus_E>, power(0.5) onesample             /* 1-sample estimation */
+display "n_enroll = " ceil(<#n_per_group> / (1 - <#dropout_prop>))             /* เผื่อ Dropout ปัดขึ้นเสมอ! */`,
+        stataCLI: "",
         templates: {
           th: "ใช้สูตร ... แทนค่า Z_1-α/2 = ..., Z_1-β = ... ได้ n = ... (ปัดขึ้นเป็น ... ต่อกลุ่ม) เมื่อเผื่อ loss to follow-up / non-response d% ต้องรับเข้าศึกษา = n / (1 − d) = ... คน (รวม 2 กลุ่ม = ... คน)",
           en: "Using the ... formula with Z = ..., n = ... (rounded up). Accounting for d% non-response/dropout: n_enroll = n / (1 − d) = ... ."
@@ -2559,7 +2774,12 @@
           }
         ],
         stataGUI: "Correlation: Statistics > Summaries, tables, and tests > Summary and descriptive statistics > Pairwise correlations\nLinear Reg: Statistics > Linear models and related > Linear regression (Postestimation: Residual-versus-fitted plot / VIF)",
-        stataCLI: `scatter y x\npwcorr y x, sig                  /* Pearson r + p-value */\nspearman y x                     /* Spearman rho */\nregress bwt ht ui                /* Multiple linear regression */\nregress abp age wt bsa, beta     /* แสดง Standardized Beta */\nstepwise, pe(.2): regress bwt age i.race wt_lmp smoke ptl hyper\nestat vif                        /* เช็ก Multicollinearity (>10) */\nrvfplot                          /* Residual vs Fitted plot */`,
+        stataImmediate: `display "Y_hat = " <#b0> + <#b1>*<#X1> + <#b2>*<#X2>
+display "Adj_R2 = " 1 - (1 - <#R2>)*(<#n> - 1)/(<#n> - <#k> - 1) "  VIF = " 1/(1 - <#R2_j>)
+display "Beta_std = " <#b_j>*(<#SD_Xj>/<#SD_Y>) "  p_F = " Ftail(<#k>, <#n>-<#k>-1, <#F_model>)
+display "t_corr = " <#r>*sqrt((<#n>-2)/(1-<#r>^2)) "  p_corr = " 2*ttail(<#n>-2, abs(<#r>*sqrt((<#n>-2)/(1-<#r>^2))))
+display "Z_fisher = " (0.5*ln((1+<#r1>)/(1-<#r1>)) - 0.5*ln((1+<#r2>)/(1-<#r2>))) / sqrt(1/(<#n1>-3) + 1/(<#n2>-3))`,
+        stataCLI: `scatter <y_cont> <x_cont>\npwcorr <y_cont> <x_cont>, sig                                /* Pearson r + p-value */\nspearman <y_ord_cont> <x_ord_cont>                           /* Spearman rho */\nregress <outcome_cont> <pred1_cont> <pred2_bin01> ...        /* Multiple linear regression */\nregress <outcome_cont> <pred1_cont> <pred2_cont>, beta       /* แสดง Standardized Beta */\nstepwise, pe(<p_enter>): regress <outcome_cont> <pred1_cont> i.<pred_cat>\nestat vif                                                    /* เช็ก Multicollinearity (>10) */\nrvfplot                                                      /* Residual vs Fitted plot */`,
         templates: {
           th: "Correlation: r = ... (p = ...) มีความสัมพันธ์เชิงเส้นทางบวก/ลบในระดับ ... โดยอธิบายความผันแปรได้ R² = r² = ...% (แต่ความสัมพันธ์ ≠ สาเหตุ) | Multiple Reg: เมื่อ X_i เพิ่มขึ้น 1 หน่วย Y จะเพิ่ม/ลด B_i หน่วย เมื่อควบคุมตัวแปรอื่น ๆ ในสมการให้คงที่ และตัวแปรที่มีอิทธิพลมากที่สุดคือ ... (Standardized Beta สูงสุด)",
           en: "There is a strong positive/negative linear relationship (r = ..., p = ...); X explains R² = ...% of variation in Y. In MLR, holding other predictors constant, each 1-unit increase in X_i changes mean Y by B_i units."
@@ -2620,7 +2840,23 @@
           }
         ],
         stataGUI: "Logistic: Statistics > Binary outcomes > Logistic regression (เลือก logit หรือ logistic)\nMantel-Haenszel: Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio (By variable)",
-        stataCLI: `logit dm age bmi male famhx      /* แสดง Coef (β) & LR chi2 (แบบ Mock Exam Part 3) */\nlogistic dm age bmi male famhx   /* แสดง Adjusted OR โดยตรง */\nlogit dm age bmi, or             /* แสดง OR จากคำสั่ง logit */\nestat classification             /* ตารางทำนาย 2x2 Sensitivity/Specificity */\nlroc                             /* วาด ROC curve + AUC */\ncc coffee mi [fw=count], by(smoke) /* Mantel-Haenszel stratified OR */`,
+        stataImmediate: `display "aOR_1 = " exp(<#beta>) "  aOR_dX = " exp(<#delta>*<#beta>) "  95%CI: " exp(<#beta>-1.96*<#SE>) " to " exp(<#beta>+1.96*<#SE>)
+display "P = " 1/(1 + exp(-(<#b0> + <#b1>*<#X1> + <#b2>*<#X2>)))
+display "G = " -2*(<#LL_null> - <#LL_full>) "  p_LR = " chi2tail(<#df>, -2*(<#LL_null> - <#LL_full>))
+* Stratified Mantel-Haenszel (8 แถว สำหรับตัวแปรกวน 2 ชั้น):
+clear
+input stratum exp case cnt
+1 1 1 <#s1_exp_dis>
+1 1 0 <#s1_exp_nodis>
+1 0 1 <#s1_unexp_dis>
+1 0 0 <#s1_unexp_nodis>
+2 1 1 <#s2_exp_dis>
+2 1 0 <#s2_exp_nodis>
+2 0 1 <#s2_unexp_dis>
+2 0 0 <#s2_unexp_nodis>
+end
+cc case exp [fw=cnt], by(stratum)`,
+        stataCLI: `logit <outcome_bin01> <pred1_cont> <pred2_bin01> i.<pred3_cat>     /* แสดง Coef (β) & LR chi2 */\nlogistic <outcome_bin01> <pred1_cont> <pred2_bin01> i.<pred3_cat>  /* แสดง Adjusted OR โดยตรง */\nlogit <outcome_bin01> <pred1_cont> <pred2_bin01>, or               /* แสดง OR จากคำสั่ง logit */\nestat classification                                               /* ตารางทำนาย 2x2 Sens/Spec */\nlroc                                                               /* วาด ROC curve + AUC */\ncc <outcome_bin01> <exp_bin01> [fw=<count_var>], by(<confounder_cat>)`,
         templates: {
           th: "Binary (เช่น famhx): เมื่อควบคุมตัวแปรอื่น ๆ ให้คงที่ ผู้ที่มีประวัติครอบครัวเป็นเบาหวานมีแต้มต่อ (odds) ในการเป็นโรคเบาหวานเป็น aOR = ... เท่า เมื่อเทียบกับผู้ที่ไม่มีประวัติครอบครัว\nContinuous เพิ่ม Δ หน่วย (เช่น BMI +5): เมื่อควบคุมอายุ เพศ และประวัติครอบครัวให้คงที่ ทุกๆ BMI ที่เพิ่มขึ้น 5 kg/m² ผู้รับการตรวจจะมีแต้มต่อ (odds) ในการเป็นโรคเบาหวานเป็น e^(5×0.12) = 1.82 เท่า (หรือเพิ่มขึ้น 82%)",
           en: "Holding other predictors constant, having the risk factor is associated with an adjusted OR of ... (95% CI ...–...). For each Δ-unit increase in continuous X, the odds multiply by exp(Δ×β) = ... ."
@@ -2637,6 +2873,7 @@
     const STATA_LABS = {
       logit: {
         title: "Stata Output: logit dm age bmi male famhx (Mock Exam Part 3)",
+        syntax: "logit <outcome_bin01> <pred1_cont> <pred2_cont> <pred3_bin01> i.<pred4_cat>",
         defaultKey: "lr",
         html: `. <button type="button" class="hotspot-btn" data-hs="cmd">logit dm age bmi male famhx</button>
 
@@ -2672,6 +2909,7 @@ Log likelihood = <button type="button" class="hotspot-btn" data-hs="ll">-287.60<
       },
       regress: {
         title: "Stata Output: regress bwt ht ui & stepwise",
+        syntax: "regress <outcome_cont> <pred1_cont_or_bin01> i.<pred2_cat>  |  stepwise, pe(<p_enter>): regress <outcome_cont> <preds>",
         defaultKey: "r2",
         html: `. <button type="button" class="hotspot-btn" data-hs="cmd">regress bwt ht ui</button>
 
@@ -2703,6 +2941,7 @@ Log likelihood = <button type="button" class="hotspot-btn" data-hs="ll">-287.60<
       },
       oneway: {
         title: "Stata Output: oneway score program, bon & kwallis",
+        syntax: "oneway <outcome_cont> <group_cat>, bonferroni  |  kwallis <outcome_ord_cont>, by(<group_cat>)",
         defaultKey: "bart",
         html: `. <button type="button" class="hotspot-btn" data-hs="cmd">oneway score program, bon</button>
 
@@ -2741,6 +2980,7 @@ chi-squared with ties = 12.903 with 3 d.f.  |  <button type="button" class="hots
       },
       epi: {
         title: "Stata Output: tab chi2, cci, and cc (Mantel–Haenszel)",
+        syntax: "cci <#case_exp> <#case_unexp> <#ctrl_exp> <#ctrl_unexp>  |  cc <outcome_bin01> <exp_bin01> [freq=<count_var>], by(<confounder_cat>)",
         defaultKey: "mh",
         html: `. <button type="button" class="hotspot-btn" data-hs="cci">cci 21 26 170 273</button>
                  |   Exposed   Unexposed  |      Total
@@ -2772,6 +3012,7 @@ Test that combined OR = 1:  Mantel-Haenszel chi2(1) =  43.58  Pr&gt;chi2 = 0.000
       },
       power: {
         title: "Stata Output: power twoproportions / twomeans / sampsi / pwcorr",
+        syntax: "power twoproportions <p2>, test(chi2) oratio(<OR>) power(<1-beta>)  |  power twomeans <mean1>, diff(<delta>) sd(<sd>)  |  sampsi <p0> <p0+E>, power(0.5) onesample",
         defaultKey: "p2p",
         html: `. <button type="button" class="hotspot-btn" data-hs="p2p">power twoproportions 0.3, test(chi2) oratio(3) power(0.9)</button>
 Study parameters:  alpha = 0.0500   power = 0.9000   p1 = 0.3000   p2 = <button type="button" class="hotspot-btn" data-hs="p2_or">0.5625</button>   odds ratio = 3.0000
@@ -2793,24 +3034,115 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
       }
     };
 
+    const STATA_IMMEDIATE_COOKBOOK = [
+      {
+        title: "1) ตาราง 2×2, เปรียบเทียบ 2 สัดส่วน & ความสอดคล้อง",
+        badge: "Built-in Immediate",
+        note: "ใส่จำนวนคนหรือค่าสัดส่วนจากโจทย์ลงใน &lt;...&gt; เพื่อรัน χ², Fisher's exact, 2-prop Z-test, 95% CI สัดส่วน, McNemar และ Kappa (ไม่มี kapi ใน Stata ต้องป้อน 4 แถวด้วย input)",
+        cmd: `tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, chi2 expected row col
+tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, exact
+prtesti <#n1> <#events1> <#n2> <#events2>, count
+prtesti <#n1> <#p1_dec> <#n2> <#p2_dec>
+cii proportions <#total_n> <#events>
+mcci <#both_pos> <#case_pos_ctrl_neg> <#case_neg_ctrl_pos> <#both_neg>
+* Kappa จากตาราง 2×2 ไม่มีไฟล์ .dta:
+clear
+input r1 r2 cnt
+1 1 <#both_1>
+1 0 <#r1_1_r2_0>
+0 1 <#r1_0_r2_1>
+0 0 <#both_0>
+end
+kap r1 r2 [fw=cnt]`
+      },
+      {
+        title: "2) Risk Ratio (csi), Odds Ratio (cci) & Mantel-Haenszel",
+        badge: "⚠️ เช็กลำดับเลข csi!",
+        note: "กับดักสำคัญของ Stata: <code>csi #1 #2 #3 #4</code> เอา <b>ป่วย (Cases) อยู่แถวบน</b> (<code>#exp_dis #unexp_dis</code>) แล้วค่อย <b>ไม่ป่วย</b> (<code>#exp_nodis #unexp_nodis</code>) — สลับกับตาราง Cohort ปกติ! ส่วน <code>cci</code> เรียง Cases(+,-) แล้ว Controls(+,-)",
+        cmd: `csi <#exp_dis> <#unexp_dis> <#exp_nodis> <#unexp_nodis>   /* ⚠️ ป่วยซ้าย-ขวา ก่อน ไม่ป่วยซ้าย-ขวา! */
+cci <#case_exp> <#case_unexp> <#ctrl_exp> <#ctrl_unexp>, woolf
+* Stratified Mantel-Haenszel (8 แถว สำหรับตัวแปรกวน 2 ชั้น):
+clear
+input stratum exp case cnt
+1 1 1 <#s1_exp_dis>
+1 1 0 <#s1_exp_nodis>
+1 0 1 <#s1_unexp_dis>
+1 0 0 <#s1_unexp_nodis>
+2 1 1 <#s2_exp_dis>
+2 1 0 <#s2_exp_nodis>
+2 0 1 <#s2_unexp_dis>
+2 0 0 <#s2_unexp_nodis>
+end
+cc case exp [fw=cnt], by(stratum)`
+      },
+      {
+        title: "3) ค่าเฉลี่ย (ttesti), ความแปรปรวน (sdtesti) & Diagnostic Test",
+        badge: "Built-in + display",
+        note: "แก้โจทย์ 1-Sample / Paired t-test (ส่ง mean_diff, sd_diff เทียบกับ 0), Unpaired t-test (เช็ก variance ก่อนด้วย sdtesti), และคำนวณ Sens/Spec/PPV/NPV พร้อม Exact 95% CI",
+        cmd: `ttesti <#n> <#mean_or_diff> <#sd_or_sddiff> <#mu0_or_0>
+sdtesti <#n1> <#m1_or_.> <#sd1> <#n2> <#m2_or_.> <#sd2>   /* ⚠️ ใส่ 6 ค่าเสมอ (คั่น Mean หรือ .); ถ้า 4 ค่า Stata จะทำ 1-sample! */
+ttesti <#n1> <#m1> <#sd1> <#n2> <#m2> <#sd2>
+ttesti <#n1> <#m1> <#sd1> <#n2> <#m2> <#sd2>, unequal
+* Diagnostic Test (TP, FP, FN, TN จากตาราง 2×2):
+display "Sens=" <#TP>/(<#TP>+<#FN>) "  Spec=" <#TN>/(<#FP>+<#TN>) "  PPV=" <#TP>/(<#TP>+<#FP>) "  NPV=" <#TN>/(<#FN>+<#TN>)
+display "Acc=" (<#TP>+<#TN>)/(<#TP>+<#FP>+<#FN>+<#TN>) "  LR+=" (<#TP>/(<#TP>+<#FN>))/(1-<#TN>/(<#FP>+<#TN>))
+cii proportions <#TP_plus_FN> <#TP>   /* Exact 95% CI ของ Sens (เปลี่ยนตัวเศษ-ส่วนเป็น Spec/PPV/NPV ได้เลย) */`
+      },
+      {
+        title: "4) คำนวณขนาดตัวอย่าง (power / sampsi) & ปรับ Dropout",
+        badge: "Power & Precision",
+        note: "เติมค่า α, Power (1−β), สัดส่วน/ค่าเฉลี่ย, SD แล้วกด Enter; อย่าลืมใช้ <code>ceil(n / (1 − d))</code> เพื่อเผื่อ Dropout โดยปัดขึ้นเสมอ!",
+        cmd: `power twoproportions <#p1> <#p2>, power(<#power>)
+power twoproportions <#p1>, rrisk(<#RR>) power(<#power>)
+power twoproportions <#p1>, oratio(<#OR>) power(<#power>)
+power twomeans <#m1> <#m2>, sd(<#sd>) power(<#power>)
+power twomeans <#m1> <#m2>, sd1(<#sd1>) sd2(<#sd2>) power(<#power>)
+power pairedmeans <#m_diff> 0, sddiff(<#sd_diff>) power(<#power>)
+sampsi <#p0_or_m0> <#p0_plus_E>, power(0.5) onesample
+display "n_enroll = " ceil(<#n_per_group> / (1 - <#dropout_prop>))`
+      },
+      {
+        title: "5) สูตร Regression, ANOVA & Correlation (display Calculator)",
+        badge: "Formula Calculator",
+        note: "คำนวณค่าทำนาย Ŷ, Adj R², VIF, Standardized Beta, aOR จาก <code>logit</code> (ทั้ง 1 หน่วยและ Δ หน่วย), Predicted P, LR Test <code>G</code>, Fisher's <code>Z</code> เทียบ 2 ค่า r",
+        cmd: `display "Y_hat = " <#b0> + <#b1>*<#X1> + <#b2>*<#X2>
+display "Adj_R2 = " 1 - (1 - <#R2>)*(<#n> - 1)/(<#n> - <#p> - 1) "  VIF = " 1/(1 - <#R2_j>)
+display "Beta_std = " <#b_j> * (<#SD_Xj> / <#SD_Y>)
+display "OR_1u = " exp(<#beta>) "  OR_dX = " exp(<#delta>*<#beta>) "  P = " 1/(1 + exp(-(<#logit_Z>)))
+display "G = " -2*(<#LL_null> - <#LL_full>) "  p_G = " chi2tail(<#df>, -2*(<#LL_null> - <#LL_full>))
+display "t_corr = " <#r>*sqrt((<#n>-2)/(1-<#r>^2)) "  p = " 2*ttail(<#n>-2, abs(<#r>*sqrt((<#n>-2)/(1-<#r>^2))))
+display "Z_fisher = " (0.5*ln((1+<#r1>)/(1-<#r1>)) - 0.5*ln((1+<#r2>)/(1-<#r2>))) / sqrt(1/(<#n1>-3) + 1/(<#n2>-3))`
+      },
+      {
+        title: "6) เปิดตารางวิกฤต & หา Exact p-value แทนตารางท้ายเล่ม",
+        badge: "แทนเปิดตาราง Z / t / χ² / F",
+        note: "หาค่าวิกฤต <code>Z</code>, <code>t</code>, <code>χ²</code>, <code>F</code> และแปลงค่าสถิติจากตารางปิดช่อง (Blank-Table) เป็น Exact two-sided / right-tail p-value ได้ทันที",
+        cmd: `display "Z(0.05,2side)=" invnormal(0.975) "  Z(0.05,1side)=" invnormal(0.95) "  Z(power80)=" invnormal(0.80)
+display "t_crit = " invttail(<#df>, 0.025) "  chi2_crit = " invchi2tail(<#df>, 0.05) "  F_crit = " invFtail(<#df1>, <#df2>, 0.05)
+display "p_Z = " 2*(1 - normal(abs(<#Z_stat>)))
+display "p_t = " 2*ttail(<#df>, abs(<#t_stat>))
+display "p_chi2 = " chi2tail(<#df>, <#chi2_stat>) "  p_F = " Ftail(<#df1>, <#df2>, <#F_stat>)`
+      }
+    ];
+
     const STATA_MASTER_ROWS = [
-      ["Pearson χ² & Fisher's exact", "tab y x, chi2 expected exact", "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table with measures of association", "ดู E ≥ 5 ≥80% ก่อน; ตารางเล็กใช้ exact"],
-      ["2-proportion Z-test + 95% CI", "prtest y, by(group)", "Statistics > Summaries, tables, and tests > Classical tests of hypotheses > Test of proportions", "ได้ 95% CI ของ (P₁ − P₂) ที่ tab ไม่มี"],
-      ["Case-Control OR (Immediate / Data)", "cci a b c d  |  cc case exp", "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio...", "a=Case+, b=Case-, c=Ctrl+, d=Ctrl-"],
-      ["Cohort RR & RD (Immediate / Data)", "csi a b c d  |  cs out exp", "Statistics > Epidemiology and related > Tables for epidemiologists > Cohort study risk-ratio...", "แถว 1 = Exposed, แถว 2 = Unexposed"],
-      ["Mantel-Haenszel (Stratified)", "cc out exp [fw=cnt], by(stratum)", "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio (By)", "เช็ก Test of homogeneity p > 0.05 ก่อนรวม"],
-      ["McNemar's test (Paired Binary)", "mcc case ctrl  |  mcci a b c d", "Statistics > Epidemiology and related > Tables for epidemiologists > Matched case-control studies", "ได้ χ², exact p, และ OR = b/c"],
-      ["Cohen's Kappa (Agreement)", "kap rater1 rater2", "Statistics > Epidemiology and related > Other > Interrater agreement, two unique raters", "เมื่อไม่มี Gold Standard"],
-      ["Diagnostic Sens / Spec / PPV / NPV", "tab test gold, col row  (หรือ diagt)", "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table...", "diagt ต้อง ssc install diagt"],
-      ["Paired & Unpaired t-test", "ttest y1==y2  |  ttest y, by(grp)", "Statistics > Summaries, tables, and tests > Classical tests of hypotheses > t test", "เพิ่ม , unequal ถ้า variance ไม่เท่า"],
-      ["Wilcoxon Signed-Rank / Rank-Sum", "signrank y1=y2  |  ranksum y, by(g)", "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > ...", "ใช้แทน t-test เมื่อข้อมูลเบ้ / Ordinal"],
-      ["One-way ANOVA + Post-hoc", "oneway y grp, bonferroni  (หรือ sch)", "Statistics > Linear models and related > ANOVA/MANOVA > One-way ANOVA", "เช็ก Bartlett p > 0.05 ก่อนดู F"],
-      ["Kruskal-Wallis + Dunn's test", "kwallis y, by(g)  |  dunntest y, by(g)", "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > Kruskal-Wallis...", "dunntest ต้อง ssc install dunntest"],
-      ["Sample size: 2 Proportions / Means", "power twoproportions ... | twomeans ...", "Statistics > Power, precision, and sample size", "ใส่ rrisk(), oratio(), onesided, power(0.9) ได้"],
-      ["Sample size: 1-Sample Est.", "sampsi p0 p1, power(0.5) onesample", "Command line (หรือ Power > One sample)", "ผลที่ได้ยังต้องหาร (1 − %dropout) เพิ่ม"],
-      ["Pearson & Spearman Correlation", "pwcorr y x, sig  |  spearman y x", "Statistics > Summaries, tables, and tests > Summary and descriptive > Pairwise correlations", "วาด scatter y x ดูก่อนเสมอ"],
-      ["Linear Regression & Diagnostics", "regress y x i.cat, beta  |  estat vif  |  rvfplot", "Statistics > Linear models and related > Linear regression", "stepwise, pe(.2): regress ..."],
-      ["Binary Logistic Regression", "logit y x1 x2  |  logistic y x1 x2", "Statistics > Binary outcomes > Logistic regression", "logit ให้ β, logistic ให้ OR; estat classification / lroc"]
+      ["Pearson χ² & Fisher's exact", "⚡ tabi <#r1c1> <#r1c2> \\ <#r2c1> <#r2c2>, chi2 expected exact  |  .dta: tab <row_cat> <col_cat>, chi2 expected exact", "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table with measures of association", "ดู E ≥ 5 ≥80% ก่อน; ตารางเล็กใช้ exact"],
+      ["2-proportion Z-test + 95% CI", "⚡ prtesti <#n1> <#ev1> <#n2> <#ev2>, count  |  .dta: prtest <outcome_bin01>, by(<group_2cat>)", "Statistics > Summaries, tables, and tests > Classical tests of hypotheses > Test of proportions", "ได้ 95% CI ของ (P₁ − P₂) ที่ tab ไม่มี"],
+      ["Case-Control OR (Immediate / Data)", "⚡ cci <#case+> <#case-> <#ctrl+> <#ctrl->, woolf  |  .dta: cc <case_bin01> <exp_bin01>", "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio...", "ลำดับเลข: Cases(+,-) แล้ว Controls(+,-)"],
+      ["Cohort RR & RD (⚠️ Immediate / Data)", "⚡ csi <#exp_dis> <#unexp_dis> <#exp_nodis> <#unexp_nodis>  |  .dta: cs <out_bin01> <exp_bin01>", "Statistics > Epidemiology and related > Tables for epidemiologists > Cohort study risk-ratio...", "⚠️ csi แถว 1 = ป่วย(+ ซ้าย-ขวา), แถว 2 = ไม่ป่วย!"],
+      ["Mantel-Haenszel (Stratified)", "⚡ input stratum exp case cnt (8 แถว) -> cc case exp [fw=cnt], by(stratum)  |  .dta: cc <out> <exp>, by(<conf>)", "Statistics > Epidemiology and related > Tables for epidemiologists > Case-control odds ratio (By)", "เช็ก Test of homogeneity p > 0.05 ก่อนรวม"],
+      ["McNemar's test (Paired Binary)", "⚡ mcci <#++> <#+-> <#-+> <#-->  |  .dta: mcc <case_bin01> <ctrl_bin01>", "Statistics > Epidemiology and related > Tables for epidemiologists > Matched case-control studies", "ได้ χ², exact p, และ OR = b/c"],
+      ["Cohen's Kappa (Agreement)", "⚡ input r1 r2 cnt (4 แถว) -> kap r1 r2 [fw=cnt]  |  .dta: kap <rater1_cat> <rater2_cat>", "Statistics > Epidemiology and related > Other > Interrater agreement, two unique raters", "ไม่มี kapi! ต้อง input 4 แถวเมื่อไม่มี .dta"],
+      ["Diagnostic Sens / Spec / PPV / NPV", "⚡ display / cii proportions <#TP_plus_FN> <#TP>  |  .dta: tab <newtest_bin01> <gold_bin01>, col row", "Statistics > Summaries, tables, and tests > Frequency tables > Two-way table...", "diagt <gold> <test> ต้อง ssc install diagt"],
+      ["Paired & Unpaired t-test", "⚡ ttesti <#n1> <#m1> <#sd1> [<#n2> <#m2> <#sd2>] / sdtesti  |  .dta: ttest <y>, by(<grp>)", "Statistics > Summaries, tables, and tests > Classical tests of hypotheses > t test", "เพิ่ม , unequal ถ้า variance ไม่เท่า"],
+      ["Wilcoxon Signed-Rank / Rank-Sum", "⚡ display Z-approx / 2*(1-normal(abs(<Z>)))  |  .dta: signrank / ranksum <y>, by(<grp>)", "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > ...", "ไม่มีคำสั่ง Immediate สำหรับ rank test โดยตรง"],
+      ["One-way ANOVA + Post-hoc", "⚡ display Ftail(<#df_b>, <#df_w>, <#F>)  |  .dta: oneway <y_cont> <group_cat>, bonferroni", "Statistics > Linear models and related > ANOVA/MANOVA > One-way ANOVA", "เช็ก Bartlett p > 0.05 ก่อนดู F"],
+      ["Kruskal-Wallis + Dunn's test", "⚡ display chi2tail(<#k-1>, <#H_stat>)  |  .dta: kwallis <y>, by(<grp>) | dunntest", "Statistics > Summaries, tables, and tests > Nonparametric tests of hypotheses > Kruskal-Wallis...", "dunntest ต้อง ssc install dunntest"],
+      ["Sample size: 2 Proportions / Means", "⚡ power twoproportions <#p1> <#p2>, power(<1-beta>)  |  power twomeans <#m1> <#m2>, sd(<#sd>) power(<1-beta>)", "Statistics > Power, precision, and sample size", "ใส่ rrisk(<#RR>), oratio(<#OR>), onesided ได้"],
+      ["Sample size: 1-Sample & Dropout", "⚡ sampsi <#p_or_m_0> <#exp+E>, power(0.5) onesample  |  display ceil(<#n>/(1-<#drop>))", "Command line (หรือ Power > One sample)", "ผลที่ได้ต้องหาร (1 − %dropout) แล้วปัดขึ้นเสมอ"],
+      ["Pearson & Spearman Correlation", "⚡ display t_corr / Fisher Z_fisher  |  .dta: pwcorr <y> <x>, sig | spearman <y> <x>", "Statistics > Summaries, tables, and tests > Summary and descriptive > Pairwise correlations", "วาด scatter <y_cont> <x_cont> ดูก่อนเสมอ"],
+      ["Linear Regression & Diagnostics", "⚡ display Y_hat / Adj_R2 / VIF / Ftail  |  .dta: regress <y> <x1> i.<x2>, beta | estat vif", "Statistics > Linear models and related > Linear regression", "stepwise, pe(<p_enter>): regress <y_cont> ..."],
+      ["Binary Logistic Regression", "⚡ display exp(<#beta>) / exp(<#d>*<#beta>) / P / chi2tail  |  .dta: logit / logistic / lroc", "Statistics > Binary outcomes > Logistic regression", "logit ให้ β, logistic ให้ OR; estat classification"]
     ];
 
     /* ---------- 4. TRAPS MATRIX ---------- */
@@ -3047,14 +3379,769 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
       }
     ];
 
+    /* ---------- 5B. BLANK-TABLE FORMULA BLUEPRINTS & SOLVER DRILLS ---------- */
+    const BLANK_BLUEPRINTS = [
+      {
+        id: "bp-anova",
+        title: "1) One-way ANOVA Table & Post-hoc Formula Map",
+        badge: "Lecture 11 (Stata oneway / anova & SPSS)",
+        viewJump: "view-anova",
+        tables: [
+          {
+            caption: "ตาราง ANOVA หลัก (แก้เดินหน้า + แก้ย้อนกลับได้ทุกช่อง)",
+            headers: ["Source", "SS (Sum of Squares)", "df (Degrees of Freedom)", "MS (Mean Square)", "F", "Prob > F"],
+            rows: [
+              {
+                head: "Between groups<br><span class='cell-sub'>(Model)</span>",
+                cells: [
+                  { m: "SSB = SST − SSW", s: "หรือ MSB × df<sub>B</sub> หรือ ∑nᵢ(ȳᵢ−ȳ)²" },
+                  { m: "df<sub>B</sub> = k − 1", s: "หรือ df<sub>T</sub> − df<sub>W</sub> หรือ SSB / MSB" },
+                  { m: "MSB = SSB / df<sub>B</sub>", s: "หรือ F × MSW" },
+                  { m: "F = MSB / MSW", s: "ถ้ามี F &amp; MSB → MSW = MSB / F" },
+                  { m: "เปิดตาราง F(df<sub>B</sub>, df<sub>W</sub>)", s: "p &lt; 0.05 → Reject Ho (ต้องเช็ก Bartlett p &gt; 0.05 ก่อน!)" }
+                ]
+              },
+              {
+                head: "Within groups<br><span class='cell-sub'>(Residual / Error)</span>",
+                cells: [
+                  { m: "SSW = SST − SSB", s: "หรือ MSW × df<sub>W</sub> หรือ ∑(nᵢ−1)Sᵢ²" },
+                  { m: "df<sub>W</sub> = N − k", s: "หรือ df<sub>T</sub> − df<sub>B</sub> หรือ SSW / MSW" },
+                  { m: "MSW = SSW / df<sub>W</sub>", s: "เท่ากับ Pooled variance S<sub>p</sub>² (หรือ MSB / F)" },
+                  { m: "—", s: "" },
+                  { m: "—", s: "" }
+                ]
+              },
+              {
+                head: "Total",
+                cells: [
+                  { m: "SST = SSB + SSW", s: "หรือ MST × df<sub>T</sub>" },
+                  { m: "df<sub>T</sub> = N − 1", s: "= df<sub>B</sub> + df<sub>W</sub> (รู้ df<sub>T</sub> → N = df<sub>T</sub> + 1)" },
+                  { m: "MST = SST / df<sub>T</sub>", s: "Total Mean Square (Variance รวม)" },
+                  { m: "—", s: "" },
+                  { m: "—", s: "" }
+                ]
+              }
+            ]
+          }
+        ],
+        metrics: [
+          ["R²", "SSB / SST = 1 − (SSW / SST)"],
+          ["Adj R²", "1 − [ (SSW / df<sub>W</sub>) / (SST / df<sub>T</sub>) ] = 1 − (MSW / MST)"],
+          ["Root MSE", "√MSW"],
+          ["จำนวนคู่เปรียบเทียบ (C)", "k(k − 1) / 2"],
+          ["Bonferroni α ต่อคู่", "α<sub>overall</sub> / C"]
+        ],
+        tricks: [
+          "<strong>หาจำนวนกลุ่ม (k) กับจำนวนคน (N) จาก df:</strong> <code>k = df_B + 1</code> และ <code>N = df_T + 1</code> เช่น df_B = 4, df_W = 15 → df_T = 19 → <code>N = 20 คน, k = 5 กลุ่ม</code>!",
+          "<strong>ถ้าปิดช่อง SS แต่ให้ MS กับ F มา:</strong> คูณกลับด้วย <code>SS = MS × df</code> และแก้ย้อนจาก F ด้วย <code>MSB = F × MSW</code> หรือ <code>MSW = MSB / F</code>"
+        ]
+      },
+      {
+        id: "bp-linreg",
+        title: "2) Simple & Multiple Linear Regression (ANOVA + Coefficients)",
+        badge: "Lecture 13 & Print 4 (Stata regress / SPSS)",
+        viewJump: "view-linreg",
+        tables: [
+          {
+            caption: "ตารางส่วนบน: Regression ANOVA Block",
+            headers: ["Source", "SS", "df", "MS", "ค่าสรุปขวา (Stata Header)"],
+            rows: [
+              {
+                head: "Model<br><span class='cell-sub'>(Regression)</span>",
+                cells: [
+                  { m: "SSR = SST − SSE", s: "หรือ MSM × k หรือ R² × SST" },
+                  { m: "df<sub>M</sub> = k", s: "จำนวน IV ในโมเดล (ไม่นับ _cons!)" },
+                  { m: "MSM = SSR / k", s: "หรือ F × MSE" },
+                  { m: "F(k, n−k−1) = MSM / MSE", s: "Simple Reg (k=1): F = t² ของ slope!" }
+                ]
+              },
+              {
+                head: "Residual<br><span class='cell-sub'>(Error)</span>",
+                cells: [
+                  { m: "SSE = SST − SSR", s: "หรือ MSE × (n − k − 1)" },
+                  { m: "df<sub>R</sub> = n − k − 1", s: "หรือ df<sub>T</sub> − k" },
+                  { m: "MSE = SSE / df<sub>R</sub>", s: "= (Root MSE)²" },
+                  { m: "Root MSE = √MSE", s: "SPSS เรียก Std. Error of Estimate" }
+                ]
+              },
+              {
+                head: "Total",
+                cells: [
+                  { m: "SST = SSR + SSE", s: "หรือ MST × (n − 1)" },
+                  { m: "df<sub>T</sub> = n − 1", s: "= df<sub>M</sub> + df<sub>R</sub> → n = df<sub>T</sub> + 1" },
+                  { m: "MST = SST / (n − 1)", s: "= Var(Y)" },
+                  { m: "R² = SSR / SST", s: "Adj R² = 1 − [ (SSE/df<sub>R</sub>) / (SST/df<sub>T</sub>) ] = 1 − MSE/MST" }
+                ]
+              }
+            ]
+          },
+          {
+            caption: "ตารางส่วนล่าง: Coefficients Table (ทั้ง Stata และ SPSS)",
+            headers: ["Variable", "Coef. (B)", "Std. Err. (SE)", "t", "95% Conf. Interval", "Std. Beta (SPSS / ,beta)"],
+            rows: [
+              {
+                head: "Xᵢ และ _cons",
+                cells: [
+                  { m: "Bᵢ = t × SE", s: "หรือกึ่งกลาง CI = (Lower + Upper) / 2" },
+                  { m: "SEᵢ = Bᵢ / t", s: "หรือ (Upper − Lower) / (2 × t<sub>crit</sub>)<br>n ใหญ่ t<sub>crit</sub> ≈ 1.96" },
+                  { m: "t = Bᵢ / SEᵢ", s: "|t| &gt; t<sub>0.975, df_R</sub> (≈1.96) → p &lt; 0.05" },
+                  { m: "Bᵢ ± t<sub>crit</sub> · SEᵢ", s: "เช็ก <strong>คร่อม 0</strong> หรือไม่ (n ใหญ่ใช้ ± 1.96·SE)" },
+                  { m: "Betaᵢ = Bᵢ × (SD<sub>Xᵢ</sub> / SD<sub>Y</sub>)", s: "เทียบอิทธิพลในโมเดล (|Beta| สูงสุด = แรงสุด)" }
+                ]
+              }
+            ]
+          }
+        ],
+        metrics: [
+          ["Simple Linear Reg (k = 1)", "R² = r² และ t² = F(1, n−2)"],
+          ["VIF (Multicollinearity)", "VIF = 1 / (1 − R²<sub>Xᵢ</sub>) > 10 = มีปัญหา"],
+          ["สมการทำนาย", "Ŷ = B<sub>_cons</sub> + B₁X₁ + ... + B<sub>k</sub>X<sub>k</sub>"]
+        ],
+        tricks: [
+          "<strong>โจทย์ปิด Coef. หรือ SE แต่ให้ 95% CI มา:</strong> ค่า <code>Coef.</code> คือค่าเฉลี่ยตรงกลางระหว่างขอบล่างและขอบบน <code>(Lower + Upper) / 2</code> เสมอ!",
+          "<strong>โจทย์ปิด MS_Residual แต่ให้ Root MSE มา:</strong> ยกกำลังสองได้ทันที <code>MSE = (Root MSE)²</code> แล้วคูณ <code>df_R</code> จะได้ <code>SSE</code>!"
+        ]
+      },
+      {
+        id: "bp-logistic",
+        title: "3) Multiple Logistic Regression & Classification 2×2",
+        badge: "Nov 5 + Mock Exam Part 3 (Stata logit/logistic & SPSS)",
+        viewJump: "view-logistic",
+        tables: [
+          {
+            caption: "Stata Model Header (Log Likelihood, LR chi2, Pseudo R²)",
+            headers: ["ส่วนที่", "Number of obs (n)", "LR chi2(k) / G", "Log likelihood (lnL_full)", "Null LogL (lnL_null)", "Pseudo R² (McFadden)"],
+            rows: [
+              {
+                head: "Model Fit",
+                cells: [
+                  { m: "n จากข้อมูลจริง", s: "อาจน้อยกว่า sample รวมถ้ามี missing" },
+                  { m: "G = −2(lnL<sub>null</sub> − lnL<sub>full</sub>)", s: "df = k ตัวแปรในโมเดล (ไม่นับ _cons)" },
+                  { m: "lnL<sub>full</sub>", s: "หรือ lnL<sub>null</sub> + (LR chi2 / 2)" },
+                  { m: "lnL<sub>null</sub> = lnL<sub>full</sub> − (LR chi2 / 2)", s: "หรือ lnL<sub>full</sub> / (1 − Pseudo R²)" },
+                  { m: "1 − (lnL<sub>full</sub> / lnL<sub>null</sub>)", s: "เทียบระหว่างโมเดลที่ใช้ข้อมูลชุดเดียวกัน" }
+                ]
+              }
+            ]
+          },
+          {
+            caption: "ตัวแปรในตาราง Stata (logit) เทียบ SPSS (Exp(B), Wald)",
+            headers: ["Column", "β / Coef. (B)", "Std. Err. (SE)", "Stata z | SPSS Wald", "aOR / Exp(B)", "[95% CI]"],
+            rows: [
+              {
+                head: "Xᵢ (และ _cons)",
+                cells: [
+                  { m: "β = z × SE", s: "หรือ ln(aOR) หรือ (L<sub>β</sub>+U<sub>β</sub>)/2" },
+                  { m: "SE = β / z", s: "หรือ (U<sub>β</sub> − L<sub>β</sub>) / (2 × 1.96)" },
+                  { m: "z = β / SE", s: "SPSS: Wald = z² = (B / SE)² (df=1)" },
+                  { m: "aOR = e<sup>β</sup>", s: "เพิ่ม Δ หน่วย: e<sup>Δ·β</sup> (e ≈ 2.718)" },
+                  { m: "บน β: β ± 1.96·SE<br>บน OR: exp(β ± 1.96·SE)", s: "β เช็กคร่อม <strong>0</strong> | OR เช็กคร่อม <strong>1</strong>" }
+                ]
+              }
+            ]
+          },
+          {
+            caption: "Classification Table 2×2 (จุดตัด P ≥ 0.50 — Nov 5 Slide 50–51)",
+            headers: ["Predicted \\ Observed", "Disease / Event (+)", "Normal / No Event (−)", "Total Predicted"],
+            rows: [
+              {
+                head: "Classified (+)",
+                cells: [
+                  { m: "a (TP)", s: "PPV = a / (a + b)" },
+                  { m: "b (FP)", s: "Row Total = a + b" },
+                  { m: "a + b", s: "" }
+                ]
+              },
+              {
+                head: "Classified (−)",
+                cells: [
+                  { m: "c (FN)", s: "c = Col₁ − a" },
+                  { m: "d (TN)", s: "NPV = d / (c + d)" },
+                  { m: "c + d", s: "" }
+                ]
+              },
+              {
+                head: "Total Observed",
+                cells: [
+                  { m: "a + c", s: "Sens = a / (a + c)" },
+                  { m: "b + d", s: "Spec = d / (b + d)" },
+                  { m: "N = a+b+c+d", s: "Accuracy = (a + d) / N" }
+                ]
+              }
+            ]
+          }
+        ],
+        metrics: [
+          ["สมการ Logit & ความน่าจะเป็น", "logit = β₀+∑βᵢXᵢ  →  P = 1 / (1 + e<sup>−logit</sup>)"],
+          ["แปลง LR → Null LogL", "lnL<sub>null</sub> = lnL<sub>full</sub> − (LR chi2 / 2)"]
+        ],
+        tricks: [
+          "<strong>สลับระหว่าง Stata z กับ SPSS Wald:</strong> จำแค่ <code>Wald = z²</code> และกลับด้าน <code>|z| = √Wald</code> (เช่น Wald = 16 → |z| = 4)!",
+          "<strong>แก้ย้อนกลับจาก Adjusted OR ในตาราง <code>logistic</code>:</strong> <code>β = ln(OR)</code> และ <code>SE(ln OR) = [ln(U<sub>OR</sub>) − ln(L<sub>OR</sub>)] / 3.92</code>!"
+        ]
+      },
+      {
+        id: "bp-2x2",
+        title: "4) 2×2 Contingency / Epidemiologic / Diagnostic Tables",
+        badge: "Lectures 9–10 + RR/OR2",
+        viewJump: "view-cat",
+        tables: [
+          {
+            caption: "ตาราง 2×2 มาตรฐาน (Observed O, Expected E, Cell χ²)",
+            headers: ["Group / Test \\ Outcome / Gold", "Event / Disease (+)", "No Event / No Dis (−)", "Row Total"],
+            rows: [
+              {
+                head: "Exposed / Cases / Test (+)",
+                cells: [
+                  { m: "O₁₁ = a", s: "E₁₁ = (Row₁×Col₁)/N<br>χ²₁₁ = (a−E₁₁)²/E₁₁" },
+                  { m: "O₁₂ = b", s: "E₁₂ = Row₁ − E₁₁<br>χ²₁₂ = (b−E₁₂)²/E₁₂" },
+                  { m: "Row₁ = a + b", s: "Risk₁ = a / (a+b) | Odds₁ = a/b" }
+                ]
+              },
+              {
+                head: "Unexposed / Controls / Test (−)",
+                cells: [
+                  { m: "O₂₁ = c", s: "E₂₁ = Col₁ − E₁₁<br>χ²₂₁ = (c−E₂₁)²/E₂₁" },
+                  { m: "O₂₂ = d", s: "E₂₂ = Row₂ − E₂₁<br>χ²₂₂ = (d−E₂₂)²/E₂₂" },
+                  { m: "Row₂ = c + d", s: "Risk₀ = c / (c+d) | Odds₀ = c/d" }
+                ]
+              },
+              {
+                head: "Column Total",
+                cells: [
+                  { m: "Col₁ = a + c", s: "Sens = a / (a + c)" },
+                  { m: "Col₂ = b + d", s: "Spec = d / (b + d)" },
+                  { m: "N = a+b+c+d", s: "Pearson χ² = ∑(O−E)²/E = N(ad−bc)²/(Row₁Row₂Col₁Col₂)" }
+                ]
+              }
+            ]
+          }
+        ],
+        metrics: [
+          ["Cohort / Cross-sect", "RR (PR) = [a/(a+b)] / [c/(c+d)]  |  RD = I₁ − I₀"],
+          ["Unmatched Case-Control", "OR = ad / bc  |  SE(ln OR) = √(1/a + 1/b + 1/c + 1/d)"],
+          ["McNemar (Paired)", "χ² = (b−c)²/(b+c)  |  Corr χ² = (|b−c|−1)²/(b+c)  |  OR = b/c"],
+          ["Diagnostic (Gold Std Col)", "Sens = a/(a+c) | Spec = d/(b+d) | PPV = a/(a+b) | NPV = d/(c+d) | Acc = (a+d)/N"]
+        ],
+        tricks: [
+          "<strong>เติมช่อง 2×2 ที่ขาดด้วย Marginals:</strong> แค่รู้ 1 ช่องในแถว/คอลัมน์กับยอดรวม (เช่น Row₁ = 120, a = 24 → <code>b = 120 − 24 = 96</code>) แล้วไล่ลบต่อจนครบทุกช่อง",
+          "<strong>คำนวณ Expected Count 2×2 แบบไว:</strong> คำนวณแค่ช่องแรก <code>E₁₁ = Row₁×Col₁/N</code> ช่องเดียว อีก 3 ช่องจับลบจากขอบตารางได้เลย ไม่ต้องคูณหาร 4 รอบ!"
+        ]
+      }
+    ];
+
+    const BLANK_DRILLS = [
+      {
+        id: "drill-anova",
+        title: "ฝึกที่ 1: เติมตาราง One-way ANOVA ที่ถูกปิดช่อง",
+        badge: "ANOVA Table",
+        presets: {
+          A: {
+            label: "ชุด A: เติมเดินหน้า (โจทย์ Lecture 11 หน้า 64, N=20)",
+            desc: "กำหนด N = 20 คน, SSB = 360, SST = 810, Within df = 15 — จงหาตัวเลขในช่องที่ปิดไว้ทั้งหมด",
+            headers: ["Source", "SS", "df", "MS", "F", "R²"],
+            rows: [
+              {
+                head: "Between groups",
+                cells: [
+                  "360",
+                  { id: "a_dfb", ans: 4, label: "Between df", hint: "df_T − df_W = 19 − 15 = 4 (→ มี k = 5 กลุ่ม)" },
+                  { id: "a_msb", ans: 90, label: "Between MS (MSB)", hint: "SSB / df_B = 360 / 4 = 90" },
+                  { id: "a_f", ans: 3, label: "F-ratio", hint: "MSB / MSW = 90 / 30 = 3.00" },
+                  { id: "a_r2", ans: 0.4444, label: "R-squared", hint: "SSB / SST = 360 / 810 = 0.4444" }
+                ]
+              },
+              {
+                head: "Within groups",
+                cells: [
+                  { id: "a_ssw", ans: 450, label: "Within SS (SSW)", hint: "SST − SSB = 810 − 360 = 450" },
+                  "15",
+                  { id: "a_msw", ans: 30, label: "Within MS (MSW)", hint: "SSW / df_W = 450 / 15 = 30" },
+                  "—",
+                  "—"
+                ]
+              },
+              {
+                head: "Total",
+                cells: [
+                  "810",
+                  { id: "a_dft", ans: 19, label: "Total df", hint: "N − 1 = 20 − 1 = 19" },
+                  { id: "a_mst", ans: 42.63, label: "Total MS", hint: "SST / df_T = 810 / 19 ≈ 42.63" },
+                  "—",
+                  "—"
+                ]
+              }
+            ]
+          },
+          B: {
+            label: "ชุด B: แก้ย้อนกลับ (ให้ MS, df, F — ปิด SS ทั้งหมด!)",
+            desc: "กำหนด Between df = 4, MSB = 90, F = 3.00, Total df = 19 — จงแก้ย้อนกลับหา MSW, SS, N และจำนวนกลุ่ม k",
+            headers: ["Source", "SS", "df", "MS", "F", "จำนวนกลุ่ม (k) / คน (N)"],
+            rows: [
+              {
+                head: "Between groups",
+                cells: [
+                  { id: "b_ssb", ans: 360, label: "Between SS", hint: "MSB × df_B = 90 × 4 = 360" },
+                  "4",
+                  "90",
+                  "3.00",
+                  { id: "b_k", ans: 5, label: "จำนวนกลุ่ม k", hint: "k = df_B + 1 = 4 + 1 = 5 กลุ่ม" }
+                ]
+              },
+              {
+                head: "Within groups",
+                cells: [
+                  { id: "b_ssw", ans: 450, label: "Within SS", hint: "MSW × df_W = 30 × 15 = 450" },
+                  { id: "b_dfw", ans: 15, label: "Within df", hint: "df_T − df_B = 19 − 4 = 15" },
+                  { id: "b_msw", ans: 30, label: "Within MS", hint: "MSB / F = 90 / 3.00 = 30" },
+                  "—",
+                  "—"
+                ]
+              },
+              {
+                head: "Total",
+                cells: [
+                  { id: "b_sst", ans: 810, label: "Total SS", hint: "SSB + SSW = 360 + 450 = 810" },
+                  "19",
+                  { id: "b_mst", ans: 42.63, label: "Total MS", hint: "810 / 19 ≈ 42.63" },
+                  "—",
+                  { id: "b_n", ans: 20, label: "Total N", hint: "N = df_T + 1 = 19 + 1 = 20 คน" }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        id: "drill-linreg",
+        title: "ฝึกที่ 2: เติมตาราง Multiple Linear Regression (Stata regress)",
+        badge: "Linear Regression",
+        presets: {
+          A: {
+            label: "ชุด A: เติม ANOVA Header + ค่า t (regress bwt ht ui, N=189)",
+            desc: "คำนวณ Residual df/SS, MS, F, R², Adj R², Root MSE และค่า t ของตัวทำนาย",
+            headers: ["รายการ / Source", "SS / Coef.", "df / SE", "MS / t", "Model Metric"],
+            rows: [
+              {
+                head: "Model (k = 2)",
+                cells: [
+                  "11173621.6",
+                  "2",
+                  { id: "lr_msm", ans: 5586810.8, label: "MS Model", hint: "11173621.6 / 2 = 5586810.8" },
+                  { id: "lr_f", ans: 11.71, label: "F-statistic", hint: "5586810.8 / 477105.79 = 11.71" }
+                ]
+              },
+              {
+                head: "Residual",
+                cells: [
+                  { id: "lr_sse", ans: 88741677, label: "SS Residual", hint: "99915298.6 − 11173621.6 = 88741677" },
+                  { id: "lr_dfr", ans: 186, label: "df Residual", hint: "df_T − df_M = 188 − 2 = 186" },
+                  { id: "lr_mse", ans: 477105.79, label: "MS Residual", hint: "88741677 / 186 = 477105.79" },
+                  { id: "lr_rmse", ans: 690.73, label: "Root MSE", hint: "√477105.79 = 690.73" }
+                ]
+              },
+              {
+                head: "Total",
+                cells: [
+                  "99915298.6",
+                  "188",
+                  { id: "lr_r2", ans: 0.1118, label: "R-squared", hint: "11173621.6 / 99915298.6 = 0.1118" },
+                  { id: "lr_adjr2", ans: 0.1023, label: "Adj R-squared", hint: "1 − (477105.79 / (99915298.6/188)) = 0.1023" }
+                ]
+              },
+              {
+                head: "Coef: ht",
+                cells: [
+                  "-533.1628",
+                  "207.27",
+                  { id: "lr_t_ht", ans: -2.57, label: "t (ht)", hint: "-533.1628 / 207.27 = -2.57" },
+                  "p = 0.011"
+                ]
+              },
+              {
+                head: "Coef: ui",
+                cells: [
+                  "-619.4842",
+                  "142.2728",
+                  { id: "lr_t_ui", ans: -4.35, label: "t (ui)", hint: "-619.4842 / 142.2728 = -4.35" },
+                  "p < 0.001"
+                ]
+              }
+            ]
+          },
+          B: {
+            label: "ชุด B: แก้ย้อนกลับจาก Root MSE และ 95% CI",
+            desc: "ปิด SS/MS/Coef/SE — ให้ df_R=186, Root MSE=690.73 และช่วง 95% CI ของ ui = [-900.16, -338.81] (t=-4.354)",
+            headers: ["รายการ", "ค่าที่โจทย์ปิด", "ค่าอ้างอิงที่ให้มา"],
+            rows: [
+              {
+                head: "MS Residual (MSE)",
+                cells: [
+                  { id: "lrb_mse", ans: 477108, label: "MSE", hint: "(Root MSE)² = 690.73² ≈ 477,108 (ตารางจริง 477,105.8)" },
+                  "Root MSE = 690.73"
+                ]
+              },
+              {
+                head: "SS Residual (SSE)",
+                cells: [
+                  { id: "lrb_sse", ans: 88741677, label: "SSE", hint: "MSE × df_R = 477,108 × 186 ≈ 88,742,088 (ตารางจริง 88,741,677)" },
+                  "df_Residual = 186"
+                ]
+              },
+              {
+                head: "Coef. ของ ui",
+                cells: [
+                  { id: "lrb_coef", ans: -619.485, label: "Coef(ui)", hint: "(Lower + Upper) / 2 = (-900.16 + -338.81) / 2 = -619.485" },
+                  "95% CI = [-900.16, -338.81]"
+                ]
+              },
+              {
+                head: "Std. Err. ของ ui",
+                cells: [
+                  { id: "lrb_se", ans: 142.28, label: "SE(ui)", hint: "Coef / t = -619.485 / -4.354 ≈ 142.28" },
+                  "t = -4.354"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        id: "drill-logistic",
+        title: "ฝึกที่ 3: เติมตาราง Logistic Regression (Stata logit & SPSS Exp(B)/Wald)",
+        badge: "Logistic Regression",
+        presets: {
+          A: {
+            label: "ชุด A: Stata logit (Mock Exam Part 3, N=500)",
+            desc: "กำหนด lnL_full = -287.60, LR chi2(4) = 58.42 — เติมค่า Null lnL, Pseudo R², z, SE, aOR และ 95% CI",
+            headers: ["Variable / Fit", "Coef. (β)", "Std. Err.", "z (Wald χ²)", "aOR (Exp β) | Fit", "95% CI (β)"],
+            rows: [
+              {
+                head: "Model Fit Header",
+                cells: [
+                  "lnL_full = -287.60",
+                  "LR chi2 = 58.42",
+                  { id: "lg_null", ans: -316.81, label: "Null Log-Likelihood", hint: "lnL_full − LR/2 = -287.60 − 29.21 = -316.81" },
+                  { id: "lg_pr2", ans: 0.0922, label: "Pseudo R²", hint: "1 − (-287.60 / -316.81) = 0.0922" },
+                  "—"
+                ]
+              },
+              {
+                head: "age",
+                cells: [
+                  "0.045",
+                  "0.012",
+                  { id: "lg_z_age", ans: 3.75, label: "z(age)", hint: "0.045 / 0.012 = 3.75" },
+                  "1.046",
+                  { id: "lg_cil_age", ans: 0.0215, label: "95% CI Lower (age)", hint: "0.045 − 1.96×0.012 = 0.0215" }
+                ]
+              },
+              {
+                head: "bmi (+1 และ +5)",
+                cells: [
+                  "0.120",
+                  { id: "lg_se_bmi", ans: 0.03, label: "SE(bmi)", hint: "0.120 / 4.00 = 0.030" },
+                  "4.00",
+                  { id: "lg_or_bmi5", ans: 1.82, label: "aOR เมื่อ BMI +5", hint: "e<sup>5 × 0.120</sup> = e<sup>0.60</sup> ≈ 1.82" },
+                  "[0.0612, 0.1788]"
+                ]
+              },
+              {
+                head: "famhx",
+                cells: [
+                  "0.920",
+                  "0.230",
+                  { id: "lg_wald_fam", ans: 16, label: "SPSS Wald (z²)", hint: "(0.920 / 0.230)² = 4.00² = 16.00" },
+                  { id: "lg_or_fam", ans: 2.51, label: "aOR(famhx)", hint: "e<sup>0.920</sup> ≈ 2.51" },
+                  "[0.4692, 1.3708]"
+                ]
+              }
+            ]
+          },
+          B: {
+            label: "ชุด B: SPSS Output (Nov 5 Slide 48: smoke & hyper)",
+            desc: "สลับคำนวณ B, Wald = (B/SE)², Exp(B) = e<sup>B</sup> และ 95% CI ของ OR = exp(B ± 1.96×SE)",
+            headers: ["Variable", "B", "S.E.", "Wald χ²", "Exp(B) = OR", "95% CI Lower (OR)", "95% CI Upper (OR)"],
+            rows: [
+              {
+                head: "smoke",
+                cells: [
+                  "0.712",
+                  "0.324",
+                  { id: "sp_w_smk", ans: 4.83, label: "Wald(smoke)", hint: "(0.712 / 0.324)² ≈ 4.83" },
+                  { id: "sp_or_smk", ans: 2.04, label: "Exp(B) smoke", hint: "e<sup>0.712</sup> ≈ 2.038" },
+                  { id: "sp_l_smk", ans: 1.08, label: "95% CI Lower OR", hint: "exp(0.712 − 1.96×0.324) ≈ 1.08" },
+                  { id: "sp_u_smk", ans: 3.85, label: "95% CI Upper OR", hint: "exp(0.712 + 1.96×0.324) ≈ 3.85" }
+                ]
+              },
+              {
+                head: "hyper",
+                cells: [
+                  { id: "sp_b_hyp", ans: 1.23, label: "B (hyper)", hint: "ln(3.421) ≈ 1.230" },
+                  "0.618",
+                  { id: "sp_w_hyp", ans: 3.96, label: "Wald(hyper)", hint: "(1.230 / 0.618)² ≈ 3.96" },
+                  "3.421",
+                  "1.02",
+                  "11.49"
+                ]
+              }
+            ]
+          }
+        }
+      },
+      {
+        id: "drill-2x2",
+        title: "ฝึกที่ 4: เติมตาราง 2×2 (Observed, Expected E, χ², PR & Classification)",
+        badge: "2×2 & Diagnostic",
+        presets: {
+          A: {
+            label: "ชุด A: Cross-Sectional 2×2 (Mock Exam Part 2 Q1, N=200)",
+            desc: "เติมจำนวนคน Expected Count, Pearson χ² และ Prevalence Ratio (Inactive vs Active)",
+            headers: ["Physical Activity", "HT Yes (Obs)", "HT No (Obs)", "Row Total", "E (HT Yes)", "E (HT No)"],
+            rows: [
+              {
+                head: "Active",
+                cells: [
+                  "24",
+                  { id: "c_b", ans: 96, label: "b (Active, HT No)", hint: "Row₁ − a = 120 − 24 = 96" },
+                  "120",
+                  { id: "c_e11", ans: 33.6, label: "E₁₁", hint: "(120 × 56) / 200 = 33.6" },
+                  { id: "c_e12", ans: 86.4, label: "E₁₂", hint: "120 − 33.6 = 86.4" }
+                ]
+              },
+              {
+                head: "Inactive",
+                cells: [
+                  { id: "c_c", ans: 32, label: "c (Inactive, HT Yes)", hint: "Col₁ − a = 56 − 24 = 32" },
+                  { id: "c_d", ans: 48, label: "d (Inactive, HT No)", hint: "80 − 32 = 48" },
+                  "80",
+                  { id: "c_e21", ans: 22.4, label: "E₂₁", hint: "56 − 33.6 = 22.4" },
+                  { id: "c_e22", ans: 57.6, label: "E₂₂", hint: "80 − 22.4 = 57.6" }
+                ]
+              },
+              {
+                head: "Total / Stats",
+                cells: [
+                  "56",
+                  { id: "c_col2", ans: 144, label: "Col Total (HT No)", hint: "200 − 56 = 144" },
+                  "200",
+                  { id: "c_chi2", ans: 9.52, label: "Pearson χ²", hint: "∑(O−E)²/E = 2.74+1.07+4.11+1.60 = 9.52" },
+                  { id: "c_pr", ans: 2, label: "Prevalence Ratio", hint: "(32/80) / (24/120) = 0.40 / 0.20 = 2.00" }
+                ]
+              }
+            ]
+          },
+          B: {
+            label: "ชุด B: Diagnostic / Classification 2×2 (Nov 5 Slide 51, N=189)",
+            desc: "คำนวณช่องที่ขาด และ Accuracy (%) / Sensitivity (%) / Specificity (%) / PPV (%) เป็นทศนิยม % (0–100)",
+            headers: ["Predicted \\ Observed", "LBW (+)", "Normal (−)", "Row Total", "Metric (%)"],
+            rows: [
+              {
+                head: "Classified (+)",
+                cells: [
+                  "24",
+                  "14",
+                  { id: "d_row1", ans: 38, label: "Pred+ Total", hint: "24 + 14 = 38" },
+                  { id: "d_ppv", ans: 63.2, label: "PPV (%)", hint: "24 / 38 × 100 = 63.2%" }
+                ]
+              },
+              {
+                head: "Classified (−)",
+                cells: [
+                  { id: "d_c", ans: 35, label: "FN (c)", hint: "59 − 24 = 35" },
+                  { id: "d_d", ans: 116, label: "TN (d)", hint: "130 − 14 = 116" },
+                  { id: "d_row2", ans: 151, label: "Pred− Total", hint: "35 + 116 = 151" },
+                  { id: "d_acc", ans: 74.1, label: "Accuracy (%)", hint: "(24 + 116) / 189 × 100 = 74.1%" }
+                ]
+              },
+              {
+                head: "Total Observed",
+                cells: [
+                  "59",
+                  "130",
+                  "189",
+                  { id: "d_sens", ans: 40.7, label: "Sensitivity (%)", hint: "24 / 59 × 100 = 40.7%" }
+                ]
+              },
+              {
+                head: "Specificity (%)",
+                cells: [
+                  "—",
+                  { id: "d_spec", ans: 89.2, label: "Specificity (%)", hint: "116 / 130 × 100 = 89.2%" },
+                  "—",
+                  "—"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    ];
+
     /* ---------- 6. RENDERERS ---------- */
     const state = {
       activeView: "view-tree",
       showAllViews: false,
       activeLeaf: "chi2",
       activeStataTab: "logit",
-      examFilter: "all"
+      examFilter: "all",
+      tablesMode: "blueprint",
+      drillPreset: { "drill-anova": "A", "drill-linreg": "A", "drill-logistic": "A", "drill-2x2": "A" }
     };
+
+    function renderBlueprintCard(bp) {
+      return `
+        <article class="card">
+          <div class="row-between">
+            <div>
+              <h2 class="card-title">${bp.title}</h2>
+              <span class="tag tag-accent">${bp.badge}</span>
+            </div>
+            <button type="button" class="btn" data-jump-view="${bp.viewJump}">ไปหน้าบทเรียนเต็ม →</button>
+          </div>
+          ${bp.tables.map(tbl => `
+            <div class="table-wrapper mt-1" tabindex="0" role="region" aria-label="${escapeAttr(tbl.caption)}">
+              <table class="data-table">
+                <caption>${tbl.caption}</caption>
+                <thead><tr>${tbl.headers.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead>
+                <tbody>
+                  ${tbl.rows.map(r => `
+                    <tr>
+                      <th scope="row">${r.head}</th>
+                      ${r.cells.map(c => `<td><span class="cell-formula">${c.m}</span>${c.s ? `<span class="cell-sub">${c.s}</span>` : ""}</td>`).join("")}
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          `).join("")}
+          <div class="grid-2 mt-1">
+            <div class="formula-box" style="margin:0;">
+              <div class="formula-label">สูตรสรุปท้ายตาราง (Summary &amp; Derived Metrics)</div>
+              <ul class="text-sm">
+                ${bp.metrics.map(([k, v]) => `<li><strong>${k}:</strong> <code>${v}</code></li>`).join("")}
+              </ul>
+            </div>
+            <div class="trap-box" style="margin:0;">
+              <div class="formula-label">ทริคแก้ย้อนกลับเมื่อข้อสอบปิดช่อง</div>
+              <ul class="text-sm">
+                ${bp.tricks.map(t => `<li>${t}</li>`).join("")}
+              </ul>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderPracticeCardHTML(drill) {
+      const presetKey = state.drillPreset[drill.id] || "A";
+      const p = drill.presets[presetKey];
+      return `
+        <div class="row-between">
+          <div>
+            <h2 class="card-title">${drill.title}</h2>
+            <span class="tag tag-purple">${drill.badge} • ${p.label}</span>
+          </div>
+          <div class="source-tags">
+            <button type="button" class="btn" data-drill-preset="${drill.id}">🔄 สลับชุด (ตอนนี้ชุด ${presetKey})</button>
+          </div>
+        </div>
+        <p class="text-sm text-muted mt-1">${p.desc}</p>
+        <div class="table-wrapper mt-1" tabindex="0" role="region" aria-label="${escapeAttr(p.label)}">
+          <table class="data-table">
+            <thead><tr>${p.headers.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead>
+            <tbody>
+              ${p.rows.map(r => `
+                <tr>
+                  <th scope="row">${r.head}</th>
+                  ${r.cells.map(c => typeof c === "string"
+                    ? `<td class="mono">${c}</td>`
+                    : `<td>
+                        <div class="blank-cell-wrap">
+                          <input type="number" step="any" class="blank-input" data-ans="${c.ans}" placeholder="?" aria-label="${escapeAttr(c.label)}">
+                          <span class="blank-hint" hidden>✅ <strong>${c.ans}</strong><br>${c.hint}</span>
+                        </div>
+                      </td>`
+                  ).join("")}
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+        <div class="row-between mt-1">
+          <div class="source-tags">
+            <button type="button" class="btn btn-primary" data-drill-check="${drill.id}">✅ ตรวจคำตอบ</button>
+            <button type="button" class="btn" data-drill-reveal="${drill.id}">👁️ เฉลย + สูตรทุกช่อง</button>
+            <button type="button" class="btn" data-drill-reset="${drill.id}">🧹 ล้างคำตอบ</button>
+          </div>
+          <span class="text-sm" data-drill-status="${drill.id}" aria-live="polite"></span>
+        </div>
+      `;
+    }
+
+    function renderBlankTables() {
+      $("#tables-blueprint-pane").innerHTML = BLANK_BLUEPRINTS.map(renderBlueprintCard).join("");
+      $("#tables-practice-pane").innerHTML = BLANK_DRILLS.map(d =>
+        `<article class="card" data-drill-card="${d.id}">${renderPracticeCardHTML(d)}</article>`
+      ).join("");
+    }
+
+    function setTablesMode(mode) {
+      state.tablesMode = mode;
+      $$("[data-tables-mode]").forEach(b => {
+        const active = b.dataset.tablesMode === mode;
+        b.setAttribute("aria-selected", active ? "true" : "false");
+        b.tabIndex = active ? 0 : -1;
+      });
+      $("#tables-blueprint-pane").hidden = mode !== "blueprint";
+      $("#tables-practice-pane").hidden = mode !== "practice";
+    }
+
+    function gradeBlankDrill(drillId, revealOnly = false) {
+      const card = $(`[data-drill-card="${drillId}"]`);
+      if (!card) return;
+      const inputs = $$(".blank-input", card);
+      let okCount = 0;
+      inputs.forEach(inp => {
+        const ans = Number(inp.dataset.ans);
+        const hint = inp.parentElement.querySelector(".blank-hint");
+        if (revealOnly) {
+          inp.value = ans;
+          inp.classList.remove("is-err");
+          inp.classList.add("is-ok");
+          if (hint) hint.hidden = false;
+          okCount++;
+          return;
+        }
+        const raw = inp.value.trim();
+        const tol = Math.max(0.02, Math.abs(ans) * 0.025);
+        const val = Number(raw);
+        const isOk = raw !== "" && Number.isFinite(val) && Math.abs(val - ans) <= tol;
+        inp.classList.toggle("is-ok", isOk);
+        inp.classList.toggle("is-err", !isOk);
+        if (hint) hint.hidden = false;
+        if (isOk) okCount++;
+      });
+      const statusEl = $(`[data-drill-status="${drillId}"]`, card);
+      if (statusEl) {
+        statusEl.textContent = revealOnly
+          ? `เฉลยครบทั้ง ${inputs.length} ช่องแล้ว`
+          : `ได้ ${okCount} / ${inputs.length} ช่อง (เกณฑ์คลาดเคลื่อน ±2.5%)`;
+      }
+    }
+
+    function resetBlankDrill(drillId) {
+      const card = $(`[data-drill-card="${drillId}"]`);
+      if (!card) return;
+      $$(".blank-input", card).forEach(inp => {
+        inp.value = "";
+        inp.classList.remove("is-ok", "is-err");
+        const hint = inp.parentElement.querySelector(".blank-hint");
+        if (hint) hint.hidden = true;
+      });
+      const statusEl = $(`[data-drill-status="${drillId}"]`, card);
+      if (statusEl) statusEl.textContent = "";
+    }
 
     const $ = (sel, root = document) => root.querySelector(sel);
     const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
@@ -3078,6 +4165,26 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
         : `${formulaHTML.slice(0, idx)}${legend}${formulaHTML.slice(idx)}`;
     }
 
+    /** Render Stata code block (Immediate first, Dataset second) with copy button. */
+    function renderStataBlocksHTML(immediateCLI, datasetCLI, dataLabel = "STATA CLI (เมื่อมีไฟล์ข้อมูล .dta)") {
+      const blocks = [];
+      if (immediateCLI) {
+        blocks.push(`
+          <div class="stata-block stata-imm">
+            <div class="stata-head"><span>⚡ IMMEDIATE / เติมเลขจากโจทย์ (ไม่ต้องมีไฟล์ .dta)</span><button type="button" class="copy-btn" data-copy-text="${escapeAttr(immediateCLI)}">คัดลอก Immediate</button></div>
+            <pre style="white-space:pre-wrap;margin:0;"><code>${escapeHtml(immediateCLI)}</code></pre>
+          </div>`);
+      }
+      if (datasetCLI) {
+        blocks.push(`
+          <div class="stata-block">
+            <div class="stata-head"><span>${dataLabel}</span><button type="button" class="copy-btn" data-copy-text="${escapeAttr(datasetCLI)}">คัดลอก</button></div>
+            <pre style="white-space:pre-wrap;margin:0;"><code>${escapeHtml(datasetCLI)}</code></pre>
+          </div>`);
+      }
+      return blocks.join("");
+    }
+
     // Render Inspector Card (Shared for Decision Tree & Topic Nodes)
     function renderInspectorHTML(leafId, showJumpBtn = true) {
       const d = LEAVES[leafId];
@@ -3097,10 +4204,7 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
         </div>
         ${injectFormulaVars(d.formulaHTML, d.vars)}
         <div class="gui-path">🖱️ <span><strong>Stata Menu:</strong> ${d.stataGUI}</span></div>
-        <div class="stata-block">
-          <div class="stata-head"><span>STATA CLI</span><button type="button" class="copy-btn" data-copy-text="${escapeAttr(d.stataCLI)}">คัดลอก</button></div>
-          <pre style="white-space:pre-wrap;margin:0;"><code>${escapeHtml(d.stataCLI)}</code></pre>
-        </div>
+        ${renderStataBlocksHTML(d.stataImmediate, d.stataCLI)}
         <div class="template-box">
           <strong>✍️ แพทเทิร์นเขียนตอบ (TH):</strong> ${d.templateTH}<br>
           <span class="text-sm"><strong>(EN):</strong> ${d.templateEN}</span>
@@ -3176,12 +4280,9 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
           </div>
 
           <article class="card">
-            <h2 class="card-title">💻 การกด Stata (Menu GUI + Command CLI)</h2>
+            <h2 class="card-title">💻 การกด Stata (Immediate เติมเลขจากโจทย์ + Menu GUI + Dataset CLI)</h2>
             <div class="gui-path">🖱️ <span><strong>Menu Path:</strong> ${escapeHtml(t.stataGUI).replace(/\n/g, "<br>")}</span></div>
-            <div class="stata-block">
-              <div class="stata-head"><span>STATA COMMANDS</span><button type="button" class="copy-btn" data-copy-text="${escapeAttr(t.stataCLI)}">คัดลอกคำสั่ง</button></div>
-              <pre style="white-space:pre-wrap;margin:0;"><code>${escapeHtml(t.stataCLI)}</code></pre>
-            </div>
+            ${renderStataBlocksHTML(t.stataImmediate, t.stataCLI, "STATA COMMANDS (เมื่อมีไฟล์ข้อมูล .dta)")}
           </article>
 
           <div class="grid-2">
@@ -3215,6 +4316,7 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
       });
       $("#stata-output-stage").innerHTML = `
         <div class="text-sm mb-1"><strong>${lab.title}</strong></div>
+        ${lab.syntax ? `<div class="gui-path mb-1">📌 <span><strong>รูปแบบคำสั่ง:</strong> <code>${escapeHtml(lab.syntax)}</code></span></div>` : ""}
         <pre class="stata-out-pre" role="region" aria-label="${escapeAttr(lab.title)}" tabindex="0"><code>${lab.html}</code></pre>
       `;
       selectHotspot(lab.defaultKey);
@@ -3230,6 +4332,37 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
       $("#stata-hotspot-body").innerHTML = `
         <h3 style="font-size:1rem;color:var(--accent-fg);">${info.title}</h3>
         <p class="text-sm mt-1">${info.body}</p>
+      `;
+    }
+
+    function renderImmediateCookbook() {
+      const mount = $("#immediate-cookbook-mount");
+      if (!mount) return;
+      mount.innerHTML = `
+        <article class="card">
+          <div class="row-between">
+            <div>
+              <h2 class="card-title">⚡ STATA Immediate &amp; Calculator Cookbook (เติมเลขจากโจทย์ → รันได้คำตอบทันที)</h2>
+              <p class="text-sm text-muted">รวมคำสั่งที่ไม่ต้องมีไฟล์ <code>.dta</code> — พิมพ์ตัวเลขจากข้อสอบลงในช่อง <code>&lt;...&gt;</code> แล้วกด Enter ใน Stata เพื่ออ่านคำตอบและ 95% CI ได้เลย (ทดสอบรันจริงแล้วใน StataNow 19.5 SE)</p>
+            </div>
+            <span class="tag tag-good">Verified in StataNow 19.5</span>
+          </div>
+          <div class="grid-2 mt-1">
+            ${STATA_IMMEDIATE_COOKBOOK.map(item => `
+              <div class="card" style="background:var(--bg-subtle);padding:0.8rem 0.95rem;">
+                <div class="row-between">
+                  <strong class="text-sm">${item.title}</strong>
+                  <span class="tag ${item.badge.includes("⚠️") ? "tag-warn" : "tag-good"}">${item.badge}</span>
+                </div>
+                <p class="text-sm text-muted mt-1">${item.note}</p>
+                <div class="stata-block stata-imm mt-1" style="margin-block-end:0;">
+                  <div class="stata-head"><span>⚡ IMMEDIATE / CALCULATOR CLI</span><button type="button" class="copy-btn" data-copy-text="${escapeAttr(item.cmd)}">คัดลอกชุดคำสั่ง</button></div>
+                  <pre style="white-space:pre-wrap;margin:0;"><code>${escapeHtml(item.cmd)}</code></pre>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </article>
       `;
     }
 
@@ -3425,10 +4558,11 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
       searchItems = [];
       Object.entries(LEAVES).forEach(([id, l]) => {
         const varsText = (l.vars || []).map(v => `${v[0]} ${v[1]}`).join(" ").replace(/<\/?(sub|sup)>/gi, "");
+        const firstCli = ((l.stataImmediate || l.stataCLI || "").split("\n").find(x => x.trim() && !/^\s*(\*|\/\*)/.test(x)) || (l.stataCLI || "").split("\n")[0]);
         searchItems.push({
           title: l.title,
-          sub: `${l.badge} • ${l.stataCLI.split("\n")[0]}`,
-          text: `${l.title} ${l.badge} ${l.when} ${l.assumptions.join(" ")} ${varsText} ${l.stataCLI} ${l.stataGUI} ${l.templateTH}`.toLowerCase(),
+          sub: `${l.badge} • ${firstCli}`,
+          text: `${l.title} ${l.badge} ${l.when} ${l.assumptions.join(" ")} ${varsText} ${l.stataImmediate || ""} ${l.stataCLI || ""} ${l.stataGUI} ${l.templateTH}`.toLowerCase(),
           action: () => { switchView("view-tree"); setTreeMode("flow"); selectLeaf(id); }
         });
       });
@@ -3439,8 +4573,16 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
         searchItems.push({
           title: `${t.num} ${t.title}`,
           sub: t.sources.join(", "),
-          text: `${t.title} ${t.knowledge.join(" ")} ${formulasText} ${t.stataCLI} ${t.traps.join(" ")}`.toLowerCase(),
+          text: `${t.title} ${t.knowledge.join(" ")} ${formulasText} ${t.stataImmediate || ""} ${t.stataCLI || ""} ${t.traps.join(" ")}`.toLowerCase(),
           action: () => switchView(`view-${t.id}`)
+        });
+      });
+      STATA_IMMEDIATE_COOKBOOK.forEach(c => {
+        searchItems.push({
+          title: `⚡ ${c.title}`,
+          sub: "Immediate STATA CLI Cookbook",
+          text: `${c.title} ${c.badge} ${c.note} ${c.cmd}`.toLowerCase(),
+          action: () => switchView("view-stata")
         });
       });
       TRAPS.forEach(tr => {
@@ -3457,6 +4599,18 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
           sub: ex.badge,
           text: `${ex.badge} ${ex.title} ${ex.prompt} ${ex.solution}`.toLowerCase(),
           action: () => { state.examFilter = "all"; renderExams(); switchView("view-exam"); }
+        });
+      });
+      BLANK_BLUEPRINTS.forEach(bp => {
+        const tableTxt = bp.tables.map(tb =>
+          `${tb.caption} ${tb.headers.join(" ")} ${tb.rows.map(r => r.head + " " + r.cells.map(c => c.m + " " + c.s).join(" ")).join(" ")}`
+        ).join(" ");
+        const metaTxt = bp.metrics.map(m => m.join(" ")).join(" ") + " " + bp.tricks.join(" ");
+        searchItems.push({
+          title: `📐 ${bp.title}`,
+          sub: `Blank-Table Solver • ${bp.badge}`,
+          text: `${bp.title} ${bp.badge} ${tableTxt} ${metaTxt}`.replace(/<\/?[^>]+>/g, " ").toLowerCase(),
+          action: () => { setTablesMode("blueprint"); switchView("view-tables"); }
         });
       });
       MOCK_MCQS.forEach((m, i) => {
@@ -3661,6 +4815,35 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
           });
           return;
         }
+        const tablesModeBtn = e.target.closest("[data-tables-mode]");
+        if (tablesModeBtn) {
+          setTablesMode(tablesModeBtn.dataset.tablesMode);
+          return;
+        }
+        const checkDrillBtn = e.target.closest("[data-drill-check]");
+        if (checkDrillBtn) {
+          gradeBlankDrill(checkDrillBtn.dataset.drillCheck, false);
+          return;
+        }
+        const revealDrillBtn = e.target.closest("[data-drill-reveal]");
+        if (revealDrillBtn) {
+          gradeBlankDrill(revealDrillBtn.dataset.drillReveal, true);
+          return;
+        }
+        const resetDrillBtn = e.target.closest("[data-drill-reset]");
+        if (resetDrillBtn) {
+          resetBlankDrill(resetDrillBtn.dataset.drillReset);
+          return;
+        }
+        const presetDrillBtn = e.target.closest("[data-drill-preset]");
+        if (presetDrillBtn) {
+          const did = presetDrillBtn.dataset.drillPreset;
+          state.drillPreset[did] = state.drillPreset[did] === "A" ? "B" : "A";
+          const drill = BLANK_DRILLS.find(d => d.id === did);
+          const card = $(`[data-drill-card="${did}"]`);
+          if (drill && card) card.innerHTML = renderPracticeCardHTML(drill);
+          return;
+        }
         const searchHit = e.target.closest("[data-search-hit]");
         if (searchHit) {
           const hits = $("#search-results")._hits || [];
@@ -3698,7 +4881,9 @@ Test Ho: p = 0.2000   alternative p = 0.2500   Estimated required sample size: n
     selectLeaf("chi2");
     renderTopics();
     renderStataLab("logit");
+    renderImmediateCookbook();
     renderStataMasterTable();
+    renderBlankTables();
     renderTraps();
     renderExams();
     buildSearchIndex();
